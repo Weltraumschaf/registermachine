@@ -11,10 +11,12 @@
 
 package de.weltraumschaf.registermachine;
 
+import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +68,37 @@ public final class App extends InvokableAdapter {
     public void execute() throws Exception {
         final Version version = new Version("/de/weltraumschaf/registermachine/version.properties");
         version.load();
-        getIoStreams().println("Hello");
+        /*
+         * LOAD  #1
+         * DIV   #2
+         * MULT  #2
+         * STORE #3
+         * LOAD  #1
+         * SUB   #3
+         * STORE #3
+         * END
+         */
+        final List<Instruction> instructions = Lists.newArrayList(
+            new Isasign(0, 30),
+            new Isasign(1, 6),
+            new Iload(1, "#0"),
+            new Iload(2, "#1"),
+            new Iadd(0, 1, 2),
+            new StdOut(0)
+//            new Idiv(3, 0, 2),
+//            new StdOut(3)
+//            new Imult(1),
+//            new Iload(1),
+//            new Isub(3),
+//            new Istore(3),
+
+        );
+
+//        opts = getopt('dp');
+//        machine = new RegisterMachine(isset(opts['d']), isset(opts['p']));
+        final RegisterMachine machine = new RegisterMachine(true, true);
+        machine.setProgram(instructions);
+        machine.getConfiguration().init();
+        machine.run();
     }
 }
