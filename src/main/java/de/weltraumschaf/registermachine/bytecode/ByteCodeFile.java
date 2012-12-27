@@ -23,8 +23,8 @@ import java.util.Arrays;
  */
 public class ByteCodeFile {
 
-    private static final int FST_HEADER_BYTE = 0xCA;
-    private static final int SND_HEADER_BYTE = 0x7E;
+    private static final byte FST_HEADER_BYTE = (byte) 0xCA;
+    private static final byte SND_HEADER_BYTE = (byte) 0x7E;
 
     private final byte[] bytecode;
 

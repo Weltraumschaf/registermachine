@@ -11,7 +11,6 @@
 
 package de.weltraumschaf.registermachine;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
 import java.util.List;
@@ -55,31 +54,6 @@ public class Scope {
         }
 
         return sb.toString();
-    }
-
-    private static final class ByteArray {
-
-        /**
-         * Not thread safe!
-         *
-         * @param in
-         * @return
-         */
-        public static byte[] toNative(final Byte[] in) {
-            final byte[] out = new byte[in.length];
-            for (int i = 0; i < in.length; ++i) {
-                out[i] = in[i];
-            }
-            return out;
-        }
-
-        public static Byte[] toObject(final byte[] in) {
-            final Byte[] out = new Byte[in.length];
-            for (int i = 0; i < in.length; ++i) {
-                out[i] = in[i];
-            }
-            return out;
-        }
     }
 
 }

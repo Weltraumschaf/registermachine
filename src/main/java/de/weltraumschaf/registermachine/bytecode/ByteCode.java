@@ -25,7 +25,7 @@ import java.util.Map;
  * <pre>
  * @author sxs
  */
-enum ByteCode {
+public enum ByteCode {
 
     /**
      * Copy a value between registers.

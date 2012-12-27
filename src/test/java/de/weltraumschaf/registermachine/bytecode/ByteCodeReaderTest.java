@@ -14,11 +14,10 @@ package de.weltraumschaf.registermachine.bytecode;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
