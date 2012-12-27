@@ -9,28 +9,26 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.instructionset;
 
-class Isasign implements Instruction {
+import de.weltraumschaf.registermachine.Configuration;
 
-    private final int address;
-    private final int value;
+public class StdOut implements Instruction {
+    private final int register;
 
-    public  Isasign(final int address, final int value) {
-        this.address = address;
-        this.value   = value;
+    public  StdOut(final int i) {
+        super();
+        register = i;
     }
 
     @Override
     public void evaluate(final Configuration config) {
-        final Scope scope = config.getScope();
-        scope.setAssign(address, value);
+        System.out.print(config.getRegister(register));
         config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("isasign %d, %d", address, value);
+        return "stdout " + register;
     }
-
 }

@@ -9,9 +9,11 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.instructionset;
 
-class IfGoto implements Instruction {
+import de.weltraumschaf.registermachine.Configuration;
+
+public class IfGoto implements Instruction {
 
     private final int pos; // Sprungziel
 

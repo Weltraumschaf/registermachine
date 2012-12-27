@@ -9,31 +9,33 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.instructionset;
 
-class Isub implements Instruction {
+import de.weltraumschaf.registermachine.Configuration;
+
+public class Idiv implements Instruction {
 
     private final int resultReg;
     private final int op1Reg;
     private final int op2Reg;
 
-    public Isub(final int resultReg, final int op1Reg, final int op2Reg) {
+    public  Idiv(final int resultReg, final int op1Reg, final int op2Reg) {
         this.resultReg = resultReg;
         this.op1Reg    = op1Reg;
         this.op2Reg    = op2Reg;
     }
 
     @Override
-    public void evaluate(Configuration config) {
-        final int op1 = config.getRegister(op1Reg);
-        final int op2 = config.getRegister(op2Reg);
-        config.setRegister(resultReg, op1 - op2);
+    public void evaluate(final Configuration config) {
+        final int op1 = config.getRegister(this.op1Reg);
+        final int op2 = config.getRegister(this.op2Reg);
+        config.setRegister(this.resultReg, op1 / op2);
         config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("isub %d, %d, %d", op1Reg, op2Reg, resultReg);
+        return String.format("idiv %d, %d, %d", op1Reg, op2Reg, resultReg);
     }
 
 }

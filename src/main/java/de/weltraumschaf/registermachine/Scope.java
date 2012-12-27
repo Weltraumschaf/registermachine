@@ -14,7 +14,7 @@ package de.weltraumschaf.registermachine;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-class Scope {
+public class Scope {
     private final List<Object> assigns = Lists.newArrayList();
 
     public void setAssign(final int address, final Object value) {

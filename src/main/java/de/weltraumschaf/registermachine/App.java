@@ -11,6 +11,11 @@
 
 package de.weltraumschaf.registermachine;
 
+import de.weltraumschaf.registermachine.instructionset.StdOut;
+import de.weltraumschaf.registermachine.instructionset.Instruction;
+import de.weltraumschaf.registermachine.instructionset.Isasign;
+import de.weltraumschaf.registermachine.instructionset.Iadd;
+import de.weltraumschaf.registermachine.instructionset.Iload;
 import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;

@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine;
 
-class Configuration {
+public class Configuration {
     private static final int DEFAULT_SIZE = 16;
 
     private int ic = 0; // instruction counter

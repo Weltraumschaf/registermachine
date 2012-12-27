@@ -9,9 +9,11 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.instructionset;
 
-class End implements Instruction {
+import de.weltraumschaf.registermachine.Configuration;
+
+public class End implements Instruction {
 
     @Override
     public void evaluate(final Configuration config) {

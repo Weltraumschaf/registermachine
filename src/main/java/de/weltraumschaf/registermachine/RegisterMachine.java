@@ -11,9 +11,11 @@
 
 package de.weltraumschaf.registermachine;
 
+import de.weltraumschaf.registermachine.instructionset.Instruction;
+import de.weltraumschaf.registermachine.instructionset.End;
 import java.util.List;
 
-class RegisterMachine {
+public class RegisterMachine {
 
     private final Configuration config;
     private List<Instruction> program;
