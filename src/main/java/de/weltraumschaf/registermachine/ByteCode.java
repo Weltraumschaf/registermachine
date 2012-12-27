@@ -25,6 +25,21 @@ enum ByteCode {
     private final byte code;
 
     ByteCode(final int code) {
-        this.code = (byte) code;
+        this((byte) code);
     }
+
+    ByteCode(final byte code) {
+        this.code = code;
+    }
+
+    public byte getCode() {
+        return code;
+    }
+
+    @Override
+    public String toString() {
+        return "ByteCode{" + "code=" + name() + '}';
+    }
+
+
 }
