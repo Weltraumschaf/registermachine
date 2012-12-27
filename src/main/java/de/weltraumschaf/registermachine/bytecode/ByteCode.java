@@ -8,14 +8,34 @@
  * you can buy me a beer in return.
  *
  */
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.bytecode;
 
+import com.google.common.collect.Maps;
+import java.util.Locale;
+import java.util.Map;
+
+/**
+ * Opcodes of the byte code.
+ *
+ * General format:
+ * <pre>
+ * [ opcode 1 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ] ... [ argN 4 byte ]
+ * <pre>
+ * @author sxs
+ */
 enum ByteCode {
 
     /**
      * Copy a value between registers.
      *
-     * 0x00
+     * <pre>
+     * move SRC_REG DST_REG ; copy register SRC_REG to register DST_REG
+     * 0x00 0x01 0x02
+     * </pre>
+     *
+     *
      */
     MOVE(0),
     /**
@@ -23,89 +43,107 @@ enum ByteCode {
      *
      * 0x01
      */
-    LOADK(1),
+//    LOADC(1),
     /**
      * Load a boolean into a register.
      *
-     * 0x02
+     * <pre>
+     * LOADBOOL DST_REG ; load bool
+     * 0x02 0x01
+     * </pre>
      */
-    LOADBOOL(2),
+//    LOADBOOL(2),
     /**
      * Load nil values into a range of registers.
      *
      * 0x03
      */
-    LOADNIL(3),
+//    LOADNIL(3),
     /**
      * Read an upvalue into a register.
      *
      * 0x04
      */
-    GETUPVAL(4),
+//    GETUPVAL(4),
     /**
      * Read a global variable into a register.
      *
+     * <pre>
+     * getglobal
      * 0x05
+     * </pre>
      */
-    GETGLOBAL(5),
+//    GETGLOBAL(5),
     /**
      * Read a table element into a register.
      *
      * 0x06
      */
-    GETTABLE(6),
+//    GETTABLE(6),
     /**
      * Write a register value into a global variable.
      *
      * 0x07
      */
-    SETGLOBAL(7),
+//    SETGLOBAL(7),
     /**
      * Write a register value into an upvalue.
      *
      * 0x08
      */
-    SETUPVAL(8),
+//    SETUPVAL(8),
     /**
      * Write a register value into a table element.
      *
      * 0x09
      */
-    SETTABLE(9),
+//    SETTABLE(9),
     /**
      * Create a new table.
      *
      * 0x0a
      */
-    NEWTABLE(10),
+//    NEWTABLE(10),
     /**
      * Prepare an object method for calling.
      *
      * 0x0b
      */
-    SELF(11),
+//    SELF(11),
     /**
      * Addition operator.
      *
-     * 0x0c
+     * <pre>
+     * add RES_REG OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in RES_REG
+     * 0x0c 0x01 0x02 0x03
+     * </pre>
      */
     ADD(12),
     /**
      * Subtraction operator.
      *
-     * 0x0d
+     * <pre>
+     * sub RES_REG OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in RES_REG
+     * 0x0d 0x01 0x02 0x03
+     * </pre>
      */
     SUB(13),
     /**
      * Multiplication operator.
      *
-     * 0x0e
+     * <pre>
+     * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
+     * 0x0e 0x01 0x02 0x03
+     * </pre>
      */
     MUL(14),
     /**
      * Division operator.
      *
-     * 0x0f
+     * <pre>
+     * div RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
+     * 0x0f 0x01 0x02 0x03
+     * </pre>
      */
     DIV(15),
     /**
@@ -137,13 +175,13 @@ enum ByteCode {
      *
      * 0x14
      */
-    LEN(20),
+//    LEN(20),
     /**
      * Concatenate a range of registers.
      *
      * 0x15
      */
-    CONCAT(21),
+//    CONCAT(21),
     /**
      * Unconditional jump.
      *
@@ -175,71 +213,82 @@ enum ByteCode {
      */
     TEST(26),
     /**
-     * Call a closure.
+     * Boolean test, with conditional jump and assignment.
      *
      * 0x1b
      */
     TESTSET(27),
     /**
-     * Perform a tail call.
+     * Call a closure.
      *
      * 0x1c
      */
-    CALL(28),
+//    CALL(28),
     /**
-     * Return from function call.
+     * Perform a tail call.
      *
      * 0x1d
      */
-    TAILCALL(29),
+//    TAILCALL(29),
     /**
-     * Iterate a numeric for loop.
+     *
+     * Return from function call.
      *
      * 0x1e
      */
     RETURN(30),
     /**
-     * Initialization for a numeric for loop.
+     * Iterate a numeric for loop.
      *
      * 0x1f
      */
     FORLOOP(31),
     /**
-     * Iterate a generic for loop.
+     * Initialization for a numeric for loop.
      *
      * 0x20
      */
     FORPREP(32),
     /**
-     * Set a range of array elements for a table.
+     * Iterate a generic for loop.
      *
      * 0x21
      */
-    TFORLOOP(33),
+//    TFORLOOP(33),
     /**
      * Set a range of array elements for a table.
      *
      * 0x22
      */
-    SETLIST(34),
+//    SETLIST(34),
     /**
      * Close a range of locals being used as upvalues.
      *
      * 0x23
      */
-    CLOSE(35),
+//    CLOSE(35),
     /**
      * Create a closure of a function prototype.
      *
      * 0x24
      */
-    CLOSURE(36),
+//    CLOSURE(36),
     /**
      * Assign vararg function arguments to registers.
      *
      * 0x25
      */
-    VARARG(37);
+//    VARARG(37),
+    UNKWONN(-1);
+
+    private static final Map<String, ByteCode> LOOKUP = Maps.newHashMap();
+
+    static {
+        for (final ByteCode code : ByteCode.values()) {
+            LOOKUP.put(code.name().toLowerCase(Locale.ENGLISH), code);
+        }
+    }
+
     private final byte code;
 
     ByteCode(final int code) {
@@ -264,5 +313,13 @@ enum ByteCode {
         return hex.length() == 1
                 ? "0" + hex
                 : hex;
+    }
+
+    public static ByteCode lokup(final String mnemonic) {
+        if (LOOKUP.containsKey(mnemonic.toLowerCase(Locale.ENGLISH))) {
+            return LOOKUP.get(mnemonic.toLowerCase(Locale.ENGLISH));
+        }
+
+        return UNKWONN;
     }
 }

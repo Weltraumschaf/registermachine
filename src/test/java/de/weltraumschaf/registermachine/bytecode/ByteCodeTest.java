@@ -9,11 +9,11 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.bytecode;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -32,5 +32,14 @@ public class ByteCodeTest {
         assertThat(ByteCode.toHex((byte) 15), is("0f"));
         assertThat(ByteCode.toHex((byte) 16), is("10"));
         assertThat(ByteCode.toHex((byte) 27), is("1b"));
+    }
+
+    @Test
+    public void lookup() {
+        assertThat(ByteCode.lokup("move"), is(ByteCode.MOVE));
+        assertThat(ByteCode.lokup("add"), is(ByteCode.ADD));
+        assertThat(ByteCode.lokup("ADD"), is(ByteCode.ADD));
+        assertThat(ByteCode.lokup("adD"), is(ByteCode.ADD));
+        assertThat(ByteCode.lokup("foobar"), is(ByteCode.UNKWONN));
     }
 }
