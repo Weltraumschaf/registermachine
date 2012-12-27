@@ -11,28 +11,29 @@
 
 package de.weltraumschaf.registermachine;
 
-public class Configuration {
-    private static final int DEFAULT_SIZE = 16;
-
-    private int ic = 0; // instruction counter
-    private int[] registers;
-    private final int size;
+public class RuntimeConfiguration {
+    private static final int DEFAULT_REGISTERS_COUNT = 16;
+    private static final int DEFAULT_REGISTER_SIZE = 256;
 
     private final Scope scope= new Scope();
 
-    public  Configuration() {
-        this(DEFAULT_SIZE);
+    private int ic = 0; // instruction counter
+    private byte[][] registers;
+    private int size;
+
+    public  RuntimeConfiguration() {
+        this(DEFAULT_REGISTERS_COUNT);
     }
 
-    public  Configuration(final int size) {
-        registers = new int[size];
+    public  RuntimeConfiguration(final int size) {
+        registers = new byte[size][];
         this.size = size;
         init();
     }
 
     public void init() {
         for (int i = 0; i < size; i++) {
-            registers[i] = 0;
+            registers[i] = new byte[DEFAULT_REGISTER_SIZE];
         }
     }
 
@@ -48,13 +49,20 @@ public class Configuration {
         ic++;
     }
 
-    public void setRegister(final int i, final int val) {
-        registers[i] = val;
+    public void setRegister(final int i, final byte value) {
+        final byte[] val = new byte[1];
+        val[0] = value;
+        setRegister(i, val);
     }
 
-    public int getRegister(final int i) {
+    public void setRegister(final int i, final byte[] value) {
+        // TODO Ensure capacity and grow for i and val size!
+        registers[i] = value;
+    }
+
+    public byte[] getRegister(final int i) {
         if (i >= size || i < 0) {
-            throw new IndexOutOfBoundsException("Access of not existing register: i!");
+            throw new IndexOutOfBoundsException(String.format("Access of not existing register: %d!", i));
         }
 
         return registers[i];

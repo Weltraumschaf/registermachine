@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public class StdOut implements Instruction {
     private final int register;
@@ -22,7 +22,7 @@ public class StdOut implements Instruction {
     }
 
     @Override
-    public void evaluate(final Configuration config) {
+    public void evaluate(final RuntimeConfiguration config) {
         System.out.print(config.getRegister(register));
         config.incInstructionCounter();
     }

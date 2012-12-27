@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public class IfGoto implements Instruction {
 
@@ -23,15 +23,16 @@ public class IfGoto implements Instruction {
 
     // Befehl IF c[0]=0 GOTO pos ausfuehren
     @Override
-    public void evaluate(final Configuration config) {
+    public void evaluate(final RuntimeConfiguration config) {
+        throw new UnsupportedOperationException();
         // Inhalt des Akkumulators prüfen
-        if (config.getRegister(0) == 0) {
-        // Sprung ausfuehren
-            config.setInstructionCounter (pos - 1);
-        } else {
-        // sonst zum nuechsten Befehl
-            config.incInstructionCounter();
-        }
+//        if (config.getRegister(0) == 0) {
+//        // Sprung ausfuehren
+//            config.setInstructionCounter (pos - 1);
+//        } else {
+//        // sonst zum nuechsten Befehl
+//            config.incInstructionCounter();
+//        }
     }
 
     @Override

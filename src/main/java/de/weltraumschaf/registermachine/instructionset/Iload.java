@@ -11,15 +11,15 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public class Iload implements Instruction {
 
     private final int register;
-    private int value = 0;
+    private byte value;
     private int address = -1;
 
-    public  Iload(final int register, final int value) {
+    public  Iload(final int register, final byte value) {
         this(register);
         this.value = value;
     }
@@ -40,22 +40,32 @@ public class Iload implements Instruction {
     }
 
     public boolean loadsReferencedValue() {
-        return -1 == address;
+        return -1 != address;
+    }
+
+    public int getRegister() {
+        return register;
+    }
+
+    public byte getValue() {
+        return value;
+    }
+
+    public int getAddress() {
+        return address;
     }
 
     @Override
-    public void evaluate(final Configuration config) {
-        Object val;
-
+    public void evaluate(final RuntimeConfiguration config) {
         if (loadsReferencedValue()) {
-            val = config.getScope().getAssign(address);
+            config.setRegister(register, config.getScope().getAssign(address));
         } else {
-            val = value;
+            config.setRegister(register, value);
         }
 
-        throw new UnsupportedOperationException();
-//        config.setRegister(register, val);
-//        config.incInstructionCounter();
+
+
+        config.incInstructionCounter();
     }
 
     @Override

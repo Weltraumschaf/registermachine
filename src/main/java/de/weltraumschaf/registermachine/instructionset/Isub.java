@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public class Isub implements Instruction {
 
@@ -27,11 +27,12 @@ public class Isub implements Instruction {
     }
 
     @Override
-    public void evaluate(Configuration config) {
-        final int op1 = config.getRegister(op1Reg);
-        final int op2 = config.getRegister(op2Reg);
-        config.setRegister(resultReg, op1 - op2);
-        config.incInstructionCounter();
+    public void evaluate(RuntimeConfiguration config) {
+        throw new UnsupportedOperationException();
+//        final int op1 = config.getRegister(op1Reg);
+//        final int op2 = config.getRegister(op2Reg);
+//        config.setRegister(resultReg, op1 - op2);
+//        config.incInstructionCounter();
     }
 
     @Override

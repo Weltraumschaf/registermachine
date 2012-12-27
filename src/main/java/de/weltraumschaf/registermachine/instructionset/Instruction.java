@@ -11,10 +11,10 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public interface Instruction {
 
-    void evaluate(Configuration config);
+    void evaluate(RuntimeConfiguration config);
 
 }

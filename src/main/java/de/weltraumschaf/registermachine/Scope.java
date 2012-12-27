@@ -12,13 +12,17 @@
 package de.weltraumschaf.registermachine;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.primitives.Bytes;
 import java.util.List;
+import java.util.Map;
 
 public class Scope {
-    private final List<Object> assigns = Lists.newArrayList();
 
-    public void setAssign(final int address, final Object value) {
-        assigns.set(address, value);
+    private final Map<Integer, List<Byte>> assigns = Maps.newHashMap();
+
+    public void setAssign(final int address, final byte[] value) {
+        assigns.put(address, Bytes.asList(value));
     }
 
     /**
@@ -27,8 +31,9 @@ public class Scope {
      * @return
      * @throws IndexOutOfBoundsException
      */
-    public Object getAssign(final int address) {
-        return assigns.get(address);
+    public byte[] getAssign(final int address) {
+        final Byte[] objects = assigns.get(address).toArray(new Byte[assigns.size()]);
+        return ByteArray.toNative(objects);
     }
 
     public boolean isEmpty() {
@@ -51,4 +56,30 @@ public class Scope {
 
         return sb.toString();
     }
+
+    private static final class ByteArray {
+
+        /**
+         * Not thread safe!
+         *
+         * @param in
+         * @return
+         */
+        public static byte[] toNative(final Byte[] in) {
+            final byte[] out = new byte[in.length];
+            for (int i = 0; i < in.length; ++i) {
+                out[i] = in[i];
+            }
+            return out;
+        }
+
+        public static Byte[] toObject(final byte[] in) {
+            final Byte[] out = new Byte[in.length];
+            for (int i = 0; i < in.length; ++i) {
+                out[i] = in[i];
+            }
+            return out;
+        }
+    }
+
 }

@@ -11,13 +11,13 @@
 
 package de.weltraumschaf.registermachine;
 
-import de.weltraumschaf.registermachine.instructionset.Instruction;
 import de.weltraumschaf.registermachine.instructionset.End;
+import de.weltraumschaf.registermachine.instructionset.Instruction;
 import java.util.List;
 
 public class RegisterMachine {
 
-    private final Configuration config;
+    private final RuntimeConfiguration config;
     private List<Instruction> program;
     private final boolean debug;
     private final boolean printProgramm;
@@ -27,7 +27,7 @@ public class RegisterMachine {
     }
 
     public  RegisterMachine(boolean debug, boolean printProgramm) {
-        this.config = new Configuration(4);
+        this.config = new RuntimeConfiguration(4);
         this.debug  = debug;
         this.printProgramm  = printProgramm;
     }
@@ -84,7 +84,7 @@ public class RegisterMachine {
         System.out.println(config.toString());
     }
 
-    public Configuration getConfiguration() {
+    public RuntimeConfiguration getConfiguration() {
         return this.config;
     }
 

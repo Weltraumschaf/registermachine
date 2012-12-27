@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 import de.weltraumschaf.registermachine.Scope;
 
 public class Isasign implements Instruction {
@@ -26,10 +26,11 @@ public class Isasign implements Instruction {
     }
 
     @Override
-    public void evaluate(final Configuration config) {
-        final Scope scope = config.getScope();
-        scope.setAssign(address, value);
-        config.incInstructionCounter();
+    public void evaluate(final RuntimeConfiguration config) {
+        throw new UnsupportedOperationException();
+//        final Scope scope = config.getScope();
+//        scope.setAssign(address, value);
+//        config.incInstructionCounter();
     }
 
     @Override

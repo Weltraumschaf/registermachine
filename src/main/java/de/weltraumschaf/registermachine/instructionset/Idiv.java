@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.Configuration;
+import de.weltraumschaf.registermachine.RuntimeConfiguration;
 
 public class Idiv implements Instruction {
 
@@ -26,11 +26,12 @@ public class Idiv implements Instruction {
     }
 
     @Override
-    public void evaluate(final Configuration config) {
-        final int op1 = config.getRegister(this.op1Reg);
-        final int op2 = config.getRegister(this.op2Reg);
-        config.setRegister(this.resultReg, op1 / op2);
-        config.incInstructionCounter();
+    public void evaluate(final RuntimeConfiguration config) {
+        throw new UnsupportedOperationException();
+//        final int op1 = config.getRegister(this.op1Reg);
+//        final int op2 = config.getRegister(this.op2Reg);
+//        config.setRegister(this.resultReg, op1 / op2);
+//        config.incInstructionCounter();
     }
 
     @Override
