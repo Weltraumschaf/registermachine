@@ -8,20 +8,238 @@
  * you can buy me a beer in return.
  *
  */
-
 package de.weltraumschaf.registermachine;
 
 enum ByteCode {
-    ILOAD(1),
-    ISTORE(2),
-    IADD(3),
-    ISUB(4),
-    IMUL(5),
-    IDIV(6),
-    IPRINT(7),
-    IF_GOTO(8),
-    END(9);
 
+    /**
+     * Copy a value between registers.
+     *
+     * 0x00
+     */
+    MOVE(0),
+    /**
+     * Load a constant into a register.
+     *
+     * 0x01
+     */
+    LOADK(1),
+    /**
+     * Load a boolean into a register.
+     *
+     * 0x02
+     */
+    LOADBOOL(2),
+    /**
+     * Load nil values into a range of registers.
+     *
+     * 0x03
+     */
+    LOADNIL(3),
+    /**
+     * Read an upvalue into a register.
+     *
+     * 0x04
+     */
+    GETUPVAL(4),
+    /**
+     * Read a global variable into a register.
+     *
+     * 0x05
+     */
+    GETGLOBAL(5),
+    /**
+     * Read a table element into a register.
+     *
+     * 0x06
+     */
+    GETTABLE(6),
+    /**
+     * Write a register value into a global variable.
+     *
+     * 0x07
+     */
+    SETGLOBAL(7),
+    /**
+     * Write a register value into an upvalue.
+     *
+     * 0x08
+     */
+    SETUPVAL(8),
+    /**
+     * Write a register value into a table element.
+     *
+     * 0x09
+     */
+    SETTABLE(9),
+    /**
+     * Create a new table.
+     *
+     * 0x0a
+     */
+    NEWTABLE(10),
+    /**
+     * Prepare an object method for calling.
+     *
+     * 0x0b
+     */
+    SELF(11),
+    /**
+     * Addition operator.
+     *
+     * 0x0c
+     */
+    ADD(12),
+    /**
+     * Subtraction operator.
+     *
+     * 0x0d
+     */
+    SUB(13),
+    /**
+     * Multiplication operator.
+     *
+     * 0x0e
+     */
+    MUL(14),
+    /**
+     * Division operator.
+     *
+     * 0x0f
+     */
+    DIV(15),
+    /**
+     * Modulus (remainder) operator.
+     *
+     * 0x10
+     */
+    MOD(16),
+    /**
+     * Exponentiation operator.
+     *
+     * 0x11
+     */
+    POW(17),
+    /**
+     * Unary minus operator.
+     *
+     * 0x12
+     */
+    UNM(18),
+    /**
+     * Logical NOT operator.
+     *
+     * 0x13
+     */
+    NOT(19),
+    /**
+     * Length operator.
+     *
+     * 0x14
+     */
+    LEN(20),
+    /**
+     * Concatenate a range of registers.
+     *
+     * 0x15
+     */
+    CONCAT(21),
+    /**
+     * Unconditional jump.
+     *
+     * 0x16
+     */
+    JMP(22),
+    /**
+     * Equality test.
+     *
+     * 0x17
+     */
+    EQ(23),
+    /**
+     * Less than test Less than or equal to test.
+     *
+     * 0x18
+     */
+    LT(24),
+    /**
+     * Boolean test, with conditional jump.
+     *
+     * 0x19
+     */
+    LE(25),
+    /**
+     * Boolean test, with conditional jump and assignment.
+     *
+     * 0x1a
+     */
+    TEST(26),
+    /**
+     * Call a closure.
+     *
+     * 0x1b
+     */
+    TESTSET(27),
+    /**
+     * Perform a tail call.
+     *
+     * 0x1c
+     */
+    CALL(28),
+    /**
+     * Return from function call.
+     *
+     * 0x1d
+     */
+    TAILCALL(29),
+    /**
+     * Iterate a numeric for loop.
+     *
+     * 0x1e
+     */
+    RETURN(30),
+    /**
+     * Initialization for a numeric for loop.
+     *
+     * 0x1f
+     */
+    FORLOOP(31),
+    /**
+     * Iterate a generic for loop.
+     *
+     * 0x20
+     */
+    FORPREP(32),
+    /**
+     * Set a range of array elements for a table.
+     *
+     * 0x21
+     */
+    TFORLOOP(33),
+    /**
+     * Set a range of array elements for a table.
+     *
+     * 0x22
+     */
+    SETLIST(34),
+    /**
+     * Close a range of locals being used as upvalues.
+     *
+     * 0x23
+     */
+    CLOSE(35),
+    /**
+     * Create a closure of a function prototype.
+     *
+     * 0x24
+     */
+    CLOSURE(36),
+    /**
+     * Assign vararg function arguments to registers.
+     *
+     * 0x25
+     */
+    VARARG(37);
     private final byte code;
 
     ByteCode(final int code) {
@@ -38,8 +256,13 @@ enum ByteCode {
 
     @Override
     public String toString() {
-        return "ByteCode{" + "code=" + name() + '}';
+        return String.format("%s[0x%s]", name(), toHex(code));
     }
 
-
+    public static String toHex(final byte b) {
+        final String hex = Integer.toHexString(0xFF & b);
+        return hex.length() == 1
+                ? "0" + hex
+                : hex;
+    }
 }
