@@ -8,22 +8,30 @@
  * you can buy me a beer in return.
  *
  */
-
 package de.weltraumschaf.registermachine;
 
-import de.weltraumschaf.registermachine.instructionset.StdOut;
-import de.weltraumschaf.registermachine.instructionset.Instruction;
-import de.weltraumschaf.registermachine.instructionset.Isasign;
-import de.weltraumschaf.registermachine.instructionset.Iadd;
-import de.weltraumschaf.registermachine.instructionset.Iload;
 import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.registermachine.instructionset.Iadd;
+import de.weltraumschaf.registermachine.instructionset.Iload;
+import de.weltraumschaf.registermachine.instructionset.Instruction;
+import de.weltraumschaf.registermachine.instructionset.Isasign;
+import de.weltraumschaf.registermachine.instructionset.StdOut;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 
 /**
  *
@@ -31,33 +39,75 @@ import java.util.logging.Logger;
  */
 public final class App extends InvokableAdapter {
 
+    private static final String EXECUTABLE = "machine";
+    private static final String HEADER = String.format("%n");
+    private static final String AUTHOR = "Sven Strittmatter <weltraumschaf@googlemail.com>";
+
     /**
-     * Hide constructor because it is not intended to create objects of this type
-     * outside of {@link App#main(de.weltraumschaf.commons.Invokable)}.
+     * URI to issue tracker.
+     */
+    private static final String ISSUE_TRACKER = "https://github.com/Weltraumschaf/registermachine/issues";
+    /**
+     * Usage footer.
+     */
+    private static final String FOOTER = String.format("%nWritten 2012 by %s%nWrite bugs to %s",
+                                                       AUTHOR, ISSUE_TRACKER);
+
+    private static final Options OPTIONS = new Options();
+
+    static {
+        OPTIONS.addOption("h", false, "display help");
+        OPTIONS.addOption("d", false, "display debug infos");
+        OPTIONS.addOption("c", true, "compile assembly source");
+
+    }
+    private static final CommandLineParser PARSER = new PosixParser();
+    private final CommandLine commandLineArgs;
+
+    /**
+     * Hide constructor because it is not intended to create objects of this type outside of
+     * {@link App#main(de.weltraumschaf.commons.Invokable)}.
      *
      * @param args command line arguments
      */
     private App(final String[] args) {
         super(args);
+
+        try {
+            commandLineArgs = PARSER.parse(OPTIONS, getArgs());
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private boolean isHelp() {
+        return commandLineArgs.hasOption("h");
+    }
+
+    private boolean isDebug() {
+        return commandLineArgs.hasOption("d");
+    }
+
+    private boolean isCompile() {
+        return commandLineArgs.hasOption("c");
+    }
+
+    private String getCompile() {
+        return commandLineArgs.getOptionValue("c");
     }
 
     /**
      * Main entry point for JVM.
      *
-     * Catches all {@link Exception exception} and print their message to STDERR
-     * and exits with -1.
+     * Catches all {@link Exception exception} and print their message to STDERR and exits with -1.
      *
      * @param args command line arguments
      */
     public static void main(final String[] args) {
         final App app = new App(args);
-        boolean debug = false;
 
         try {
-            if (args.length == 1 && "-d".equals(args[0])) {
-                debug = true;
-            }
-            InvokableAdapter.main(app, IOStreams.newDefault(), debug);
+            InvokableAdapter.main(app, IOStreams.newDefault(), app.isDebug());
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             app.exit(-1);
@@ -71,6 +121,16 @@ public final class App extends InvokableAdapter {
      */
     @Override
     public void execute() throws Exception {
+        if (isHelp()) {
+            showHelp();
+        } else if (isCompile()) {
+            compileAssemblyCode(getCompile());
+        } else {
+            executeByteCode();
+        }
+    }
+
+    private void executeByteCode() throws IOException {
         final Version version = new Version("/de/weltraumschaf/registermachine/version.properties");
         version.load();
         /*
@@ -84,20 +144,18 @@ public final class App extends InvokableAdapter {
          * END
          */
         final List<Instruction> instructions = Lists.newArrayList(
-            new Isasign(0, 30),
-            new Isasign(1, 6),
-            new Iload(1, "#0"),
-            new Iload(2, "#1"),
-            new Iadd(0, 1, 2),
-            new StdOut(0)
-//            new Idiv(3, 0, 2),
-//            new StdOut(3)
-//            new Imult(1),
-//            new Iload(1),
-//            new Isub(3),
-//            new Istore(3),
-
-        );
+                new Isasign(0, 30),
+                new Isasign(1, 6),
+                new Iload(1, "#0"),
+                new Iload(2, "#1"),
+                new Iadd(0, 1, 2),
+                new StdOut(0) //            new Idiv(3, 0, 2),
+                //            new StdOut(3)
+                //            new Imult(1),
+                //            new Iload(1),
+                //            new Isub(3),
+                //            new Istore(3),
+                );
 
 //        opts = getopt('dp');
 //        machine = new RegisterMachine(isset(opts['d']), isset(opts['p']));
@@ -105,5 +163,25 @@ public final class App extends InvokableAdapter {
         machine.setProgram(instructions);
         machine.getConfiguration().init();
         machine.run();
+    }
+
+    private void compileAssemblyCode(String compile) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void showHelp() {
+        final PrintWriter writer = new PrintWriter(getIoStreams().getStdout());
+        final HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp(
+            writer,
+            HelpFormatter.DEFAULT_WIDTH,
+            EXECUTABLE,
+            HEADER,
+            OPTIONS,
+            HelpFormatter.DEFAULT_LEFT_PAD,
+            HelpFormatter.DEFAULT_DESC_PAD,
+            FOOTER,
+            true);
+        writer.flush();
     }
 }

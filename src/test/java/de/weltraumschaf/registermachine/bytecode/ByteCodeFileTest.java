@@ -45,7 +45,7 @@ public class ByteCodeFileTest {
     @Test
     public void isValid_goodHeader() throws IOException {
         final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01});
-        assertThat(sut.isValid(), is(false));
+        assertThat(sut.isValid(), is(true));
     }
 
     @Test
