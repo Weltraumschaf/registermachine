@@ -61,4 +61,9 @@ public class ByteCodeFile {
         }
         return Arrays.copyOfRange(bytecode, 3, bytecode.length);
     }
+
+    public byte[] toArray() {
+        return bytecode;
+    }
+
 }

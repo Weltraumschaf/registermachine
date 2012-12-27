@@ -22,13 +22,13 @@ import static org.junit.Assert.*;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class AssamblerTest {
+public class AssemblerTest {
 
     private static final String PACKAGE_PREFIX = "/de/weltraumschaf/registermachine/asm";
-    private final Assambler sut = new Assambler();
+    private final Assembler sut = new Assembler();
 
     @Test
-    public void assamble() throws IOException, AssamblerSyntaxException {
+    public void assamble() throws IOException, AssemblerSyntaxException {
         final InputStream input = getClass().getResourceAsStream(PACKAGE_PREFIX + "/all_instructions.caythe");
         final ByteCodeFile bytecode = sut.assamble(input);
         input.close();

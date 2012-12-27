@@ -16,9 +16,9 @@ package de.weltraumschaf.registermachine.asm;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class AssamblerSyntaxException extends Exception {
+public class AssemblerSyntaxException extends Exception {
 
-    public AssamblerSyntaxException(final String syntax_error) {
+    public AssemblerSyntaxException(final String syntax_error) {
         super("Syntax error: " + syntax_error);
     }
 

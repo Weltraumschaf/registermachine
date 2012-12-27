@@ -27,9 +27,9 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Assambler {
+public class Assembler {
 
-    public ByteCodeFile assamble(final InputStream input) throws IOException, AssamblerSyntaxException {
+    public ByteCodeFile assamble(final InputStream input) throws IOException, AssemblerSyntaxException {
         final List<String> lines = IOUtils.readLines(input);
         IOUtils.closeQuietly(input);
         List<Byte> bytecode = Lists.newArrayList();
@@ -44,13 +44,13 @@ public class Assambler {
         return ByteArray.toNative(bytecode.toArray(new Byte[bytecode.size()]));
     }
 
-    private void processLines(final List<Byte> bytecode, final List<String> lines) throws AssamblerSyntaxException {
+    private void processLines(final List<Byte> bytecode, final List<String> lines) throws AssemblerSyntaxException {
         for (final String line : lines) {
             processLines(bytecode, line);
         }
     }
 
-    private void processLines(final List<Byte> bytecode, final String line) throws AssamblerSyntaxException {
+    private void processLines(final List<Byte> bytecode, final String line) throws AssemblerSyntaxException {
         final String trimmedLine = StringUtils.trimToEmpty(line);
 
         if (trimmedLine.isEmpty()) {
@@ -76,7 +76,7 @@ public class Assambler {
         return StringUtils.trimToEmpty(line.substring(0, commentStart));
     }
 
-    private void processLineParts(final List<Byte> bytecode, final List<String> parts) throws AssamblerSyntaxException {
+    private void processLineParts(final List<Byte> bytecode, final List<String> parts) throws AssemblerSyntaxException {
         final List<String> args = parts.subList(1, parts.size());
         final ByteCode bc = ByteCode.lokup(parts.get(0));
 
@@ -98,130 +98,130 @@ public class Assambler {
                 break;
             case UNKWONN:
             default:
-                throw new AssamblerSyntaxException(String.format("Unknown mnemonic '%s'!", parts.get(0)));
+                throw new AssemblerSyntaxException(String.format("Unknown mnemonic '%s'!", parts.get(0)));
 
         }
     }
 
-    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssamblerSyntaxException {
+    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         if (args.size() != 2) {
-            throw new AssamblerSyntaxException("move requires two arguments!");
+            throw new AssemblerSyntaxException("move requires two arguments!");
         }
 
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssamblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(0)));
 
         if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssamblerSyntaxException("argument two not numeric!");
+            throw new AssemblerSyntaxException("argument two not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(1)));
     }
 
-    private void generateAddCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssamblerSyntaxException {
+    private void generateAddCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         if (args.size() != 3) {
-            throw new AssamblerSyntaxException("add requires three arguments!");
+            throw new AssemblerSyntaxException("add requires three arguments!");
         }
 
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssamblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(0)));
 
         if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssamblerSyntaxException("argument two not numeric!");
+            throw new AssemblerSyntaxException("argument two not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(1)));
 
         if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssamblerSyntaxException("argument three not numeric!");
+            throw new AssemblerSyntaxException("argument three not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(2)));
     }
 
-    private void generateSubCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssamblerSyntaxException {
+    private void generateSubCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         if (args.size() != 3) {
-            throw new AssamblerSyntaxException("sub requires three arguments!");
+            throw new AssemblerSyntaxException("sub requires three arguments!");
         }
 
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssamblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(0)));
 
         if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssamblerSyntaxException("argument two not numeric!");
+            throw new AssemblerSyntaxException("argument two not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(1)));
 
         if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssamblerSyntaxException("argument three not numeric!");
+            throw new AssemblerSyntaxException("argument three not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(2)));
     }
 
-    private void generateMullCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssamblerSyntaxException {
+    private void generateMullCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         if (args.size() != 3) {
-            throw new AssamblerSyntaxException("mul requires three arguments!");
+            throw new AssemblerSyntaxException("mul requires three arguments!");
         }
 
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssamblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(0)));
 
         if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssamblerSyntaxException("argument two not numeric!");
+            throw new AssemblerSyntaxException("argument two not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(1)));
 
         if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssamblerSyntaxException("argument three not numeric!");
+            throw new AssemblerSyntaxException("argument three not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(2)));
     }
 
-    private void generateDivCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssamblerSyntaxException {
+    private void generateDivCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         if (args.size() != 3) {
-            throw new AssamblerSyntaxException("div requires three arguments!");
+            throw new AssemblerSyntaxException("div requires three arguments!");
         }
 
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssamblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(0)));
 
         if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssamblerSyntaxException("argument two not numeric!");
+            throw new AssemblerSyntaxException("argument two not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(1)));
 
         if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssamblerSyntaxException("argument three not numeric!");
+            throw new AssemblerSyntaxException("argument three not numeric!");
         }
 
         bytecode.add(Byte.valueOf(args.get(2)));

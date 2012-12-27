@@ -14,13 +14,18 @@ import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.registermachine.asm.Assembler;
+import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.instructionset.Iadd;
 import de.weltraumschaf.registermachine.instructionset.Iload;
 import de.weltraumschaf.registermachine.instructionset.Instruction;
 import de.weltraumschaf.registermachine.instructionset.Isasign;
 import de.weltraumschaf.registermachine.instructionset.StdOut;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -32,6 +37,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -165,8 +171,15 @@ public final class App extends InvokableAdapter {
         machine.run();
     }
 
-    private void compileAssemblyCode(String compile) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void compileAssemblyCode(final String inFilename) throws IOException, AssemblerSyntaxException {
+        getIoStreams().println(String.format("Compiling assembly file '%s' ...", inFilename));
+        final Assembler asm = new Assembler();
+        final ByteCodeFile bc = asm.assamble(new FileInputStream(new File(inFilename)));
+        final String outFilename = inFilename.replace(".caythe", "") + ".ct";
+        final FileOutputStream out = new FileOutputStream(new File(outFilename));
+        IOUtils.write(bc.toArray(), out);
+        IOUtils.closeQuietly(out);
+        getIoStreams().println(String.format("Saved assembled byte code to '%s'.", outFilename));
     }
 
     private void showHelp() {
