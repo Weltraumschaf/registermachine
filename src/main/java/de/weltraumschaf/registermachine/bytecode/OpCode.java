@@ -44,7 +44,7 @@ public enum OpCode {
      *
      * 0x01
      */
-//    LOADC(1),
+    LOADC(1, ArgCount.TWO),
     /**
      * Load a boolean into a register.
      *
@@ -280,6 +280,8 @@ public enum OpCode {
      * 0x25
      */
 //    VARARG(37),
+    PRINT(38, ArgCount.ONE),
+    PRINTLN(39, ArgCount.ONE),
     UNKWONN(-1);
 
     private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();

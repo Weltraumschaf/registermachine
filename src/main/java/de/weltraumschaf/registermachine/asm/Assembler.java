@@ -88,10 +88,12 @@ public class Assembler {
         final List<String> args = parts.subList(1, parts.size());
         final OpCode bc = OpCode.lokup(parts.get(0));
 
-        // TODO Write 4 bytes per argument!
         switch (bc) {
             case MOVE:
                 generateMoveCode(bc, bytecode, args);
+                break;
+            case LOADC:
+                generateLoadConstantCode(bc, bytecode, args);
                 break;
             case ADD:
                 generateAddCode(bc, bytecode, args);
@@ -104,6 +106,12 @@ public class Assembler {
                 break;
             case DIV:
                 generateDivCode(bc, bytecode, args);
+                break;
+            case PRINT:
+                generatePrintCode(bc, bytecode, args);
+                break;
+            case PRINTLN:
+                generatePrintLnCode(bc, bytecode, args);
                 break;
             case UNKWONN:
             default:
@@ -166,6 +174,25 @@ public class Assembler {
         if (args.size() != bc.getArgCount().getCount()) {
             throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT, bc.name(), bc.getArgCount().getCount()));
         }
+    }
+
+    private void generateLoadConstantCode(OpCode bc, List<Byte> bytecode, List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
+        bytecode.add(bc.getCode());
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+    }
+
+    private void generatePrintCode(OpCode bc, List<Byte> bytecode, List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
+        bytecode.add(bc.getCode());
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+    }
+
+    private void generatePrintLnCode(OpCode bc, List<Byte> bytecode, List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
+        bytecode.add(bc.getCode());
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
     }
 
 }

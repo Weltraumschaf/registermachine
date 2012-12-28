@@ -11,27 +11,28 @@
 
 package de.weltraumschaf.registermachine.instr;
 
-import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class StdOut implements Instruction {
-    private final int srcReg;
-    private final IO io;
+class Loadc implements Instruction {
 
-    public  StdOut(final int srcReg, final IO io) {
+    private final int register;
+    private final int value;
+
+    public  Loadc(final int register, final int value) {
         super();
-        this.srcReg = srcReg;
-        this.io = io;
+        this.value = value;
+        this.register = register;
     }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        io.print(String.valueOf(config.getRegister(srcReg)));
+        config.setRegister(register, value);
         config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return "stdout " + srcReg;
+        return String.format("loadc %s, %s", register, value);
     }
+
 }

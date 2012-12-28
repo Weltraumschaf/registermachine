@@ -10,25 +10,20 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.instructionset;
 
-import java.util.Locale;
+import org.junit.Test;
+import org.junit.Ignore;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface Const {
+public class LoadTest {
 
-    static final String ENCODING = "UTF-8";
-    static final Locale LOCALE = Locale.ENGLISH;
+    @Test @Ignore("Icomplete")
+    public void evaluate() {
 
-    static final byte BC_FST_HEADER_BYTE = (byte) 0xCA;
-    static final byte BC_SND_HEADER_BYTE = (byte) 0x7E;
-    static final short BC_CURRENT_VERSION = (short) 0x01;
-
-    static final String NL = String.format("%n");
-
-    static final int ARG_BYTE_COUNT = 4;
+    }
 
 }

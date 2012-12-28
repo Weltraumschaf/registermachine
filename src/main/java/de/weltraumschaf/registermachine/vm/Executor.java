@@ -12,16 +12,13 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Lists;
+import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.ByteInt;
+import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
-import de.weltraumschaf.registermachine.instr.Add;
-import de.weltraumschaf.registermachine.instr.Div;
+import de.weltraumschaf.registermachine.instr.Factory;
 import de.weltraumschaf.registermachine.instr.Instruction;
-import de.weltraumschaf.registermachine.instr.Move;
-import de.weltraumschaf.registermachine.instr.Mul;
-import de.weltraumschaf.registermachine.instr.Nop;
-import de.weltraumschaf.registermachine.instr.Sub;
 import java.util.List;
 
 /**
@@ -31,11 +28,13 @@ import java.util.List;
 public class Executor {
 
     private static final byte VERSION = (byte) 0x01;
-    private static final int ARG_BYTE_COUNT = 4;
     private final RegisterMachine machine;
+    private final IO io;
 
-    public Executor(final RegisterMachine machine) {
+    public Executor(final RegisterMachine machine, final IO io) {
+        super();
         this.machine = machine;
+        this.io = io;
     }
 
     public void execute(final ByteCodeFile bc) {
@@ -68,13 +67,13 @@ public class Executor {
             } else {
                 final int argCount = bc.getArgCount().getCount();
                 args = new int[argCount];
-                final int byteCount = argCount * ARG_BYTE_COUNT;
-                final byte[] bytes = new byte[ARG_BYTE_COUNT];
+                final int byteCount = argCount * Const.ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[Const.ARG_BYTE_COUNT];
                 int argI = 0;
                 for (int shift = 0; shift < byteCount; ++shift) {
-                    bytes[shift % ARG_BYTE_COUNT] = programm[i];
+                    bytes[shift % Const.ARG_BYTE_COUNT] = programm[i];
 
-                    if (shift % ARG_BYTE_COUNT == ARG_BYTE_COUNT - 1) {
+                    if (shift % Const.ARG_BYTE_COUNT == Const.ARG_BYTE_COUNT - 1) {
                         args[argI] = ByteInt.intFromBytes(bytes);
                         ++argI;
                     }
@@ -83,42 +82,11 @@ public class Executor {
                 }
             }
 
-            final Instruction instr = createInstruction(bc, args);
+            final Instruction instr = Factory.createInstruction(bc, args, io);
             instructions.add(instr);
         }
 
         return instructions;
     }
 
-    void verifyArcCount(final OpCode bc, final int[] args) {
-        if (args.length != bc.getArgCount().getCount()) {
-            throw  new IllegalArgumentException(String.format("Opcode %s requires %d arguments!", bc.toString(), bc.getArgCount().getCount()));
-        }
-    }
-    private Instruction createInstruction(final OpCode bc, final int[] args) {
-        verifyArcCount(bc, args);
-        Instruction instr = new Nop();
-
-        switch (bc) {
-            case MOVE:
-                instr = new Move(args[0], args[1]);
-                break;
-            case ADD:
-                instr = new Add(args[0], args[1], args[2]);
-                break;
-            case SUB:
-                instr = new Sub(args[0], args[1], args[2]);
-                break;
-            case MUL:
-                instr = new Mul(args[0], args[1], args[2]);
-                break;
-            case DIV:
-                instr = new Div(args[0], args[1], args[2]);
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Opcode nit implemented yet: %s!", bc.toString()));
-        }
-
-        return instr;
-    }
 }

@@ -18,7 +18,7 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Nop implements Instruction {
+class Nop implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {

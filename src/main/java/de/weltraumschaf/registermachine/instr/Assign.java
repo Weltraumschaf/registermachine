@@ -14,7 +14,7 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 import de.weltraumschaf.registermachine.vm.Scope;
 
-public class Assign implements Instruction {
+class Assign implements Instruction {
 
     private final int address;
     private final int value;

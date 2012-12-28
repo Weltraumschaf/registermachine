@@ -178,7 +178,8 @@ public final class App extends InvokableAdapter {
         }
 
         getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
-        final Executor exec = new Executor(new RegisterMachine(isVerbose(), isPrintProgram()));
+        final RegisterMachine vm = new RegisterMachine(isVerbose(), isPrintProgram());
+        final Executor exec = new Executor(vm, getIoStreams());
         exec.execute(bc);
     }
 

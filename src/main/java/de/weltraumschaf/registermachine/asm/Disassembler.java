@@ -24,9 +24,6 @@ import java.io.InputStream;
  */
 public class Disassembler {
 
-    private static final String NL = String.format("%n");
-    private static final int ARG_BYTE_COUNT = 4;
-
     public String disassamble(final InputStream input) throws IOException {
         final StringBuilder buffer = new StringBuilder();
         final ByteCodeFile bc = new ByteCodeFile(input);
@@ -35,7 +32,7 @@ public class Disassembler {
             throw new RuntimeException("Not a valid byte code file!");
         }
 
-        buffer.append("; byte code version ").append(bc.getVersion()).append(NL);
+        buffer.append("; byte code version ").append(bc.getVersion()).append(Const.NL);
         disassembleProgram(buffer, bc.getProgramm());
         return buffer.toString();
     }
@@ -53,12 +50,12 @@ public class Disassembler {
             ++i;
 
             if (bc.getArgCount() != OpCode.ArgCount.NONE) {
-                final int count = bc.getArgCount().getCount() * ARG_BYTE_COUNT;
-                final byte[] bytes = new byte[ARG_BYTE_COUNT];
+                final int count = bc.getArgCount().getCount() * Const.ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[Const.ARG_BYTE_COUNT];
                 for (int shift = 0; shift < count; ++shift) {
-                    bytes[shift % ARG_BYTE_COUNT] = programm[i];
+                    bytes[shift % Const.ARG_BYTE_COUNT] = programm[i];
 
-                    if (shift % ARG_BYTE_COUNT == ARG_BYTE_COUNT - 1) {
+                    if (shift % Const.ARG_BYTE_COUNT == Const.ARG_BYTE_COUNT - 1) {
                         buffer.append(' ');
                         buffer.append(ByteInt.intFromBytes(bytes));
                     }
@@ -66,7 +63,7 @@ public class Disassembler {
                 }
             }
 
-            buffer.append(NL);
+            buffer.append(Const.NL);
         }
     }
 }

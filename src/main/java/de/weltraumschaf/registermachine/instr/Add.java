@@ -12,7 +12,7 @@ package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class Add implements Instruction {
+class Add implements Instruction {
 
     private final int resultReg;
     private final int op1Reg;

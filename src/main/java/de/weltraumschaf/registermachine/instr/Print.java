@@ -1,43 +1,37 @@
 /*
- *  LICENSE
+ * LICENSE
  *
- * "THE BEER-WARE LICENSE" (Revision 43):
+ * "THE BEER-WARE LICENSE" (Revision 42):
  * "Sven Strittmatter" <weltraumschaf@googlemail.com> wrote this file.
  * As long as you retain this notice you can do whatever you want with
  * this stuff. If we meet some day, and you think this stuff is worth it,
- * you can buy me a non alcohol-free beer in return.
+ * you can buy me a beer in return.
  *
- * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-/**
- *
- * @author Sven Strittmatter <weltraumschaf@googlemail.com>
- */
-class Move implements Instruction {
-
+class Print implements Instruction {
     private final int srcReg;
-    private final int dstReg;
+    private final IO io;
 
-    public Move(final int srcReg, final int dstReg) {
+    public  Print(final int srcReg, final IO io) {
+        super();
         this.srcReg = srcReg;
-        this.dstReg = dstReg;
+        this.io = io;
     }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int value = config.getRegister(srcReg);
-        config.setRegister(dstReg, value);
+        io.print(String.valueOf(config.getRegister(srcReg)));
         config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("move %d, %d", srcReg, dstReg);
+        return "print " + srcReg;
     }
-
 }

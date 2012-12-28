@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.vm;
 
-import de.weltraumschaf.registermachine.instr.End;
+import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
 
@@ -34,10 +34,6 @@ public class RegisterMachine {
 
     public void setProgram(final List<Instruction> prog) {
         program = prog;
-
-        if (! (program.get(program.size() - 1) instanceof  End)) { // prevent infinite loop in run()
-            program.add(new End());
-        }
     }
 
     public void run() {
@@ -48,12 +44,12 @@ public class RegisterMachine {
         }
 
         if (!program.isEmpty()) {
-            while ( ! (program.get(config.getInstructionCounter()) instanceof  End)) {
+            while ( config.getInstructionCounter() < program.size()) {
                 final Instruction instruction = program.get(config.getInstructionCounter());
                 instruction.evaluate(config);
 
                 if (debug) {
-                    debugOutput.append(config.toString()).append(String.format("%n"));
+                    debugOutput.append(config.toString()).append(Const.NL);
                 }
             }
         }

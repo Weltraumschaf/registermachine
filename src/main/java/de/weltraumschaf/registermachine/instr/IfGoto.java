@@ -13,7 +13,7 @@ package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class IfGoto implements Instruction {
+class IfGoto implements Instruction {
 
     private final int pos; // Sprungziel
 
