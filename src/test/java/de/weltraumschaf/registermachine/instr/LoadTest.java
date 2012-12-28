@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.instructionset;
+package de.weltraumschaf.registermachine.instr;
 
 import org.junit.Test;
 import org.junit.Ignore;
