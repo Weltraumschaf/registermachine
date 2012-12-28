@@ -46,9 +46,8 @@ import org.apache.commons.io.IOUtils;
 public final class App extends InvokableAdapter {
 
     private static final String EXECUTABLE = "machine";
-    private static final String HEADER = String.format("%n");
+    private static final String HEADER_FMT = "%n%nRegister based machine v%s%n%n";
     private static final String AUTHOR = "Sven Strittmatter <weltraumschaf@googlemail.com>";
-
     /**
      * URI to issue tracker.
      */
@@ -57,8 +56,7 @@ public final class App extends InvokableAdapter {
      * Usage footer.
      */
     private static final String FOOTER = String.format("%nWritten 2012 by %s%nWrite bugs to %s",
-                                                       AUTHOR, ISSUE_TRACKER);
-
+            AUTHOR, ISSUE_TRACKER);
     private static final Options OPTIONS = new Options();
 
     static {
@@ -137,8 +135,6 @@ public final class App extends InvokableAdapter {
     }
 
     private void executeByteCode() throws IOException {
-        final Version version = new Version("/de/weltraumschaf/registermachine/version.properties");
-        version.load();
         /*
          * LOAD  #1
          * DIV   #2
@@ -182,19 +178,22 @@ public final class App extends InvokableAdapter {
         getIoStreams().println(String.format("Saved assembled byte code to '%s'.", outFilename));
     }
 
-    private void showHelp() {
+    private void showHelp() throws IOException {
         final PrintWriter writer = new PrintWriter(getIoStreams().getStdout());
         final HelpFormatter formatter = new HelpFormatter();
+        final Version version = new Version("/de/weltraumschaf/registermachine/version.properties");
+        version.load();
+
         formatter.printHelp(
-            writer,
-            HelpFormatter.DEFAULT_WIDTH,
-            EXECUTABLE,
-            HEADER,
-            OPTIONS,
-            HelpFormatter.DEFAULT_LEFT_PAD,
-            HelpFormatter.DEFAULT_DESC_PAD,
-            FOOTER,
-            true);
+                writer,
+                HelpFormatter.DEFAULT_WIDTH,
+                EXECUTABLE,
+                String.format(HEADER_FMT, version.toString()),
+                OPTIONS,
+                HelpFormatter.DEFAULT_LEFT_PAD,
+                HelpFormatter.DEFAULT_DESC_PAD,
+                FOOTER,
+                true);
         writer.flush();
     }
 }
