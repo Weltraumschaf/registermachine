@@ -56,6 +56,7 @@ public class RegisterMachine {
         if (!program.isEmpty()) {
             while ( config.getInstructionCounter() < program.size()) {
                 final Instruction instruction = program.get(config.getInstructionCounter());
+                config.incInstructionCounter();
                 instruction.evaluate(config);
 
                 if (debug) {
@@ -64,7 +65,6 @@ public class RegisterMachine {
                                .append(config.toString())
                                .append(Const.NL);
                 }
-                config.incInstructionCounter();
             }
             io.println("HALT.");
             io.println("");

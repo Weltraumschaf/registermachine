@@ -62,6 +62,9 @@ public final class Factory {
             case NOT:
                 instr = new Not(args[0]);
                 break;
+            case JMP:
+                instr = new Jmp(args[0]);
+                break;
             case PRINT:
                 instr = new Print(args[0], io);
                 break;
