@@ -10,34 +10,24 @@
  */
 package de.weltraumschaf.registermachine.vm;
 
+import de.weltraumschaf.registermachine.Const;
+
 public class RuntimeConfiguration {
 
-    private static final int DEFAULT_REGISTERS_COUNT = 16;
-    private static final int DEFAULT_REGISTER_SIZE = 256;
     private final Scope scope = new Scope();
-    private int ic = 0; // instruction counter
-    private final Register registers;
-    private int size;
-
-    public RuntimeConfiguration() {
-        this(DEFAULT_REGISTERS_COUNT);
-    }
-
-    public RuntimeConfiguration(final int size) {
-        registers = new Register();
-        this.size = size;
-    }
+    private final Register registers = new Register();
+    private int instructionCounter;
 
     public int getInstructionCounter() {
-        return ic;
+        return instructionCounter;
     }
 
     public void setInstructionCounter(final int ic) {
-        this.ic = ic;
+        this.instructionCounter = ic;
     }
 
     public void incInstructionCounter() {
-        ic++;
+        instructionCounter++;
     }
 
     public void setRegister(final int r, final int v) {
@@ -55,17 +45,13 @@ public class RuntimeConfiguration {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("icounter = ").append(ic + 1);
-
-        for (int i = 0; i < size; i++) {
-            sb.append(", \tr[")
-                    .append(i)
-                    .append("] = ")
-                    .append(registers);
-        }
+        sb.append("instruction: ")
+          .append(instructionCounter + 1)
+          .append(' ')
+          .append(registers);
 
         if (!scope.isEmpty()) {
-            sb.append(String.format("%n%s", scope.toString()));
+            sb.append(Const.NL).append(scope.toString());
         }
 
         return sb.toString();

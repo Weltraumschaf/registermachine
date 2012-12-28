@@ -1,7 +1,7 @@
 ; All instructions
 
 move 1 2 ; copy register 1 to register 2
-add 1 2 3 ; add value from register 1 and register 2 and stores result in register 1
-sub 1 2 3 ; subtract value from register 1 and register 2 and stores result in register 1
-mul 1 2 3 ; multiply value from register 1 and register 2 and stores result in register 1
-div 1 2 3 ; dive value from register 1 and register 2 and stores result in register 1
+add 2 3 ; add value from register 1 and register 2 and stores result in register 1
+sub 2 3 ; subtract value from register 1 and register 2 and stores result in register 1
+mul 2 3 ; multiply value from register 1 and register 2 and stores result in register 1
+div 2 3 ; dive value from register 1 and register 2 and stores result in register 1

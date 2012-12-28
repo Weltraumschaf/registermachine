@@ -11,6 +11,7 @@
 
 package de.weltraumschaf.registermachine.vm;
 
+import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
@@ -18,16 +19,20 @@ import java.util.List;
 public class RegisterMachine {
 
     private final RuntimeConfiguration config;
-    private List<Instruction> program;
     private final boolean debug;
     private final boolean printProgramm;
+    private final IO io;
 
-    public  RegisterMachine() {
-        this(false, false);
+    private List<Instruction> program;
+
+    public  RegisterMachine(final IO io) {
+        this(io, false, false);
     }
 
-    public  RegisterMachine(boolean debug, boolean printProgramm) {
-        this.config = new RuntimeConfiguration(4);
+    public  RegisterMachine(final IO io, boolean debug, boolean printProgramm) {
+        super();
+        this.io = io;
+        this.config = new RuntimeConfiguration();
         this.debug  = debug;
         this.printProgramm  = printProgramm;
     }
@@ -40,7 +45,7 @@ public class RegisterMachine {
         final StringBuilder debugOutput = new StringBuilder();
 
         if (debug) {
-            debugOutput.append(config.toString()).append(String.format("%n"));
+            debugOutput.append(config.toString()).append(Const.NL);
         }
 
         if (!program.isEmpty()) {
@@ -55,7 +60,7 @@ public class RegisterMachine {
         }
 
         if (debug) {
-            System.out.println(String.format("%nDebug:%n%s", debugOutput.toString()));
+            io.println(String.format("%nDebug:%n%s", debugOutput.toString()));
         }
 
         if (this.printProgramm) {
@@ -64,20 +69,15 @@ public class RegisterMachine {
     }
 
     public void printProgramm() {
-        System.out.println("\nProgramm:\n");
-
-        if (!this.printProgramm) {
-            System.out.println("empty programm");
-            return;
-        }
+        io.println("\nProgramm:\n");
 
         for (final Instruction instruction : program) {
-            System.out.println(instruction.toString());
+            io.println(instruction.toString());
         }
     }
 
     public void printConfiguration() {
-        System.out.println(config.toString());
+        io.println(config.toString());
     }
 
     public RuntimeConfiguration getConfiguration() {

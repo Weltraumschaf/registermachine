@@ -50,6 +50,9 @@ public final class Factory {
             case DIV:
                 instr = new Div(args[0], args[1]);
                 break;
+            case MOD:
+                instr = new Mod(args[0], args[1]);
+                break;
             case PRINT:
                 instr = new Print(args[0], io);
                 break;

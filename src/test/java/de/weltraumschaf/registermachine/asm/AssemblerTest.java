@@ -60,40 +60,40 @@ public class AssemblerTest {
         assertThat(program[16], is((byte) 0x00)); // arg 2
         assertThat(program[17], is((byte) 0x00)); // arg 2
 
-        assertThat(program[22], is((byte) 0x04)); // sub
+        assertThat(program[18], is((byte) 0x04)); // sub
 
-        assertThat(program[23], is((byte) 0x02)); // arg 1
-        assertThat(program[24], is((byte) 0x00)); // arg 1
-        assertThat(program[25], is((byte) 0x00)); // arg 1
-        assertThat(program[26], is((byte) 0x00)); // arg 1
+        assertThat(program[19], is((byte) 0x02)); // arg 1
+        assertThat(program[20], is((byte) 0x00)); // arg 1
+        assertThat(program[21], is((byte) 0x00)); // arg 1
+        assertThat(program[22], is((byte) 0x00)); // arg 1
 
-        assertThat(program[27], is((byte) 0x03)); // arg 2
-        assertThat(program[28], is((byte) 0x00)); // arg 2
-        assertThat(program[29], is((byte) 0x00)); // arg 2
-        assertThat(program[30], is((byte) 0x00)); // arg 2
+        assertThat(program[23], is((byte) 0x03)); // arg 2
+        assertThat(program[24], is((byte) 0x00)); // arg 2
+        assertThat(program[25], is((byte) 0x00)); // arg 2
+        assertThat(program[26], is((byte) 0x00)); // arg 2
 
-        assertThat(program[35], is((byte) 0x05)); // mul
+        assertThat(program[27], is((byte) 0x05)); // mul
 
-        assertThat(program[36], is((byte) 0x02)); // arg 1
-        assertThat(program[37], is((byte) 0x00)); // arg 1
+        assertThat(program[28], is((byte) 0x02)); // arg 1
+        assertThat(program[29], is((byte) 0x00)); // arg 1
+        assertThat(program[30], is((byte) 0x00)); // arg 1
+        assertThat(program[31], is((byte) 0x00)); // arg 1
+
+        assertThat(program[32], is((byte) 0x03)); // arg 2
+        assertThat(program[33], is((byte) 0x00)); // arg 2
+        assertThat(program[34], is((byte) 0x00)); // arg 2
+        assertThat(program[35], is((byte) 0x00)); // arg 2
+
+        assertThat(program[36], is((byte) 0x06)); // div
+
+        assertThat(program[37], is((byte) 0x02)); // arg 1
         assertThat(program[38], is((byte) 0x00)); // arg 1
         assertThat(program[39], is((byte) 0x00)); // arg 1
+        assertThat(program[40], is((byte) 0x00)); // arg 1
 
-        assertThat(program[40], is((byte) 0x03)); // arg 2
-        assertThat(program[41], is((byte) 0x00)); // arg 2
+        assertThat(program[41], is((byte) 0x03)); // arg 2
         assertThat(program[42], is((byte) 0x00)); // arg 2
         assertThat(program[43], is((byte) 0x00)); // arg 2
-
-        assertThat(program[48], is((byte) 0x06)); // div
-
-        assertThat(program[49], is((byte) 0x02)); // arg 1
-        assertThat(program[50], is((byte) 0x00)); // arg 1
-        assertThat(program[51], is((byte) 0x00)); // arg 1
-        assertThat(program[52], is((byte) 0x00)); // arg 1
-
-        assertThat(program[53], is((byte) 0x03)); // arg 2
-        assertThat(program[54], is((byte) 0x00)); // arg 2
-        assertThat(program[55], is((byte) 0x00)); // arg 2
-        assertThat(program[56], is((byte) 0x00)); // arg 2
+        assertThat(program[44], is((byte) 0x00)); // arg 2
     }
 }

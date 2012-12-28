@@ -45,7 +45,7 @@ class Register {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("store", store).toString();
+        return String.format("Register: %s", store.toString());
     }
 
 }
