@@ -14,12 +14,12 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 import de.weltraumschaf.registermachine.vm.Scope;
 
-public class Isasign implements Instruction {
+public class Assign implements Instruction {
 
     private final int address;
     private final int value;
 
-    public  Isasign(final int address, final int value) {
+    public  Assign(final int address, final int value) {
         super();
         this.address = address;
         this.value   = value;

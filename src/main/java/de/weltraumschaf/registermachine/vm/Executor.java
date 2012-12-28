@@ -12,10 +12,15 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Lists;
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.instr.Add;
+import de.weltraumschaf.registermachine.instr.Div;
 import de.weltraumschaf.registermachine.instr.Instruction;
+import de.weltraumschaf.registermachine.instr.Move;
+import de.weltraumschaf.registermachine.instr.Mul;
+import de.weltraumschaf.registermachine.instr.Nop;
+import de.weltraumschaf.registermachine.instr.Sub;
 import java.util.List;
 
 /**
@@ -78,6 +83,27 @@ public class Executor {
     }
 
     private Instruction createInstruction(final ByteCode bc, final byte[] args) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Instruction instr = new Nop();
+        switch (bc) {
+            case MOVE:
+                instr = new Move(0, 0);
+                break;
+            case ADD:
+                instr = new Add(0, 0, 0);
+                break;
+            case SUB:
+                instr = new Sub(0, 0, 0);
+                break;
+            case MUL:
+                instr = new Mul(0, 0, 0);
+                break;
+            case DIV:
+                instr = new Div(0, 0, 0);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Opcode nit implemented yet: %s!", bc.toString()));
+        }
+
+        return instr;
     }
 }

@@ -12,7 +12,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.instr.Iload;
+import de.weltraumschaf.registermachine.instr.Load;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,7 +26,7 @@ public class IloadTest {
 
     @Test
     public void createILoadWithReference() {
-        final Iload sut = new Iload(23, "#1234");
+        final Load sut = new Load(23, "#1234");
         assertThat(sut.getRegister(), is(23));
         assertThat(sut.getAddress(), is(1234));
         assertThat(sut.getValue(), is((byte)0));
@@ -34,7 +34,7 @@ public class IloadTest {
 
     @Test
     public void createILoadWithByteValue() {
-        final Iload sut = new Iload(23, (byte)42);
+        final Load sut = new Load(23, (byte)42);
         assertThat(sut.getRegister(), is(23));
         assertThat(sut.getAddress(), is(-1));
         assertThat(sut.getValue(), is((byte)42));
@@ -42,19 +42,19 @@ public class IloadTest {
 
     @Test
     public void loadsReferencedValue_isTrueOnAddress() {
-        final Iload sut = new Iload(23, "#1234");
+        final Load sut = new Load(23, "#1234");
         assertThat(sut.loadsReferencedValue(), is(true));
     }
 
     @Test
     public void loadsReferencedValue_isFalseOnByte() {
-        final Iload sut = new Iload(23, (byte)42);
+        final Load sut = new Load(23, (byte)42);
         assertThat(sut.loadsReferencedValue(), is(false));
     }
 
     @Test
     public void evaluate_withReference() {
-        final Iload sut = new Iload(2, "#34");
+        final Load sut = new Load(2, "#34");
         final RuntimeConfiguration conf = new RuntimeConfiguration();
         final byte[] expected = new byte[2];
         expected[0] = 42;
@@ -66,7 +66,7 @@ public class IloadTest {
 
     @Test
     public void evaluate_withByteValue() {
-        final Iload sut = new Iload(3, (byte)42);
+        final Load sut = new Load(3, (byte)42);
         final RuntimeConfiguration conf = new RuntimeConfiguration();
         sut.evaluate(conf);
         final byte[] expected = new byte[1];

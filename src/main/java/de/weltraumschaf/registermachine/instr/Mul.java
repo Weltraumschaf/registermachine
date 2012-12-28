@@ -13,13 +13,13 @@ package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class Isub implements Instruction {
+public class Mul implements Instruction {
 
     private final int resultReg;
     private final int op1Reg;
     private final int op2Reg;
 
-    public Isub(final int resultReg, final int op1Reg, final int op2Reg) {
+    public  Mul(final int resultReg, final int op1Reg, final int op2Reg) {
         super();
         this.resultReg = resultReg;
         this.op1Reg    = op1Reg;
@@ -27,17 +27,17 @@ public class Isub implements Instruction {
     }
 
     @Override
-    public void evaluate(RuntimeConfiguration config) {
+    public void evaluate(final RuntimeConfiguration config) {
         throw new UnsupportedOperationException();
 //        final int op1 = config.getRegister(op1Reg);
 //        final int op2 = config.getRegister(op2Reg);
-//        config.setRegister(resultReg, op1 - op2);
+//        config.setRegister(resultReg, op1 * op2);
 //        config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("isub %d, %d, %d", op1Reg, op2Reg, resultReg);
+        return String.format("imul %d, %d, %d", op1Reg, op2Reg, resultReg);
     }
 
 }

@@ -13,18 +13,18 @@ package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class Iload implements Instruction {
+public class Load implements Instruction {
 
     private final int register;
     private byte value;
     private int address = -1;
 
-    public  Iload(final int register, final byte value) {
+    public  Load(final int register, final byte value) {
         this(register);
         this.value = value;
     }
 
-    public  Iload(final int register, final String value) {
+    public  Load(final int register, final String value) {
         this(register);
 
         if (value.charAt(0) == '#') {
@@ -34,7 +34,7 @@ public class Iload implements Instruction {
         }
     }
 
-    public  Iload(final int register) {
+    public  Load(final int register) {
         super();
         this.register = register;
     }
