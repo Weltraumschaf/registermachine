@@ -11,9 +11,10 @@
  */
 package de.weltraumschaf.registermachine.asm;
 
+import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
-import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,6 +25,7 @@ import java.io.InputStream;
 public class Disassembler {
 
     private static final String NL = String.format("%n");
+    private static final int ARG_BYTE_COUNT = 4;
 
     public String disassamble(final InputStream input) throws IOException {
         final StringBuilder buffer = new StringBuilder();
@@ -51,10 +53,15 @@ public class Disassembler {
             ++i;
 
             if (bc.getArgCount() != OpCode.ArgCount.NONE) {
-                for (int shift = 0; shift < bc.getArgCount().getCount(); ++shift) {
-                    buffer.append(' ');
-                    // TODO Read 4 bytes per argument!
-                    buffer.append(programm[i]);
+                final int count = bc.getArgCount().getCount() * ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[ARG_BYTE_COUNT];
+                for (int shift = 0; shift < count; ++shift) {
+                    bytes[shift % ARG_BYTE_COUNT] = programm[i];
+
+                    if (shift % ARG_BYTE_COUNT == ARG_BYTE_COUNT - 1) {
+                        buffer.append(' ');
+                        buffer.append(ByteInt.intFromBytes(bytes));
+                    }
                     ++i;
                 }
             }
