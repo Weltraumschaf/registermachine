@@ -11,6 +11,7 @@
 package de.weltraumschaf.registermachine.bytecode;
 
 import com.google.common.collect.Maps;
+import de.weltraumschaf.registermachine.Const;
 import java.util.Locale;
 import java.util.Map;
 
@@ -286,7 +287,7 @@ public enum ByteCode {
 
     static {
         for (final ByteCode code : ByteCode.values()) {
-            MNEMONIC_LOOKUP.put(code.name().toLowerCase(Locale.ENGLISH), code);
+            MNEMONIC_LOOKUP.put(code.name().toLowerCase(Const.LOCALE), code);
             OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
     }
@@ -332,8 +333,8 @@ public enum ByteCode {
     }
 
     public static ByteCode lokup(final String mnemonic) {
-        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Locale.ENGLISH))) {
-            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Locale.ENGLISH));
+        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Const.LOCALE))) {
+            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Const.LOCALE));
         }
 
         return UNKWONN;

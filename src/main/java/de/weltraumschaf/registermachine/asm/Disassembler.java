@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.registermachine.asm;
 
+import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class Disassembler {
                 throw new RuntimeException(String.format("Unknown opcode: %s!", bc.toHex()));
             }
 
-            buffer.append(bc.name().toLowerCase(Locale.ENGLISH));
+            buffer.append(bc.name().toLowerCase(Const.LOCALE));
             ++i;
 
             if (bc.getArgCount() != ByteCode.ArgCount.NONE) {
