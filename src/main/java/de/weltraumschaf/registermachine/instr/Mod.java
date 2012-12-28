@@ -32,8 +32,7 @@ public class Mod implements Instruction {
     public void evaluate(final RuntimeConfiguration config) {
         final int op1 = config.getRegister(op1Reg);
         final int op2 = config.getRegister(op2Reg);
-        config.setRegister(0, op1 % op2);
-        config.incInstructionCounter();
+        config.setRegister(RESULT_REGISTER, op1 % op2);
     }
 
     @Override

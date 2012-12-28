@@ -27,7 +27,6 @@ class Loadc implements Instruction {
     @Override
     public void evaluate(final RuntimeConfiguration config) {
         config.setRegister(register, value);
-        config.incInstructionCounter();
     }
 
     @Override

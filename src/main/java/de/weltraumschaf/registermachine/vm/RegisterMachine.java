@@ -45,7 +45,7 @@ public class RegisterMachine {
 
     public void run() {
         final StringBuilder debugOutput = new StringBuilder();
-
+        config.setInstructionCounter(0);
         if (debug) {
             debugOutput.append(StringUtils.rightPad("Init", DEBUG_PAD))
                        .append(" > ")
@@ -64,6 +64,7 @@ public class RegisterMachine {
                                .append(config.toString())
                                .append(Const.NL);
                 }
+                config.incInstructionCounter();
             }
             io.println("HALT.");
             io.println("");

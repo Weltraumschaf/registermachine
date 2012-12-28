@@ -46,7 +46,7 @@ public class RuntimeConfiguration {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Counter=")
-          .append(instructionCounter + 1)
+          .append(instructionCounter)
           .append(" Registers=")
           .append(registers);
 

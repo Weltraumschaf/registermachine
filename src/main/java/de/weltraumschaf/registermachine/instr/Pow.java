@@ -18,25 +18,28 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Move implements Instruction {
+class Pow implements Instruction {
 
-    private final int srcReg;
-    private final int dstReg;
+    private final int op1Reg;
+    private final int op2Reg;
 
-    public Move(final int srcReg, final int dstReg) {
-        this.srcReg = srcReg;
-        this.dstReg = dstReg;
+    public Pow(final int op1Reg, final int op2Reg) {
+        super();
+        this.op1Reg = op1Reg;
+        this.op2Reg = op2Reg;
     }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int value = config.getRegister(srcReg);
-        config.setRegister(dstReg, value);
+        final int op1 = config.getRegister(op1Reg);
+        final int op2 = config.getRegister(op2Reg);
+        final int result = (int) Math.pow(op1, op2);
+        config.setRegister(RESULT_REGISTER, result);
     }
 
     @Override
     public String toString() {
-        return String.format("move %d, %d", srcReg, dstReg);
+        return String.format("pow %d %d", op1Reg, op2Reg);
     }
 
 }

@@ -53,6 +53,11 @@ public final class Factory {
             case MOD:
                 instr = new Mod(args[0], args[1]);
                 break;
+            case POW:
+                instr = new Pow(args[0], args[1]);
+                break;
+            case UNM:
+                instr = new Unm(args[0]);
             case PRINT:
                 instr = new Print(args[0], io);
                 break;

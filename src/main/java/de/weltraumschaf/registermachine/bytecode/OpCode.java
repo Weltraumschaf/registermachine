@@ -51,7 +51,7 @@ public enum OpCode {
      * Addition operator.
      *
      * <pre>
-     * add RES_REG OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in RES_REG
+     * add OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
     ADD(0x03, ArgCount.TWO),
@@ -59,7 +59,7 @@ public enum OpCode {
      * Subtraction operator.
      *
      * <pre>
-     * sub RES_REG OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in RES_REG
+     * sub OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
     SUB(0x04, ArgCount.TWO),
@@ -75,7 +75,7 @@ public enum OpCode {
      * Division operator.
      *
      * <pre>
-     * div RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
+     * div OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
     DIV(0x06, ArgCount.TWO),
@@ -83,12 +83,16 @@ public enum OpCode {
      * Modulus (remainder) operator.
      *
      * <pre>
-     * mod RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
+     * mod OP1_REG OP2_REG ; reminder divide value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
     MOD(0x07, ArgCount.TWO),
     /**
      * Exponentiation operator.
+     *
+     * <pre>
+     * pow OP1_REG OP2_REG ; powers value from OP1_REG and OP2_REG and stores result in register 0
+     * </pre>
      */
     POW(0x08, ArgCount.TWO),
     /**

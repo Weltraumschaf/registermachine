@@ -27,7 +27,6 @@ class PrintLn implements Instruction {
     @Override
     public void evaluate(final RuntimeConfiguration config) {
         io.println(String.valueOf(config.getRegister(srcReg)));
-        config.incInstructionCounter();
     }
 
     @Override
