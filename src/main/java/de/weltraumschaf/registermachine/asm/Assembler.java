@@ -33,14 +33,18 @@ public class Assembler {
     public ByteCodeFile assamble(final InputStream input) throws IOException, AssemblerSyntaxException {
         final List<String> lines = IOUtils.readLines(input, Const.ENCODING);
         IOUtils.closeQuietly(input);
-        List<Byte> bytecode = Lists.newArrayList();
-        bytecode.add(Byte.valueOf((byte) 0xCA));
-        bytecode.add(Byte.valueOf((byte) 0x7E));
-        bytecode.add(Byte.valueOf((byte) 0x01));
+        final List<Byte> bytecode = createByteCodeHeader();
         processLines(bytecode, lines);
         return new ByteCodeFile(convertToNativeArray(bytecode));
     }
 
+    private List<Byte> createByteCodeHeader() {
+        final List<Byte> bytecode = Lists.newArrayList();
+        bytecode.add(Byte.valueOf(Const.BC_FST_HEADER_BYTE));
+        bytecode.add(Byte.valueOf(Const.BC_SND_HEADER_BYTE));
+        bytecode.add(Byte.valueOf(Const.BC_CURRENT_VERSION));
+        return bytecode;
+    }
     private byte[] convertToNativeArray(List<Byte> bytecode) {
         return ByteArray.toNative(bytecode.toArray(new Byte[bytecode.size()]));
     }

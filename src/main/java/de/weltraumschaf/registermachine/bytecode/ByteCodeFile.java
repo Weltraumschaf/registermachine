@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.registermachine.bytecode;
 
+import de.weltraumschaf.registermachine.Const;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -22,9 +23,6 @@ import java.util.Arrays;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ByteCodeFile {
-
-    private static final byte FST_HEADER_BYTE = (byte) 0xCA;
-    private static final byte SND_HEADER_BYTE = (byte) 0x7E;
 
     private final byte[] bytecode;
 
@@ -48,7 +46,7 @@ public class ByteCodeFile {
             return false;
         }
 
-        return bytecode[0] == FST_HEADER_BYTE && bytecode[1] == SND_HEADER_BYTE;
+        return bytecode[0] == Const.BC_FST_HEADER_BYTE && bytecode[1] == Const.BC_SND_HEADER_BYTE;
     }
 
     public byte getVersion() {
