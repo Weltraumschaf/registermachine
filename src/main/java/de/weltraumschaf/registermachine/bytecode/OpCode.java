@@ -12,7 +12,6 @@ package de.weltraumschaf.registermachine.bytecode;
 
 import com.google.common.collect.Maps;
 import de.weltraumschaf.registermachine.Const;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -22,11 +21,12 @@ import java.util.Map;
  * <pre>
  * [ opcode 1 byte ]
  * [ opcode 1 byte ] [ arg1 4 byte ]
- * [ opcode 1 byte ] [ arg1 4 byte ] ... [ argN 4 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ] [ arg3 4 byte ]
  * <pre>
  * @author sxs
  */
-public enum ByteCode {
+public enum OpCode {
 
     /**
      * Copy a value between registers.
@@ -282,11 +282,11 @@ public enum ByteCode {
 //    VARARG(37),
     UNKWONN(-1);
 
-    private static final Map<String, ByteCode> MNEMONIC_LOOKUP = Maps.newHashMap();
-    private static final Map<Byte, ByteCode> OPCODE_LOOKUP = Maps.newHashMap();
+    private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();
+    private static final Map<Byte, OpCode> OPCODE_LOOKUP = Maps.newHashMap();
 
     static {
-        for (final ByteCode code : ByteCode.values()) {
+        for (final OpCode code : OpCode.values()) {
             MNEMONIC_LOOKUP.put(code.name().toLowerCase(Const.LOCALE), code);
             OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
@@ -295,15 +295,15 @@ public enum ByteCode {
     private final byte code;
     private final ArgCount argCount;
 
-    ByteCode(final int code) {
+    OpCode(final int code) {
         this(code, ArgCount.NONE);
     }
 
-    ByteCode(final int code, ArgCount argCount) {
+    OpCode(final int code, ArgCount argCount) {
         this((byte) code, argCount);
     }
 
-    ByteCode(final byte code, ArgCount argCount) {
+    OpCode(final byte code, ArgCount argCount) {
         this.code = code;
         this.argCount = argCount;
     }
@@ -332,7 +332,7 @@ public enum ByteCode {
                 : hex;
     }
 
-    public static ByteCode lokup(final String mnemonic) {
+    public static OpCode lokup(final String mnemonic) {
         if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Const.LOCALE))) {
             return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Const.LOCALE));
         }
@@ -340,7 +340,7 @@ public enum ByteCode {
         return UNKWONN;
     }
 
-    public static ByteCode lookup(final byte b) {
+    public static OpCode lookup(final byte b) {
         if (OPCODE_LOOKUP.containsKey(Byte.valueOf(b))) {
             return OPCODE_LOOKUP.get(Byte.valueOf(b));
         }

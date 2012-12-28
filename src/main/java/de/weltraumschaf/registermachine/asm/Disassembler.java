@@ -12,7 +12,7 @@
 package de.weltraumschaf.registermachine.asm;
 
 import de.weltraumschaf.registermachine.Const;
-import de.weltraumschaf.registermachine.bytecode.ByteCode;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,16 +41,16 @@ public class Disassembler {
     private void disassembleProgram(final StringBuilder buffer, final byte[] programm) {
         int i = 0;
         while (i < programm.length) {
-            final ByteCode bc = ByteCode.lookup(programm[i]);
+            final OpCode bc = OpCode.lookup(programm[i]);
 
-            if (ByteCode.UNKWONN == bc) {
+            if (OpCode.UNKWONN == bc) {
                 throw new RuntimeException(String.format("Unknown opcode: %s!", bc.toHex()));
             }
 
             buffer.append(bc.name().toLowerCase(Const.LOCALE));
             ++i;
 
-            if (bc.getArgCount() != ByteCode.ArgCount.NONE) {
+            if (bc.getArgCount() != OpCode.ArgCount.NONE) {
                 for (int shift = 0; shift < bc.getArgCount().getCount(); ++shift) {
                     buffer.append(' ');
                     // TODO Read 4 bytes per argument!

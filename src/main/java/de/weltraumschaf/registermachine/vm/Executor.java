@@ -12,7 +12,7 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Lists;
-import de.weltraumschaf.registermachine.bytecode.ByteCode;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.instr.Add;
 import de.weltraumschaf.registermachine.instr.Div;
@@ -54,15 +54,15 @@ public class Executor {
         final List<Instruction> instructions = Lists.newArrayList();
         int i = 0;
         while (i < programm.length) {
-            final ByteCode bc = ByteCode.lookup(programm[i]);
+            final OpCode bc = OpCode.lookup(programm[i]);
 
-            if (ByteCode.UNKWONN == bc) {
+            if (OpCode.UNKWONN == bc) {
                 throw new RuntimeException(String.format("Unknown opcode: %s!", bc.toHex()));
             }
 
             ++i;
             byte[] args;
-            if (bc.getArgCount() == ByteCode.ArgCount.NONE) {
+            if (bc.getArgCount() == OpCode.ArgCount.NONE) {
                 args = new byte[0];
             }else {
                 final int argCount = bc.getArgCount().getCount();
@@ -82,7 +82,7 @@ public class Executor {
         return instructions;
     }
 
-    private Instruction createInstruction(final ByteCode bc, final byte[] args) {
+    private Instruction createInstruction(final OpCode bc, final byte[] args) {
         Instruction instr = new Nop();
         switch (bc) {
             case MOVE:

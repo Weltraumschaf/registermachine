@@ -23,23 +23,23 @@ public class ByteCodeTest {
 
     @Test
     public void testToString() {
-        assertThat(ByteCode.ADD.toString(), is("ADD[0x0c]"));
+        assertThat(OpCode.ADD.toString(), is("ADD[0x0c]"));
     }
 
     @Test
     public void toHex() {
-        assertThat(ByteCode.toHex((byte) 3), is("03"));
-        assertThat(ByteCode.toHex((byte) 15), is("0f"));
-        assertThat(ByteCode.toHex((byte) 16), is("10"));
-        assertThat(ByteCode.toHex((byte) 27), is("1b"));
+        assertThat(OpCode.toHex((byte) 3), is("03"));
+        assertThat(OpCode.toHex((byte) 15), is("0f"));
+        assertThat(OpCode.toHex((byte) 16), is("10"));
+        assertThat(OpCode.toHex((byte) 27), is("1b"));
     }
 
     @Test
     public void lookup() {
-        assertThat(ByteCode.lokup("move"), is(ByteCode.MOVE));
-        assertThat(ByteCode.lokup("add"), is(ByteCode.ADD));
-        assertThat(ByteCode.lokup("ADD"), is(ByteCode.ADD));
-        assertThat(ByteCode.lokup("adD"), is(ByteCode.ADD));
-        assertThat(ByteCode.lokup("foobar"), is(ByteCode.UNKWONN));
+        assertThat(OpCode.lokup("move"), is(OpCode.MOVE));
+        assertThat(OpCode.lokup("add"), is(OpCode.ADD));
+        assertThat(OpCode.lokup("ADD"), is(OpCode.ADD));
+        assertThat(OpCode.lokup("adD"), is(OpCode.ADD));
+        assertThat(OpCode.lokup("foobar"), is(OpCode.UNKWONN));
     }
 }

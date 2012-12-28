@@ -19,7 +19,15 @@ import java.util.Arrays;
 /**
  * Represents a byte code file.
  *
- * Format
+ * Format:
+ * <pre>
+ * [ 2 bytes header: 0xca 0x7e ]
+ * [ 2 bytes version           ]
+ * [ 1 ... 13 bytes opcode     ]
+ * ...
+ * [ 1 ... 13 bytes opcode     ]
+ * <pre>
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ByteCodeFile {

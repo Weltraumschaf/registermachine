@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.ByteArray;
 import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
-import de.weltraumschaf.registermachine.bytecode.ByteCode;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,7 +84,7 @@ public class Assembler {
 
     private void processLineParts(final List<Byte> bytecode, final List<String> parts) throws AssemblerSyntaxException {
         final List<String> args = parts.subList(1, parts.size());
-        final ByteCode bc = ByteCode.lokup(parts.get(0));
+        final OpCode bc = OpCode.lokup(parts.get(0));
 
         // TODO Write 4 bytes per argument!
         switch (bc) {
@@ -121,22 +121,14 @@ public class Assembler {
         final byte[] bytes = ByteInt.bytesFromInt(value);
         return Arrays.asList(ByteArray.toObject(bytes));
     }
-    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+    private void generateMoveCode(final OpCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
         bytecode.addAll(createByteListFromNumericArg(args.get(0)));
         bytecode.addAll(createByteListFromNumericArg(args.get(1)));
     }
 
-    private void generateAddCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        assertArgCount(args, bc);
-        bytecode.add(bc.getCode());
-        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
-        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
-        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
-    }
-
-    private void generateSubCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+    private void generateAddCode(final OpCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
         bytecode.addAll(createByteListFromNumericArg(args.get(0)));
@@ -144,7 +136,7 @@ public class Assembler {
         bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
-    private void generateMullCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+    private void generateSubCode(final OpCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
         bytecode.addAll(createByteListFromNumericArg(args.get(0)));
@@ -152,7 +144,7 @@ public class Assembler {
         bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
-    private void generateDivCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+    private void generateMullCode(final OpCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
         bytecode.addAll(createByteListFromNumericArg(args.get(0)));
@@ -160,7 +152,15 @@ public class Assembler {
         bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
-    private void assertArgCount(final List<String> args, final ByteCode bc) throws AssemblerSyntaxException {
+    private void generateDivCode(final OpCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
+        bytecode.add(bc.getCode());
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
+    }
+
+    private void assertArgCount(final List<String> args, final OpCode bc) throws AssemblerSyntaxException {
         if (args.size() != bc.getArgCount().getCount()) {
             throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT, bc.name(), bc.getArgCount().getCount()));
         }
