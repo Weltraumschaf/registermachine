@@ -36,7 +36,7 @@ public class AssemblerTest {
         assertThat(bytecode.getVersion(), is((short) 0x01));
         final byte[] program = bytecode.getProgramm();
         assertThat(program.length, is(61));
-        assertThat(program[0], is((byte) 0x00)); // move
+        assertThat(program[0], is((byte) 0x01)); // move
 
         assertThat(program[1], is((byte) 0x01)); // arg 1
         assertThat(program[2], is((byte) 0x00)); // arg 1
@@ -48,7 +48,7 @@ public class AssemblerTest {
         assertThat(program[7], is((byte) 0x00)); // arg 2
         assertThat(program[8], is((byte) 0x00)); // arg 2
 
-        assertThat(program[9], is((byte) 0x0c)); // add
+        assertThat(program[9], is((byte) 0x03)); // add
 
         assertThat(program[10], is((byte) 0x01)); // arg 1
         assertThat(program[11], is((byte) 0x00)); // arg 1
@@ -65,7 +65,7 @@ public class AssemblerTest {
         assertThat(program[20], is((byte) 0x00)); // arg 3
         assertThat(program[21], is((byte) 0x00)); // arg 3
 
-        assertThat(program[22], is((byte) 0x0d)); // sub
+        assertThat(program[22], is((byte) 0x04)); // sub
 
         assertThat(program[23], is((byte) 0x01)); // arg 1
         assertThat(program[24], is((byte) 0x00)); // arg 1
@@ -82,7 +82,7 @@ public class AssemblerTest {
         assertThat(program[33], is((byte) 0x00)); // arg 3
         assertThat(program[34], is((byte) 0x00)); // arg 3
 
-        assertThat(program[35], is((byte) 0x0e)); // mul
+        assertThat(program[35], is((byte) 0x05)); // mul
 
         assertThat(program[36], is((byte) 0x01)); // arg 1
         assertThat(program[37], is((byte) 0x00)); // arg 1
@@ -99,7 +99,8 @@ public class AssemblerTest {
         assertThat(program[46], is((byte) 0x00)); // arg 3
         assertThat(program[47], is((byte) 0x00)); // arg 3
 
-        assertThat(program[48], is((byte) 0x0f)); // div
+        assertThat(program[48], is((byte) 0x06)); // div
+
         assertThat(program[49], is((byte) 0x01)); // arg 1
         assertThat(program[50], is((byte) 0x00)); // arg 1
         assertThat(program[51], is((byte) 0x00)); // arg 1

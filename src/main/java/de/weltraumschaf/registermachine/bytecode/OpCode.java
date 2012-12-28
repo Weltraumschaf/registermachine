@@ -32,257 +32,98 @@ public enum OpCode {
      * Copy a value between registers.
      *
      * <pre>
-     * move SRC_REG DST_REG ; copy register SRC_REG to register DST_REG
-     * 0x00 0x01 0x02
+     * move SRC_REG DST_REG ; copy register SRC_REG into register DST_REG
      * </pre>
-     *
-     *
      */
-    MOVE(0, ArgCount.TWO),
+    MOVE(0x01, ArgCount.TWO),
     /**
      * Load a constant into a register.
      *
-     * 0x01
-     */
-    LOADC(1, ArgCount.TWO),
-    /**
-     * Load a boolean into a register.
-     *
      * <pre>
-     * LOADBOOL DST_REG ; load bool
-     * 0x02 0x01
+     * loadc DST_REG VALUE ; load integer value into register DST_REG
      * </pre>
      */
-//    LOADBOOL(2),
-    /**
-     * Load nil values into a range of registers.
-     *
-     * 0x03
-     */
-//    LOADNIL(3),
-    /**
-     * Read an upvalue into a register.
-     *
-     * 0x04
-     */
-//    GETUPVAL(4),
-    /**
-     * Read a global variable into a register.
-     *
-     * <pre>
-     * getglobal
-     * 0x05
-     * </pre>
-     */
-//    GETGLOBAL(5),
-    /**
-     * Read a table element into a register.
-     *
-     * 0x06
-     */
-//    GETTABLE(6),
-    /**
-     * Write a register value into a global variable.
-     *
-     * 0x07
-     */
-//    SETGLOBAL(7),
-    /**
-     * Write a register value into an upvalue.
-     *
-     * 0x08
-     */
-//    SETUPVAL(8),
-    /**
-     * Write a register value into a table element.
-     *
-     * 0x09
-     */
-//    SETTABLE(9),
-    /**
-     * Create a new table.
-     *
-     * 0x0a
-     */
-//    NEWTABLE(10),
-    /**
-     * Prepare an object method for calling.
-     *
-     * 0x0b
-     */
-//    SELF(11),
+    LOADC(0x02, ArgCount.TWO),
     /**
      * Addition operator.
      *
      * <pre>
      * add RES_REG OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in RES_REG
-     * 0x0c 0x01 0x02 0x03
      * </pre>
      */
-    ADD(12, ArgCount.THREE),
+    ADD(0x03, ArgCount.THREE),
     /**
      * Subtraction operator.
      *
      * <pre>
      * sub RES_REG OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in RES_REG
-     * 0x0d 0x01 0x02 0x03
      * </pre>
      */
-    SUB(13, ArgCount.THREE),
+    SUB(0x04, ArgCount.THREE),
     /**
      * Multiplication operator.
      *
      * <pre>
      * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
-     * 0x0e 0x01 0x02 0x03
      * </pre>
      */
-    MUL(14, ArgCount.THREE),
+    MUL(0x05, ArgCount.THREE),
     /**
      * Division operator.
      *
      * <pre>
      * div RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
-     * 0x0f 0x01 0x02 0x03
      * </pre>
      */
-    DIV(15, ArgCount.THREE),
+    DIV(0x06, ArgCount.THREE),
     /**
      * Modulus (remainder) operator.
-     *
-     * 0x10
      */
-    MOD(16),
+    MOD(0x07, ArgCount.TWO),
     /**
      * Exponentiation operator.
-     *
-     * 0x11
      */
-    POW(17),
+    POW(0x08, ArgCount.TWO),
     /**
      * Unary minus operator.
-     *
-     * 0x12
      */
-    UNM(18),
+    UNM(0x09, ArgCount.ONE),
     /**
      * Logical NOT operator.
-     *
-     * 0x13
      */
-    NOT(19),
-    /**
-     * Length operator.
-     *
-     * 0x14
-     */
-//    LEN(20),
-    /**
-     * Concatenate a range of registers.
-     *
-     * 0x15
-     */
-//    CONCAT(21),
+    NOT(0x0a, ArgCount.ONE),
     /**
      * Unconditional jump.
-     *
-     * 0x16
      */
-    JMP(22),
+    JMP(0x0b, ArgCount.ONE),
     /**
      * Equality test.
-     *
-     * 0x17
      */
-    EQ(23),
+    EQ(0x0c, ArgCount.TWO),
     /**
      * Less than test Less than or equal to test.
-     *
-     * 0x18
      */
-    LT(24),
+    LT(0x0d, ArgCount.TWO),
     /**
-     * Boolean test, with conditional jump.
-     *
-     * 0x19
+     * Less than or equals test Less than or equal to test.
      */
-    LE(25),
+    LE(0x0e, ArgCount.TWO),
     /**
-     * Boolean test, with conditional jump and assignment.
-     *
-     * 0x1a
+     *Boolean test, with conditional jump.
      */
-    TEST(26),
-    /**
-     * Boolean test, with conditional jump and assignment.
-     *
-     * 0x1b
-     */
-    TESTSET(27),
-    /**
-     * Call a closure.
-     *
-     * 0x1c
-     */
-//    CALL(28),
-    /**
-     * Perform a tail call.
-     *
-     * 0x1d
-     */
-//    TAILCALL(29),
+    TEST(0x0f, ArgCount.TWO),
     /**
      *
-     * Return from function call.
-     *
-     * 0x1e
      */
-    RETURN(30),
+    PRINT(0x10, ArgCount.ONE),
     /**
-     * Iterate a numeric for loop.
      *
-     * 0x1f
      */
-    FORLOOP(31),
+    PRINTLN(0x11, ArgCount.ONE),
     /**
-     * Initialization for a numeric for loop.
-     *
-     * 0x20
+     * Unknown opcode wil stop execution.
      */
-    FORPREP(32),
-    /**
-     * Iterate a generic for loop.
-     *
-     * 0x21
-     */
-//    TFORLOOP(33),
-    /**
-     * Set a range of array elements for a table.
-     *
-     * 0x22
-     */
-//    SETLIST(34),
-    /**
-     * Close a range of locals being used as upvalues.
-     *
-     * 0x23
-     */
-//    CLOSE(35),
-    /**
-     * Create a closure of a function prototype.
-     *
-     * 0x24
-     */
-//    CLOSURE(36),
-    /**
-     * Assign vararg function arguments to registers.
-     *
-     * 0x25
-     */
-//    VARARG(37),
-    PRINT(38, ArgCount.ONE),
-    PRINTLN(39, ArgCount.ONE),
-    UNKWONN(-1);
+    UNKWONN(0xff);
 
     private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();
     private static final Map<Byte, OpCode> OPCODE_LOOKUP = Maps.newHashMap();
