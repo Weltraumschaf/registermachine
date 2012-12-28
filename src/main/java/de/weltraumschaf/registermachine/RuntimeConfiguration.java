@@ -8,24 +8,22 @@
  * you can buy me a beer in return.
  *
  */
-
 package de.weltraumschaf.registermachine;
 
 public class RuntimeConfiguration {
+
     private static final int DEFAULT_REGISTERS_COUNT = 16;
     private static final int DEFAULT_REGISTER_SIZE = 256;
-
-    private final Scope scope= new Scope();
-
+    private final Scope scope = new Scope();
     private int ic = 0; // instruction counter
     private byte[][] registers;
     private int size;
 
-    public  RuntimeConfiguration() {
+    public RuntimeConfiguration() {
         this(DEFAULT_REGISTERS_COUNT);
     }
 
-    public  RuntimeConfiguration(final int size) {
+    public RuntimeConfiguration(final int size) {
         registers = new byte[size][];
         this.size = size;
         init();
@@ -78,7 +76,10 @@ public class RuntimeConfiguration {
         sb.append("icounter = ").append(ic + 1);
 
         for (int i = 0; i < size; i++) {
-            sb.append(", \tr[").append(i).append("] = ").append(registers[i]);
+            sb.append(", \tr[")
+                    .append(i)
+                    .append("] = ")
+                    .append(registers[i]);
         }
 
         if (!scope.isEmpty()) {
@@ -87,5 +88,4 @@ public class RuntimeConfiguration {
 
         return sb.toString();
     }
-
 }
