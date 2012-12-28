@@ -65,6 +65,18 @@ public final class Factory {
             case JMP:
                 instr = new Jmp(args[0]);
                 break;
+            case EQ:
+                instr = new Eq(args[0], args[1]);
+                break;
+            case LT:
+                instr = new Lt(args[0], args[1]);
+                break;
+            case LE:
+                instr = new Le(args[0], args[1]);
+                break;
+            case TEST:
+                instr = new Test(args[0], args[1]);
+                break;
             case PRINT:
                 instr = new Print(args[0], io);
                 break;
