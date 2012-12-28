@@ -17,14 +17,12 @@ import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.registermachine.asm.Assembler;
 import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
 import de.weltraumschaf.registermachine.instructionset.Iadd;
 import de.weltraumschaf.registermachine.instructionset.Iload;
 import de.weltraumschaf.registermachine.instructionset.Instruction;
 import de.weltraumschaf.registermachine.instructionset.Isasign;
 import de.weltraumschaf.registermachine.instructionset.StdOut;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -37,7 +35,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -46,7 +43,7 @@ import org.apache.commons.io.IOUtils;
 public final class App extends InvokableAdapter {
 
     private static final String EXECUTABLE = "machine";
-    private static final String HEADER_FMT = "%n%nRegister based machine v%s%n%n";
+    private static final String HEADER_FMT = "%n%nRegister based machine v%s.%n%n";
     private static final String AUTHOR = "Sven Strittmatter <weltraumschaf@googlemail.com>";
     /**
      * URI to issue tracker.
@@ -55,14 +52,17 @@ public final class App extends InvokableAdapter {
     /**
      * Usage footer.
      */
-    private static final String FOOTER = String.format("%nWritten 2012 by %s%nWrite bugs to %s",
+    private static final String FOOTER = String.format("%nWritten 2012 by %s%nWrite bugs to %s%n",
             AUTHOR, ISSUE_TRACKER);
     private static final Options OPTIONS = new Options();
+    private static final String CTASM_EXT = ".ctasm";
+    private static final String BC_EXT = ".ct";
 
     static {
         OPTIONS.addOption("h", false, "display help");
         OPTIONS.addOption("d", false, "display debug infos");
         OPTIONS.addOption("c", true, "compile assembly source");
+        OPTIONS.addOption("p", true, "print program output");
 
     }
     private static final CommandLineParser PARSER = new PosixParser();
@@ -98,6 +98,10 @@ public final class App extends InvokableAdapter {
 
     private String getCompile() {
         return commandLineArgs.getOptionValue("c");
+    }
+
+    private boolean isPrintProgram() {
+        return commandLineArgs.hasOption("p");
     }
 
     /**
@@ -159,22 +163,23 @@ public final class App extends InvokableAdapter {
                 //            new Istore(3),
                 );
 
-//        opts = getopt('dp');
-//        machine = new RegisterMachine(isset(opts['d']), isset(opts['p']));
-        final RegisterMachine machine = new RegisterMachine(true, true);
+        final RegisterMachine machine = new RegisterMachine(isDebug(), isPrintProgram());
         machine.setProgram(instructions);
         machine.getConfiguration().init();
         machine.run();
     }
 
+    private static String generateCompiledFileName(final String inFilename)  {
+        return inFilename.replace(CTASM_EXT, "") + BC_EXT;
+    }
+
     private void compileAssemblyCode(final String inFilename) throws IOException, AssemblerSyntaxException {
         getIoStreams().println(String.format("Compiling assembly file '%s' ...", inFilename));
         final Assembler asm = new Assembler();
-        final ByteCodeFile bc = asm.assamble(new FileInputStream(new File(inFilename)));
-        final String outFilename = inFilename.replace(".caythe", "") + ".ct";
-        final FileOutputStream out = new FileOutputStream(new File(outFilename));
-        IOUtils.write(bc.toArray(), out);
-        IOUtils.closeQuietly(out);
+        final ByteCodeFile bc = asm.assamble(FileIo.newInputStream(inFilename));
+        final String outFilename = generateCompiledFileName(inFilename);
+        final ByteCodeWriter out = new ByteCodeWriter(FileIo.newOutputStream(outFilename));
+        out.write(bc);
         getIoStreams().println(String.format("Saved assembled byte code to '%s'.", outFilename));
     }
 
@@ -196,4 +201,5 @@ public final class App extends InvokableAdapter {
                 true);
         writer.flush();
     }
+
 }

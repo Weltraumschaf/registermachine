@@ -10,32 +10,27 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.bytecode;
+package de.weltraumschaf.registermachine;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
-import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class ByteCodeWriter {
+public class FileIo {
 
-    private final OutputStream output;
-
-    public ByteCodeWriter(final OutputStream output) {
-        this.output = output;
+    static InputStream newInputStream(final String filename) throws FileNotFoundException {
+        return new FileInputStream(new File(filename));
     }
 
-
-    public void write(final ByteCodeFile code) throws IOException {
-        write(code.toArray());
-    }
-
-    public void write(final byte[] code) throws IOException {
-        IOUtils.write(code, output);
-        IOUtils.closeQuietly(output);
+    static OutputStream newOutputStream(final String filename) throws FileNotFoundException {
+        return new FileOutputStream(new File(filename));
     }
 
 }
