@@ -16,7 +16,6 @@ import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 /**
  *

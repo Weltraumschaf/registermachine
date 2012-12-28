@@ -25,5 +25,5 @@ public interface Const {
 
     static final byte BC_FST_HEADER_BYTE = (byte) 0xCA;
     static final byte BC_SND_HEADER_BYTE = (byte) 0x7E;
-    static final byte BC_CURRENT_VERSION = (byte) 0x7E;
+    static final byte BC_CURRENT_VERSION = (byte) 0x01;
 }

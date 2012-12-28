@@ -14,6 +14,7 @@ package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.ByteArray;
+import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
@@ -111,113 +112,52 @@ public class Assembler {
 
     private static final String ARG_CNT_ERR_FMT = "Opcode %s requires %d arguments!";
 
-    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        assertArgCount(args, bc);
-        bytecode.add(bc.getCode());
-
-        if (!StringUtils.isNumeric(args.get(0))) {
+    private List<Byte> createByteListFromNumericArg(final String arg) throws AssemblerSyntaxException {
+        if (!StringUtils.isNumeric(arg)) {
             throw new AssemblerSyntaxException("argument one not numeric!");
         }
 
-        bytecode.add(Byte.valueOf(args.get(0)));
-
-        if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssemblerSyntaxException("argument two not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(1)));
+        final Integer value = Integer.valueOf(arg);
+        final byte[] bytes = ByteInt.bytesFromInt(value);
+        return Arrays.asList(ByteArray.toObject(bytes));
+    }
+    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
+        bytecode.add(bc.getCode());
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
     }
 
     private void generateAddCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
-
-        if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssemblerSyntaxException("argument one not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(0)));
-
-        if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssemblerSyntaxException("argument two not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(1)));
-
-        if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssemblerSyntaxException("argument three not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(2)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
     private void generateSubCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
-
-        if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssemblerSyntaxException("argument one not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(0)));
-
-        if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssemblerSyntaxException("argument two not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(1)));
-
-        if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssemblerSyntaxException("argument three not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(2)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
     private void generateMullCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
-
-        if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssemblerSyntaxException("argument one not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(0)));
-
-        if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssemblerSyntaxException("argument two not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(1)));
-
-        if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssemblerSyntaxException("argument three not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(2)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
     private void generateDivCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
         assertArgCount(args, bc);
         bytecode.add(bc.getCode());
-
-        if (!StringUtils.isNumeric(args.get(0))) {
-            throw new AssemblerSyntaxException("argument one not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(0)));
-
-        if (!StringUtils.isNumeric(args.get(1))) {
-            throw new AssemblerSyntaxException("argument two not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(1)));
-
-        if (!StringUtils.isNumeric(args.get(2))) {
-            throw new AssemblerSyntaxException("argument three not numeric!");
-        }
-
-        bytecode.add(Byte.valueOf(args.get(2)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(0)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(1)));
+        bytecode.addAll(createByteListFromNumericArg(args.get(2)));
     }
 
     private void assertArgCount(final List<String> args, final ByteCode bc) throws AssemblerSyntaxException {
