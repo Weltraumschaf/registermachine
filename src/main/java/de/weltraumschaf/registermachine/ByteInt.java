@@ -14,6 +14,8 @@ package de.weltraumschaf.registermachine;
 /**
  * Converts integers to array of bytes and vice versa.
  *
+ * Converts big endian.
+ *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class ByteInt {
@@ -37,7 +39,7 @@ public final class ByteInt {
 
     private static final int BYTES_SHORT = 2;
     private static final int BYTES_INT = 4;
-    
+
     private static final String BYTE_COUNT_ERROR_FMT = "Need %d bytes exactly!";
 
 
