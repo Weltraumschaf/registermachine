@@ -11,8 +11,8 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.RuntimeConfiguration;
-import de.weltraumschaf.registermachine.Scope;
+import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
+import de.weltraumschaf.registermachine.vm.Scope;
 
 public class Isasign implements Instruction {
 

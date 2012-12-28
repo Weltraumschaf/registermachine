@@ -11,7 +11,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.RuntimeConfiguration;
+import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 public class Iload implements Instruction {
 

@@ -9,7 +9,7 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.vm;
 
 import de.weltraumschaf.registermachine.instructionset.End;
 import de.weltraumschaf.registermachine.instructionset.Instruction;

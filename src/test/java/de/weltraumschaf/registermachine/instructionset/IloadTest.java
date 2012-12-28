@@ -12,7 +12,7 @@
 
 package de.weltraumschaf.registermachine.instructionset;
 
-import de.weltraumschaf.registermachine.RuntimeConfiguration;
+import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

@@ -9,10 +9,11 @@
  *
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Bytes;
+import de.weltraumschaf.registermachine.ByteArray;
 import java.util.List;
 import java.util.Map;
 

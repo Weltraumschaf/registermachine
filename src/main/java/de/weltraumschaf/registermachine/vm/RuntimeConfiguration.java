@@ -8,7 +8,7 @@
  * you can buy me a beer in return.
  *
  */
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.vm;
 
 public class RuntimeConfiguration {
 
