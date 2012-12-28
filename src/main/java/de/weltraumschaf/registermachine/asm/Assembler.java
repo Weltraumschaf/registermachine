@@ -14,6 +14,7 @@ package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.ByteArray;
+import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 public class Assembler {
 
     public ByteCodeFile assamble(final InputStream input) throws IOException, AssemblerSyntaxException {
-        final List<String> lines = IOUtils.readLines(input);
+        final List<String> lines = IOUtils.readLines(input, Const.ENCODING);
         IOUtils.closeQuietly(input);
         List<Byte> bytecode = Lists.newArrayList();
         bytecode.add(Byte.valueOf((byte) 0xCA));

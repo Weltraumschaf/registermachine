@@ -152,7 +152,7 @@ public final class App extends InvokableAdapter {
         if (isHelp()) {
             showHelp();
         } else if (isCompile()) {
-            compileAssembleCode(getCompile());
+            assembleCode(getCompile());
         } else if (isDisassemble()) {
             disassembleCode(getDisassemble());
         } else if (isExecute()) {
@@ -212,7 +212,7 @@ public final class App extends InvokableAdapter {
         return inFilename.replace(CTASM_EXT, "") + BC_EXT;
     }
 
-    private void compileAssembleCode(final String inFilename) throws IOException, AssemblerSyntaxException {
+    private void assembleCode(final String inFilename) throws IOException, AssemblerSyntaxException {
         getIoStreams().println(String.format("Compiling assembly file '%s' ...", inFilename));
         final Assembler asm = new Assembler();
         final ByteCodeFile bc = asm.assamble(FileIo.newInputStream(inFilename));
