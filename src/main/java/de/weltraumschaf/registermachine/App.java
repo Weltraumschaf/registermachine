@@ -16,7 +16,9 @@ import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.registermachine.asm.Assembler;
 import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
+import de.weltraumschaf.registermachine.bytecode.ByteCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeReader;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
 import de.weltraumschaf.registermachine.instructionset.Iadd;
 import de.weltraumschaf.registermachine.instructionset.Iload;
@@ -62,7 +64,8 @@ public final class App extends InvokableAdapter {
         OPTIONS.addOption("h", false, "display help");
         OPTIONS.addOption("d", false, "display debug infos");
         OPTIONS.addOption("c", true, "compile assembly source");
-        OPTIONS.addOption("p", true, "print program output");
+        OPTIONS.addOption("p", false, "print program output");
+        OPTIONS.addOption("e", true, "executes byte code file");
 
     }
     private static final CommandLineParser PARSER = new PosixParser();
@@ -104,6 +107,14 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.hasOption("p");
     }
 
+    private boolean isExecute() {
+        return commandLineArgs.hasOption("e");
+    }
+
+    private String getExecute() {
+        return commandLineArgs.getOptionValue("e");
+    }
+
     /**
      * Main entry point for JVM.
      *
@@ -133,40 +144,51 @@ public final class App extends InvokableAdapter {
             showHelp();
         } else if (isCompile()) {
             compileAssemblyCode(getCompile());
+        } else if (isExecute()) {
+            executeByteCode(getExecute());
         } else {
-            executeByteCode();
+            getIoStreams().errorln("Bad arguments!");
+            showHelp();
         }
     }
 
-    private void executeByteCode() throws IOException {
-        /*
-         * LOAD  #1
-         * DIV   #2
-         * MULT  #2
-         * STORE #3
-         * LOAD  #1
-         * SUB   #3
-         * STORE #3
-         * END
-         */
-        final List<Instruction> instructions = Lists.newArrayList(
-                new Isasign(0, 30),
-                new Isasign(1, 6),
-                new Iload(1, "#0"),
-                new Iload(2, "#1"),
-                new Iadd(0, 1, 2),
-                new StdOut(0) //            new Idiv(3, 0, 2),
-                //            new StdOut(3)
-                //            new Imult(1),
-                //            new Iload(1),
-                //            new Isub(3),
-                //            new Istore(3),
-                );
+    private void executeByteCode(final String filename) throws IOException {
+        final ByteCodeFile bc = new ByteCodeFile(new ByteCodeReader(FileIo.newInputStream(filename)));
 
-        final RegisterMachine machine = new RegisterMachine(isDebug(), isPrintProgram());
-        machine.setProgram(instructions);
-        machine.getConfiguration().init();
-        machine.run();
+        if (!bc.isValid()) {
+            throw new RuntimeException("Is not valid byte code!");
+        }
+
+        getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
+
+//        /*
+//         * LOAD  #1
+//         * DIV   #2
+//         * MULT  #2
+//         * STORE #3
+//         * LOAD  #1
+//         * SUB   #3
+//         * STORE #3
+//         * END
+//         */
+//        final List<Instruction> instructions = Lists.newArrayList(
+//                new Isasign(0, 30),
+//                new Isasign(1, 6),
+//                new Iload(1, "#0"),
+//                new Iload(2, "#1"),
+//                new Iadd(0, 1, 2),
+//                new StdOut(0) //            new Idiv(3, 0, 2),
+//                //            new StdOut(3)
+//                //            new Imult(1),
+//                //            new Iload(1),
+//                //            new Isub(3),
+//                //            new Istore(3),
+//                );
+//
+//        final RegisterMachine machine = new RegisterMachine(isDebug(), isPrintProgram());
+//        machine.setProgram(instructions);
+//        machine.getConfiguration().init();
+//        machine.run();
     }
 
     private static String generateCompiledFileName(final String inFilename)  {
