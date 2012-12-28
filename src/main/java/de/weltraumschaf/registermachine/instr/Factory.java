@@ -58,6 +58,10 @@ public final class Factory {
                 break;
             case UNM:
                 instr = new Unm(args[0]);
+                break;
+            case NOT:
+                instr = new Not(args[0]);
+                break;
             case PRINT:
                 instr = new Print(args[0], io);
                 break;
