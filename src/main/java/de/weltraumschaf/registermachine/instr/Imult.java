@@ -9,33 +9,35 @@
  *
  */
 
-package de.weltraumschaf.registermachine.instructionset;
+package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
-import de.weltraumschaf.registermachine.vm.Scope;
 
-public class Isasign implements Instruction {
+public class Imult implements Instruction {
 
-    private final int address;
-    private final int value;
+    private final int resultReg;
+    private final int op1Reg;
+    private final int op2Reg;
 
-    public  Isasign(final int address, final int value) {
+    public  Imult(final int resultReg, final int op1Reg, final int op2Reg) {
         super();
-        this.address = address;
-        this.value   = value;
+        this.resultReg = resultReg;
+        this.op1Reg    = op1Reg;
+        this.op2Reg    = op2Reg;
     }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
         throw new UnsupportedOperationException();
-//        final Scope scope = config.getScope();
-//        scope.setAssign(address, value);
+//        final int op1 = config.getRegister(op1Reg);
+//        final int op2 = config.getRegister(op2Reg);
+//        config.setRegister(resultReg, op1 * op2);
 //        config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("isasign %d, %d", address, value);
+        return String.format("imul %d, %d, %d", op1Reg, op2Reg, resultReg);
     }
 
 }

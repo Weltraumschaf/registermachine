@@ -9,12 +9,20 @@
  *
  */
 
-package de.weltraumschaf.registermachine.instructionset;
+package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public interface Instruction {
+public class End implements Instruction {
 
-    void evaluate(RuntimeConfiguration config);
+    @Override
+    public void evaluate(final RuntimeConfiguration config) {
+        // nichts tun
+    }
+
+    @Override
+    public String toString() {
+        return "end";
+    }
 
 }

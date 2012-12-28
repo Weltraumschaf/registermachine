@@ -9,20 +9,26 @@
  *
  */
 
-package de.weltraumschaf.registermachine.instructionset;
+package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
-public class End implements Instruction {
+public class StdOut implements Instruction {
+    private final int register;
+
+    public  StdOut(final int i) {
+        super();
+        register = i;
+    }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        // nichts tun
+        System.out.print(config.getRegister(register));
+        config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return "end";
+        return "stdout " + register;
     }
-
 }

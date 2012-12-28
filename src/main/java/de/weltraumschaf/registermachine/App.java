@@ -10,6 +10,7 @@
  */
 package de.weltraumschaf.registermachine;
 
+import de.weltraumschaf.registermachine.vm.Executor;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
@@ -17,8 +18,8 @@ import de.weltraumschaf.registermachine.asm.Assembler;
 import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
 import de.weltraumschaf.registermachine.asm.Disassembler;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
-import de.weltraumschaf.registermachine.bytecode.ByteCodeReader;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
+import de.weltraumschaf.registermachine.vm.RegisterMachine;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -177,6 +178,8 @@ public final class App extends InvokableAdapter {
         }
 
         getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
+        final Executor exec = new Executor(new RegisterMachine(isVerbose(), isPrintProgram()));
+        exec.execute(bc);
         throw new UnsupportedOperationException("Not yet implemented");
 //        /*
 //         * LOAD  #1

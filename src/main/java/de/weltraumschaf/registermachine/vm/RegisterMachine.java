@@ -11,8 +11,8 @@
 
 package de.weltraumschaf.registermachine.vm;
 
-import de.weltraumschaf.registermachine.instructionset.End;
-import de.weltraumschaf.registermachine.instructionset.Instruction;
+import de.weltraumschaf.registermachine.instr.End;
+import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
 
 public class RegisterMachine {

@@ -9,7 +9,7 @@
  *
  */
 
-package de.weltraumschaf.registermachine.instructionset;
+package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
