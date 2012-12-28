@@ -10,25 +10,19 @@
  */
 package de.weltraumschaf.registermachine;
 
-import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IOStreams;
 import de.weltraumschaf.commons.InvokableAdapter;
 import de.weltraumschaf.commons.Version;
 import de.weltraumschaf.registermachine.asm.Assembler;
 import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
-import de.weltraumschaf.registermachine.bytecode.ByteCode;
+import de.weltraumschaf.registermachine.asm.Disassembler;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeReader;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
-import de.weltraumschaf.registermachine.instructionset.Iadd;
-import de.weltraumschaf.registermachine.instructionset.Iload;
-import de.weltraumschaf.registermachine.instructionset.Instruction;
-import de.weltraumschaf.registermachine.instructionset.Isasign;
-import de.weltraumschaf.registermachine.instructionset.StdOut;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
@@ -59,13 +53,20 @@ public final class App extends InvokableAdapter {
     private static final Options OPTIONS = new Options();
     private static final String CTASM_EXT = ".ctasm";
     private static final String BC_EXT = ".ct";
+    private static final String HELP_OPT = "h";
+    private static final String VERBOSE_OPT = "v";
+    private static final String COMPILE_OPT = "c";
+    private static final String PRINT_OPT = "p";
+    private static final String EXECUTE_OPT = "e";
+    private static final String DISASSEMBLE_OPT = "d";
 
     static {
-        OPTIONS.addOption("h", false, "display help");
-        OPTIONS.addOption("d", false, "display debug infos");
-        OPTIONS.addOption("c", true, "compile assembly source");
-        OPTIONS.addOption("p", false, "print program output");
-        OPTIONS.addOption("e", true, "executes byte code file");
+        OPTIONS.addOption(HELP_OPT, false, "display help");
+        OPTIONS.addOption(VERBOSE_OPT, false, "be more verbose");
+        OPTIONS.addOption(COMPILE_OPT, true, "compile assembly source");
+        OPTIONS.addOption(PRINT_OPT, false, "print program output");
+        OPTIONS.addOption(EXECUTE_OPT, true, "executes byte code file");
+        OPTIONS.addOption(DISASSEMBLE_OPT, true, "disassemble byte code file");
 
     }
     private static final CommandLineParser PARSER = new PosixParser();
@@ -88,31 +89,39 @@ public final class App extends InvokableAdapter {
     }
 
     private boolean isHelp() {
-        return commandLineArgs.hasOption("h");
+        return commandLineArgs.hasOption(HELP_OPT);
     }
 
-    private boolean isDebug() {
-        return commandLineArgs.hasOption("d");
+    private boolean isVerbose() {
+        return commandLineArgs.hasOption(VERBOSE_OPT);
     }
 
     private boolean isCompile() {
-        return commandLineArgs.hasOption("c");
+        return commandLineArgs.hasOption(COMPILE_OPT);
     }
 
     private String getCompile() {
-        return commandLineArgs.getOptionValue("c");
+        return commandLineArgs.getOptionValue(COMPILE_OPT);
     }
 
     private boolean isPrintProgram() {
-        return commandLineArgs.hasOption("p");
+        return commandLineArgs.hasOption(PRINT_OPT);
     }
 
     private boolean isExecute() {
-        return commandLineArgs.hasOption("e");
+        return commandLineArgs.hasOption(EXECUTE_OPT);
     }
 
     private String getExecute() {
-        return commandLineArgs.getOptionValue("e");
+        return commandLineArgs.getOptionValue(EXECUTE_OPT);
+    }
+
+    private boolean isDisassemble() {
+        return commandLineArgs.hasOption(DISASSEMBLE_OPT);
+    }
+
+    private String getDisassemble() {
+        return commandLineArgs.getOptionValue(DISASSEMBLE_OPT);
     }
 
     /**
@@ -126,7 +135,7 @@ public final class App extends InvokableAdapter {
         final App app = new App(args);
 
         try {
-            InvokableAdapter.main(app, IOStreams.newDefault(), app.isDebug());
+            InvokableAdapter.main(app, IOStreams.newDefault(), app.isVerbose());
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             app.exit(-1);
@@ -143,7 +152,9 @@ public final class App extends InvokableAdapter {
         if (isHelp()) {
             showHelp();
         } else if (isCompile()) {
-            compileAssemblyCode(getCompile());
+            compileAssembleCode(getCompile());
+        } else if (isDisassemble()) {
+            disassembleCode(getDisassemble());
         } else if (isExecute()) {
             executeByteCode(getExecute());
         } else {
@@ -152,15 +163,21 @@ public final class App extends InvokableAdapter {
         }
     }
 
+    private void disassembleCode(final String filename) throws FileNotFoundException, IOException {
+        final Disassembler disasm = new Disassembler();
+        final String asm = disasm.disassamble(FileIo.newInputStream(filename));
+        getIoStreams().println(asm);
+    }
+
     private void executeByteCode(final String filename) throws IOException {
-        final ByteCodeFile bc = new ByteCodeFile(new ByteCodeReader(FileIo.newInputStream(filename)));
+        final ByteCodeFile bc = new ByteCodeFile(FileIo.newInputStream(filename));
 
         if (!bc.isValid()) {
             throw new RuntimeException("Is not valid byte code!");
         }
 
         getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
-
+        throw new UnsupportedOperationException("Not yet implemented");
 //        /*
 //         * LOAD  #1
 //         * DIV   #2
@@ -195,7 +212,7 @@ public final class App extends InvokableAdapter {
         return inFilename.replace(CTASM_EXT, "") + BC_EXT;
     }
 
-    private void compileAssemblyCode(final String inFilename) throws IOException, AssemblerSyntaxException {
+    private void compileAssembleCode(final String inFilename) throws IOException, AssemblerSyntaxException {
         getIoStreams().println(String.format("Compiling assembly file '%s' ...", inFilename));
         final Assembler asm = new Assembler();
         final ByteCodeFile bc = asm.assamble(FileIo.newInputStream(inFilename));

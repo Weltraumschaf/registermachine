@@ -37,7 +37,7 @@ public enum ByteCode {
      *
      *
      */
-    MOVE(0),
+    MOVE(0, ArgCount.TWO),
     /**
      * Load a constant into a register.
      *
@@ -118,7 +118,7 @@ public enum ByteCode {
      * 0x0c 0x01 0x02 0x03
      * </pre>
      */
-    ADD(12),
+    ADD(12, ArgCount.THREE),
     /**
      * Subtraction operator.
      *
@@ -127,7 +127,7 @@ public enum ByteCode {
      * 0x0d 0x01 0x02 0x03
      * </pre>
      */
-    SUB(13),
+    SUB(13, ArgCount.THREE),
     /**
      * Multiplication operator.
      *
@@ -136,7 +136,7 @@ public enum ByteCode {
      * 0x0e 0x01 0x02 0x03
      * </pre>
      */
-    MUL(14),
+    MUL(14, ArgCount.THREE),
     /**
      * Division operator.
      *
@@ -145,7 +145,7 @@ public enum ByteCode {
      * 0x0f 0x01 0x02 0x03
      * </pre>
      */
-    DIV(15),
+    DIV(15, ArgCount.THREE),
     /**
      * Modulus (remainder) operator.
      *
@@ -281,31 +281,47 @@ public enum ByteCode {
 //    VARARG(37),
     UNKWONN(-1);
 
-    private static final Map<String, ByteCode> LOOKUP = Maps.newHashMap();
+    private static final Map<String, ByteCode> MNEMONIC_LOOKUP = Maps.newHashMap();
+    private static final Map<Byte, ByteCode> OPCODE_LOOKUP = Maps.newHashMap();
 
     static {
         for (final ByteCode code : ByteCode.values()) {
-            LOOKUP.put(code.name().toLowerCase(Locale.ENGLISH), code);
+            MNEMONIC_LOOKUP.put(code.name().toLowerCase(Locale.ENGLISH), code);
+            OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
     }
 
     private final byte code;
+    private final ArgCount argCount;
 
     ByteCode(final int code) {
-        this((byte) code);
+        this(code, ArgCount.NONE);
     }
 
-    ByteCode(final byte code) {
+    ByteCode(final int code, ArgCount argCount) {
+        this((byte) code, argCount);
+    }
+
+    ByteCode(final byte code, ArgCount argCount) {
         this.code = code;
+        this.argCount = argCount;
     }
 
     public byte getCode() {
         return code;
     }
 
+    public ArgCount getArgCount() {
+        return argCount;
+    }
+
     @Override
     public String toString() {
         return String.format("%s[0x%s]", name(), toHex(code));
+    }
+
+    public String toHex() {
+        return toHex(code);
     }
 
     public static String toHex(final byte b) {
@@ -316,10 +332,34 @@ public enum ByteCode {
     }
 
     public static ByteCode lokup(final String mnemonic) {
-        if (LOOKUP.containsKey(mnemonic.toLowerCase(Locale.ENGLISH))) {
-            return LOOKUP.get(mnemonic.toLowerCase(Locale.ENGLISH));
+        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Locale.ENGLISH))) {
+            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Locale.ENGLISH));
         }
 
         return UNKWONN;
     }
+
+    public static ByteCode lookup(final byte b) {
+        if (OPCODE_LOOKUP.containsKey(Byte.valueOf(b))) {
+            return OPCODE_LOOKUP.get(Byte.valueOf(b));
+        }
+
+        return UNKWONN;
+    }
+
+    public enum ArgCount {
+        NONE(0), ONE(1), TWO(2), THREE(3);
+
+        private final int count;
+
+        private ArgCount(final int count) {
+            this.count = count;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+    }
+
 }

@@ -80,6 +80,7 @@ public class Assembler {
         final List<String> args = parts.subList(1, parts.size());
         final ByteCode bc = ByteCode.lokup(parts.get(0));
 
+        // TODO Write 4 bytes per argument!
         switch (bc) {
             case MOVE:
                 generateMoveCode(bc, bytecode, args);
@@ -103,11 +104,10 @@ public class Assembler {
         }
     }
 
-    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        if (args.size() != 2) {
-            throw new AssemblerSyntaxException("move requires two arguments!");
-        }
+    private static final String ARG_CNT_ERR_FMT = "Opcode %s requires %d arguments!";
 
+    private void generateMoveCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
+        assertArgCount(args, bc);
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
@@ -124,10 +124,7 @@ public class Assembler {
     }
 
     private void generateAddCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        if (args.size() != 3) {
-            throw new AssemblerSyntaxException("add requires three arguments!");
-        }
-
+        assertArgCount(args, bc);
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
@@ -150,10 +147,7 @@ public class Assembler {
     }
 
     private void generateSubCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        if (args.size() != 3) {
-            throw new AssemblerSyntaxException("sub requires three arguments!");
-        }
-
+        assertArgCount(args, bc);
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
@@ -176,10 +170,7 @@ public class Assembler {
     }
 
     private void generateMullCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        if (args.size() != 3) {
-            throw new AssemblerSyntaxException("mul requires three arguments!");
-        }
-
+        assertArgCount(args, bc);
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
@@ -202,10 +193,7 @@ public class Assembler {
     }
 
     private void generateDivCode(final ByteCode bc, final List<Byte> bytecode, final List<String> args) throws AssemblerSyntaxException {
-        if (args.size() != 3) {
-            throw new AssemblerSyntaxException("div requires three arguments!");
-        }
-
+        assertArgCount(args, bc);
         bytecode.add(bc.getCode());
 
         if (!StringUtils.isNumeric(args.get(0))) {
@@ -225,6 +213,12 @@ public class Assembler {
         }
 
         bytecode.add(Byte.valueOf(args.get(2)));
+    }
+
+    private void assertArgCount(final List<String> args, final ByteCode bc) throws AssemblerSyntaxException {
+        if (args.size() != bc.getArgCount().getCount()) {
+            throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT, bc.name(), bc.getArgCount().getCount()));
+        }
     }
 
 }
