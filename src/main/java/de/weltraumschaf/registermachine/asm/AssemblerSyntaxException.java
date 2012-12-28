@@ -13,13 +13,29 @@
 package de.weltraumschaf.registermachine.asm;
 
 /**
+ * Syntax error in assembly code.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class AssemblerSyntaxException extends Exception {
 
-    public AssemblerSyntaxException(final String syntax_error) {
-        super("Syntax error: " + syntax_error);
+    /**
+     * Sets the line to -1.
+     * 
+     * @param syntaxError the human readable error message
+     */
+    public AssemblerSyntaxException(final String syntaxError) {
+        this(syntaxError, -1);
+    }
+
+    /**
+     * Designated constructor.
+     *
+     * @param syntaxError the human readable error message
+     * @param line line in source asm where the error is
+     */
+    public AssemblerSyntaxException(final String syntaxError, final int line) {
+        super(String.format("Syntax error on line %d: %s", line, syntaxError));
     }
 
 }

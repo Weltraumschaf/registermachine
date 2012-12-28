@@ -31,12 +31,26 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Assembler {
 
+    private int currentLine;
+
+    private void resetCurrentLine() {
+        currentLine = 0;
+    }
+
+    private void incCurrentLine() {
+        ++currentLine;
+    }
+
+    private int getCurrentLine() {
+        return currentLine;
+    }
+
     public ByteCodeFile assamble(final InputStream input) throws IOException, AssemblerSyntaxException {
         final List<String> lines = IOUtils.readLines(input, Const.ENCODING);
         IOUtils.closeQuietly(input);
         final List<Byte> bytecode = createByteCodeHeader();
         processLines(bytecode, lines);
-        return new ByteCodeFile(convertToNativeArray(bytecode));
+        return new ByteCodeFile(ByteArray.convertToNativeArray(bytecode));
     }
 
     private List<Byte> createByteCodeHeader() {
@@ -48,12 +62,11 @@ public class Assembler {
         bytecode.add(Byte.valueOf(version[1]));
         return bytecode;
     }
-    private byte[] convertToNativeArray(List<Byte> bytecode) {
-        return ByteArray.toNative(bytecode.toArray(new Byte[bytecode.size()]));
-    }
 
     private void processLines(final List<Byte> bytecode, final List<String> lines) throws AssemblerSyntaxException {
+        resetCurrentLine();
         for (final String line : lines) {
+            incCurrentLine();
             processLines(bytecode, line);
         }
     }
@@ -89,7 +102,7 @@ public class Assembler {
         final OpCode bc = OpCode.lokup(parts.get(0));
 
         if (bc == OpCode.UNKWONN) {
-            throw new AssemblerSyntaxException(String.format("Unknown mnemonic '%s'!", parts.get(0)));
+            throw new AssemblerSyntaxException(String.format("Unknown mnemonic '%s'!", parts.get(0)), getCurrentLine());
         } else {
             assertArgCount(args, bc);
             bytecode.add(bc.getCode());
@@ -104,7 +117,7 @@ public class Assembler {
 
     private List<Byte> createByteListFromNumericArg(final String arg) throws AssemblerSyntaxException {
         if (!StringUtils.isNumeric(arg)) {
-            throw new AssemblerSyntaxException("argument one not numeric!");
+            throw new AssemblerSyntaxException("Argument one not numeric!", getCurrentLine());
         }
 
         final Integer value = Integer.valueOf(arg);
@@ -114,7 +127,10 @@ public class Assembler {
 
     private void assertArgCount(final List<String> args, final OpCode bc) throws AssemblerSyntaxException {
         if (args.size() != bc.getArgCount().getCount()) {
-            throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT, bc.name(), bc.getArgCount().getCount()));
+            throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT,
+                                                             bc.name(),
+                                                             bc.getArgCount().getCount()),
+                    getCurrentLine());
         }
     }
 

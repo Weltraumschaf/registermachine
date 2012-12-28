@@ -11,6 +11,8 @@
  */
 package de.weltraumschaf.registermachine;
 
+import java.util.List;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
@@ -43,4 +45,7 @@ public final class ByteArray {
         return out;
     }
 
+    public static byte[] convertToNativeArray(final List<Byte> bytecode) {
+        return ByteArray.toNative(bytecode.toArray(new Byte[bytecode.size()]));
+    }
 }
