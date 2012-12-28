@@ -46,25 +46,14 @@ public class RegisterMachine {
     public void run() {
         final StringBuilder debugOutput = new StringBuilder();
         config.setInstructionCounter(0);
-        if (debug) {
-            debugOutput.append(StringUtils.rightPad("Init", DEBUG_PAD))
-                       .append(" > ")
-                       .append(config.toString())
-                       .append(Const.NL);
-        }
+        debugInit(debugOutput);
 
         if (!program.isEmpty()) {
             while ( config.getInstructionCounter() < program.size()) {
                 final Instruction instruction = program.get(config.getInstructionCounter());
                 config.incInstructionCounter();
                 instruction.evaluate(config);
-
-                if (debug) {
-                    debugOutput.append(StringUtils.rightPad("Instruction '" + instruction.toString() + "'", DEBUG_PAD))
-                               .append(" > ")
-                               .append(config.toString())
-                               .append(Const.NL);
-                }
+                debugInstruction(debugOutput, instruction);
             }
             io.println("HALT.");
             io.println("");
@@ -95,6 +84,24 @@ public class RegisterMachine {
 
     public RuntimeConfiguration getConfiguration() {
         return this.config;
+    }
+
+    private void debugInit(final StringBuilder debugOutput) {
+        if (debug) {
+            debugOutput.append(StringUtils.rightPad("Init", DEBUG_PAD))
+                       .append(" > ")
+                       .append(config.toString())
+                       .append(Const.NL);
+        }
+    }
+
+    private void debugInstruction(final StringBuilder debugOutput, final Instruction instruction) {
+        if (debug) {
+            debugOutput.append(StringUtils.rightPad("Instruction '" + instruction.toString() + "'", DEBUG_PAD))
+                       .append(" > ")
+                       .append(config.toString())
+                       .append(Const.NL);
+        }
     }
 
 }
