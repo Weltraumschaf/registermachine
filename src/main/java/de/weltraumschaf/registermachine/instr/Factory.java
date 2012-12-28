@@ -39,16 +39,16 @@ public final class Factory {
                 instr = new Loadc(args[0], args[1]);
                 break;
             case ADD:
-                instr = new Add(args[0], args[1], args[2]);
+                instr = new Add(args[0], args[1]);
                 break;
             case SUB:
-                instr = new Sub(args[0], args[1], args[2]);
+                instr = new Sub(args[0], args[1]);
                 break;
             case MUL:
-                instr = new Mul(args[0], args[1], args[2]);
+                instr = new Mul(args[0], args[1]);
                 break;
             case DIV:
-                instr = new Div(args[0], args[1], args[2]);
+                instr = new Div(args[0], args[1]);
                 break;
             case PRINT:
                 instr = new Print(args[0], io);

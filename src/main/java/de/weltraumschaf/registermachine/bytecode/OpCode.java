@@ -24,6 +24,9 @@ import java.util.Map;
  * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ]
  * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ] [ arg3 4 byte ]
  * <pre>
+ *
+ * TODO Make result register implicitly to 0.
+ *
  * @author sxs
  */
 public enum OpCode {
@@ -51,7 +54,7 @@ public enum OpCode {
      * add RES_REG OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
-    ADD(0x03, ArgCount.THREE),
+    ADD(0x03, ArgCount.TWO),
     /**
      * Subtraction operator.
      *
@@ -59,7 +62,7 @@ public enum OpCode {
      * sub RES_REG OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
-    SUB(0x04, ArgCount.THREE),
+    SUB(0x04, ArgCount.TWO),
     /**
      * Multiplication operator.
      *
@@ -67,7 +70,7 @@ public enum OpCode {
      * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
-    MUL(0x05, ArgCount.THREE),
+    MUL(0x05, ArgCount.TWO),
     /**
      * Division operator.
      *
@@ -75,9 +78,13 @@ public enum OpCode {
      * div RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
-    DIV(0x06, ArgCount.THREE),
+    DIV(0x06, ArgCount.TWO),
     /**
      * Modulus (remainder) operator.
+     *
+     * <pre>
+     * mod RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in RES_REG
+     * </pre>
      */
     MOD(0x07, ArgCount.TWO),
     /**

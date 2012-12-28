@@ -35,7 +35,7 @@ public class AssemblerTest {
         assertThat(bytecode.isValid(), is(true));
         assertThat(bytecode.getVersion(), is((short) 0x01));
         final byte[] program = bytecode.getProgramm();
-        assertThat(program.length, is(61));
+        assertThat(program.length, is(45));
         assertThat(program[0], is((byte) 0x01)); // move
 
         assertThat(program[1], is((byte) 0x01)); // arg 1
@@ -50,70 +50,50 @@ public class AssemblerTest {
 
         assertThat(program[9], is((byte) 0x03)); // add
 
-        assertThat(program[10], is((byte) 0x01)); // arg 1
+        assertThat(program[10], is((byte) 0x02)); // arg 1
         assertThat(program[11], is((byte) 0x00)); // arg 1
         assertThat(program[12], is((byte) 0x00)); // arg 1
         assertThat(program[13], is((byte) 0x00)); // arg 1
 
-        assertThat(program[14], is((byte) 0x02)); // arg 2
+        assertThat(program[14], is((byte) 0x03)); // arg 2
         assertThat(program[15], is((byte) 0x00)); // arg 2
         assertThat(program[16], is((byte) 0x00)); // arg 2
         assertThat(program[17], is((byte) 0x00)); // arg 2
 
-        assertThat(program[18], is((byte) 0x03)); // arg 3
-        assertThat(program[19], is((byte) 0x00)); // arg 3
-        assertThat(program[20], is((byte) 0x00)); // arg 3
-        assertThat(program[21], is((byte) 0x00)); // arg 3
-
         assertThat(program[22], is((byte) 0x04)); // sub
 
-        assertThat(program[23], is((byte) 0x01)); // arg 1
+        assertThat(program[23], is((byte) 0x02)); // arg 1
         assertThat(program[24], is((byte) 0x00)); // arg 1
         assertThat(program[25], is((byte) 0x00)); // arg 1
         assertThat(program[26], is((byte) 0x00)); // arg 1
 
-        assertThat(program[27], is((byte) 0x02)); // arg 2
+        assertThat(program[27], is((byte) 0x03)); // arg 2
         assertThat(program[28], is((byte) 0x00)); // arg 2
         assertThat(program[29], is((byte) 0x00)); // arg 2
         assertThat(program[30], is((byte) 0x00)); // arg 2
 
-        assertThat(program[31], is((byte) 0x03)); // arg 3
-        assertThat(program[32], is((byte) 0x00)); // arg 3
-        assertThat(program[33], is((byte) 0x00)); // arg 3
-        assertThat(program[34], is((byte) 0x00)); // arg 3
-
         assertThat(program[35], is((byte) 0x05)); // mul
 
-        assertThat(program[36], is((byte) 0x01)); // arg 1
+        assertThat(program[36], is((byte) 0x02)); // arg 1
         assertThat(program[37], is((byte) 0x00)); // arg 1
         assertThat(program[38], is((byte) 0x00)); // arg 1
         assertThat(program[39], is((byte) 0x00)); // arg 1
 
-        assertThat(program[40], is((byte) 0x02)); // arg 2
+        assertThat(program[40], is((byte) 0x03)); // arg 2
         assertThat(program[41], is((byte) 0x00)); // arg 2
         assertThat(program[42], is((byte) 0x00)); // arg 2
         assertThat(program[43], is((byte) 0x00)); // arg 2
 
-        assertThat(program[44], is((byte) 0x03)); // arg 3
-        assertThat(program[45], is((byte) 0x00)); // arg 3
-        assertThat(program[46], is((byte) 0x00)); // arg 3
-        assertThat(program[47], is((byte) 0x00)); // arg 3
-
         assertThat(program[48], is((byte) 0x06)); // div
 
-        assertThat(program[49], is((byte) 0x01)); // arg 1
+        assertThat(program[49], is((byte) 0x02)); // arg 1
         assertThat(program[50], is((byte) 0x00)); // arg 1
         assertThat(program[51], is((byte) 0x00)); // arg 1
         assertThat(program[52], is((byte) 0x00)); // arg 1
 
-        assertThat(program[53], is((byte) 0x02)); // arg 2
+        assertThat(program[53], is((byte) 0x03)); // arg 2
         assertThat(program[54], is((byte) 0x00)); // arg 2
         assertThat(program[55], is((byte) 0x00)); // arg 2
         assertThat(program[56], is((byte) 0x00)); // arg 2
-
-        assertThat(program[57], is((byte) 0x03)); // arg 3
-        assertThat(program[58], is((byte) 0x00)); // arg 3
-        assertThat(program[59], is((byte) 0x00)); // arg 3
-        assertThat(program[60], is((byte) 0x00)); // arg 3
     }
 }

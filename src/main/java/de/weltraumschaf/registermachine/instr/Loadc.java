@@ -32,7 +32,7 @@ class Loadc implements Instruction {
 
     @Override
     public String toString() {
-        return String.format("loadc %s, %s", register, value);
+        return String.format("loadc %d %d", register, value);
     }
 
 }
