@@ -16,8 +16,8 @@ import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.ByteArray;
 import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
-import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -43,7 +43,9 @@ public class Assembler {
         final List<Byte> bytecode = Lists.newArrayList();
         bytecode.add(Byte.valueOf(Const.BC_FST_HEADER_BYTE));
         bytecode.add(Byte.valueOf(Const.BC_SND_HEADER_BYTE));
-        bytecode.add(Byte.valueOf(Const.BC_CURRENT_VERSION));
+        final byte[] version = ByteInt.bytesFromInt(Const.BC_CURRENT_VERSION);
+        bytecode.add(Byte.valueOf(version[0]));
+        bytecode.add(Byte.valueOf(version[1]));
         return bytecode;
     }
     private byte[] convertToNativeArray(List<Byte> bytecode) {

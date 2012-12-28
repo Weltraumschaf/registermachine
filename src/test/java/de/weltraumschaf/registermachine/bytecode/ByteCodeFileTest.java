@@ -44,19 +44,19 @@ public class ByteCodeFileTest {
 
     @Test
     public void isValid_goodHeader() throws IOException {
-        final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01});
+        final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01, (byte) 0x00});
         assertThat(sut.isValid(), is(true));
     }
 
     @Test
     public void getVersion() {
         final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01});
-        assertThat(sut.getVersion(), is((byte) 0x01));
+        assertThat(sut.getVersion(), is((short) 0x01));
     }
 
     @Test
     public void getProgramm() {
-        final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01,
+        final ByteCodeFile sut = new ByteCodeFile(new byte[]{(byte) 0xCA, (byte) 0x7E, (byte) 0x01, (byte) 0x00,
                     (byte) 0x03, (byte) 0x04, (byte) 0x05});
         assertThat(sut.getProgramm(), is(new byte[] {(byte) 0x03, (byte) 0x04, (byte) 0x05}));
     }

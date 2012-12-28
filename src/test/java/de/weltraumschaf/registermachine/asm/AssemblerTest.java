@@ -33,7 +33,7 @@ public class AssemblerTest {
         final ByteCodeFile bytecode = sut.assamble(input);
         input.close();
         assertThat(bytecode.isValid(), is(true));
-        assertThat(bytecode.getVersion(), is((byte) 0x01));
+        assertThat(bytecode.getVersion(), is((short) 0x01));
         final byte[] program = bytecode.getProgramm();
         assertThat(program.length, is(61));
         assertThat(program[0], is((byte) 0x00)); // move
