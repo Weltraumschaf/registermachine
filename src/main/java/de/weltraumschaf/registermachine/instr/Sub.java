@@ -28,16 +28,15 @@ public class Sub implements Instruction {
 
     @Override
     public void evaluate(RuntimeConfiguration config) {
-        throw new UnsupportedOperationException();
-//        final int op1 = config.getRegister(op1Reg);
-//        final int op2 = config.getRegister(op2Reg);
-//        config.setRegister(resultReg, op1 - op2);
-//        config.incInstructionCounter();
+        final int op1 = config.getRegister(op1Reg);
+        final int op2 = config.getRegister(op2Reg);
+        config.setRegister(resultReg, op1 - op2);
+        config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("isub %d, %d, %d", op1Reg, op2Reg, resultReg);
+        return String.format("sub %d, %d, %d", op1Reg, op2Reg, resultReg);
     }
 
 }

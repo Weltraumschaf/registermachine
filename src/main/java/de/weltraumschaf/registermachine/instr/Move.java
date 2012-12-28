@@ -29,8 +29,15 @@ public class Move implements Instruction {
     }
 
     @Override
-    public void evaluate(RuntimeConfiguration config) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void evaluate(final RuntimeConfiguration config) {
+        final int value = config.getRegister(srcReg);
+        config.setRegister(dstReg, value);
+        config.incInstructionCounter();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("move %d, %d", srcReg, dstReg);
     }
 
 }

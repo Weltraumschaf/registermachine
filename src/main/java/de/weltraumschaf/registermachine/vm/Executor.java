@@ -12,8 +12,9 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Lists;
-import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.instr.Add;
 import de.weltraumschaf.registermachine.instr.Div;
 import de.weltraumschaf.registermachine.instr.Instruction;
@@ -30,6 +31,7 @@ import java.util.List;
 public class Executor {
 
     private static final byte VERSION = (byte) 0x01;
+    private static final int ARG_BYTE_COUNT = 4;
     private final RegisterMachine machine;
 
     public Executor(final RegisterMachine machine) {
@@ -40,7 +42,6 @@ public class Executor {
         validateVersion(bc);
         final List<Instruction> instructions = generateInstructions(bc.getProgramm());
         machine.setProgram(instructions);
-        machine.getConfiguration().init();
         machine.run();
     }
 
@@ -61,16 +62,23 @@ public class Executor {
             }
 
             ++i;
-            byte[] args;
+            int[] args;
             if (bc.getArgCount() == OpCode.ArgCount.NONE) {
-                args = new byte[0];
-            }else {
+                args = new int[0];
+            } else {
                 final int argCount = bc.getArgCount().getCount();
-                args = new byte[argCount];
-                for (int shift = 0; shift < argCount; ++shift) {
+                args = new int[argCount];
+                final int byteCount = argCount * ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[ARG_BYTE_COUNT];
+                int argI = 0;
+                for (int shift = 0; shift < byteCount; ++shift) {
+                    bytes[shift % ARG_BYTE_COUNT] = programm[i];
 
-                    // TODO Read 4 bytes per argument!
-                    args[shift] = programm[i];
+                    if (shift % ARG_BYTE_COUNT == ARG_BYTE_COUNT - 1) {
+                        args[argI] = ByteInt.intFromBytes(bytes);
+                        ++argI;
+                    }
+
                     ++i;
                 }
             }
@@ -82,23 +90,30 @@ public class Executor {
         return instructions;
     }
 
-    private Instruction createInstruction(final OpCode bc, final byte[] args) {
+    void verifyArcCount(final OpCode bc, final int[] args) {
+        if (args.length != bc.getArgCount().getCount()) {
+            throw  new IllegalArgumentException(String.format("Opcode %s requires %d arguments!", bc.toString(), bc.getArgCount().getCount()));
+        }
+    }
+    private Instruction createInstruction(final OpCode bc, final int[] args) {
+        verifyArcCount(bc, args);
         Instruction instr = new Nop();
+
         switch (bc) {
             case MOVE:
-                instr = new Move(0, 0);
+                instr = new Move(args[0], args[1]);
                 break;
             case ADD:
-                instr = new Add(0, 0, 0);
+                instr = new Add(args[0], args[1], args[2]);
                 break;
             case SUB:
-                instr = new Sub(0, 0, 0);
+                instr = new Sub(args[0], args[1], args[2]);
                 break;
             case MUL:
-                instr = new Mul(0, 0, 0);
+                instr = new Mul(args[0], args[1], args[2]);
                 break;
             case DIV:
-                instr = new Div(0, 0, 0);
+                instr = new Div(args[0], args[1], args[2]);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Opcode nit implemented yet: %s!", bc.toString()));

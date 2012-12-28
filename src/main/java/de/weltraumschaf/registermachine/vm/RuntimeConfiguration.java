@@ -16,7 +16,7 @@ public class RuntimeConfiguration {
     private static final int DEFAULT_REGISTER_SIZE = 256;
     private final Scope scope = new Scope();
     private int ic = 0; // instruction counter
-    private byte[][] registers;
+    private final Register registers;
     private int size;
 
     public RuntimeConfiguration() {
@@ -24,15 +24,8 @@ public class RuntimeConfiguration {
     }
 
     public RuntimeConfiguration(final int size) {
-        registers = new byte[size][];
+        registers = new Register();
         this.size = size;
-        init();
-    }
-
-    public void init() {
-        for (int i = 0; i < size; i++) {
-            registers[i] = new byte[DEFAULT_REGISTER_SIZE];
-        }
     }
 
     public int getInstructionCounter() {
@@ -47,23 +40,12 @@ public class RuntimeConfiguration {
         ic++;
     }
 
-    public void setRegister(final int i, final byte value) {
-        final byte[] val = new byte[1];
-        val[0] = value;
-        setRegister(i, val);
+    public void setRegister(final int r, final int v) {
+        registers.set(r, v);
     }
 
-    public void setRegister(final int i, final byte[] value) {
-        // TODO Ensure capacity and grow for i and val size!
-        registers[i] = value;
-    }
-
-    public byte[] getRegister(final int i) {
-        if (i >= size || i < 0) {
-            throw new IndexOutOfBoundsException(String.format("Access of not existing register: %d!", i));
-        }
-
-        return registers[i];
+    public int getRegister(final int r) {
+        return registers.get(r);
     }
 
     public Scope getScope() {
@@ -79,7 +61,7 @@ public class RuntimeConfiguration {
             sb.append(", \tr[")
                     .append(i)
                     .append("] = ")
-                    .append(registers[i]);
+                    .append(registers);
         }
 
         if (!scope.isEmpty()) {

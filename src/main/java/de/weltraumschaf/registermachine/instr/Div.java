@@ -27,16 +27,15 @@ public class Div implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        throw new UnsupportedOperationException();
-//        final int op1 = config.getRegister(this.op1Reg);
-//        final int op2 = config.getRegister(this.op2Reg);
-//        config.setRegister(this.resultReg, op1 / op2);
-//        config.incInstructionCounter();
+        final int op1 = config.getRegister(op1Reg);
+        final int op2 = config.getRegister(op2Reg);
+        config.setRegister(resultReg, op1 / op2);
+        config.incInstructionCounter();
     }
 
     @Override
     public String toString() {
-        return String.format("idiv %d, %d, %d", op1Reg, op2Reg, resultReg);
+        return String.format("div %d, %d, %d", op1Reg, op2Reg, resultReg);
     }
 
 }

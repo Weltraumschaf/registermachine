@@ -58,7 +58,7 @@ public class Load implements Instruction {
     @Override
     public void evaluate(final RuntimeConfiguration config) {
         if (loadsReferencedValue()) {
-            config.setRegister(register, config.getScope().getAssign(address));
+//            config.setRegister(register, config.getScope().getAssign(address));
         } else {
             config.setRegister(register, value);
         }
@@ -66,6 +66,7 @@ public class Load implements Instruction {
 
 
         config.incInstructionCounter();
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @Override

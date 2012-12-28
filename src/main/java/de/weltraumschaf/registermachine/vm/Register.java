@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.vm;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import java.util.Map;
 
@@ -34,12 +35,17 @@ class Register {
         if (r < 0) {
             throw new IllegalArgumentException("Register address must be greater equal 0! Given: " + r);
         }
-        
+
         if (store.containsKey(Integer.valueOf(r))) {
             return store.get(Integer.valueOf(r));
         }
 
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("store", store).toString();
     }
 
 }

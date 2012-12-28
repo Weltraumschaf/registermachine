@@ -25,4 +25,9 @@ public class Nop implements Instruction {
         // No operation
     }
 
+    @Override
+    public String toString() {
+        return "nop";
+    }
+
 }
