@@ -45,7 +45,7 @@ class Register {
 
     @Override
     public String toString() {
-        return String.format("Register: %s", store.toString());
+        return store.toString();
     }
 
 }

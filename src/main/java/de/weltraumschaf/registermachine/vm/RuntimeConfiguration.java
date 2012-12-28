@@ -45,9 +45,9 @@ public class RuntimeConfiguration {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("instruction: ")
+        sb.append("Counter=")
           .append(instructionCounter + 1)
-          .append(' ')
+          .append(" Registers=")
           .append(registers);
 
         if (!scope.isEmpty()) {

@@ -15,8 +15,10 @@ import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 public class RegisterMachine {
+    private static final int DEBUG_PAD = 26;
 
     private final RuntimeConfiguration config;
     private final boolean debug;
@@ -45,7 +47,10 @@ public class RegisterMachine {
         final StringBuilder debugOutput = new StringBuilder();
 
         if (debug) {
-            debugOutput.append(config.toString()).append(Const.NL);
+            debugOutput.append(StringUtils.rightPad("Init", DEBUG_PAD))
+                       .append(" > ")
+                       .append(config.toString())
+                       .append(Const.NL);
         }
 
         if (!program.isEmpty()) {
@@ -54,13 +59,18 @@ public class RegisterMachine {
                 instruction.evaluate(config);
 
                 if (debug) {
-                    debugOutput.append(config.toString()).append(Const.NL);
+                    debugOutput.append(StringUtils.rightPad("Instruction '" + instruction.toString() + "'", DEBUG_PAD))
+                               .append(" > ")
+                               .append(config.toString())
+                               .append(Const.NL);
                 }
             }
+            io.println("HALT.");
+            io.println("");
         }
 
         if (debug) {
-            io.println(String.format("%nDebug:%n%s", debugOutput.toString()));
+            io.println(String.format("Debug:%n======%n%s", debugOutput.toString()));
         }
 
         if (this.printProgramm) {
@@ -69,11 +79,13 @@ public class RegisterMachine {
     }
 
     public void printProgramm() {
-        io.println("\nProgramm:\n");
+        io.println(String.format("Programm:%n========="));
 
         for (final Instruction instruction : program) {
             io.println(instruction.toString());
         }
+
+        io.print(Const.NL);
     }
 
     public void printConfiguration() {
