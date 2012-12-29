@@ -12,17 +12,15 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Bytes;
-import de.weltraumschaf.registermachine.ByteArray;
-import java.util.List;
+import de.weltraumschaf.registermachine.typing.Value;
 import java.util.Map;
 
 public class Scope {
 
-    private final Map<Integer, List<Byte>> assigns = Maps.newHashMap();
+    private final Map<Integer, Value> assigns = Maps.newHashMap();
 
-    public void setAssign(final int address, final byte[] value) {
-        assigns.put(address, Bytes.asList(value));
+    public void setAssign(final int address, final Value value) {
+        assigns.put(address, value);
     }
 
     /**
@@ -31,9 +29,8 @@ public class Scope {
      * @return
      * @throws IndexOutOfBoundsException
      */
-    public byte[] getAssign(final int address) {
-        final Byte[] objects = assigns.get(address).toArray(new Byte[assigns.size()]);
-        return ByteArray.toNative(objects);
+    public Value getAssign(final int address) {
+        return assigns.get(address);
     }
 
     public boolean isEmpty() {
