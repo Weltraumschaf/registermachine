@@ -10,29 +10,23 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.typing;
+package de.weltraumschaf.registermachine.vm;
+
+import de.weltraumschaf.registermachine.typing.Value;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public enum Type {
+public class ConstantPool extends VariablePool {
 
-    NIL((byte) 0x00),
-    INTEGER((byte) 0x01),
-    FLOAT((byte) 0x02),
-    BOOLEAN((byte) 0x03);
+    @Override
+    public final void assign(final Value v) {
+        if (lookup(v)) {
+            throw new IllegalArgumentException(String.format("Value %s already defined as constant!", v.toString()));
+        }
 
-
-
-    private final byte typeByte;
-
-    Type(final byte typeByte) {
-        this.typeByte = typeByte;
-    }
-
-    public byte asByte() {
-        return typeByte;
+        super.assign(v);
     }
 
 }

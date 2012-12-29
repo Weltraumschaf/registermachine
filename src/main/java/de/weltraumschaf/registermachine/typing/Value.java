@@ -11,6 +11,8 @@
  */
 package de.weltraumschaf.registermachine.typing;
 
+import com.google.common.base.Objects;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
@@ -92,6 +94,24 @@ public class Value {
                 return "NIL";
 
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(type, booleanValue, floatValue, integerValue);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (! (obj instanceof Value)) {
+            return false;
+        }
+
+        final Value other = (Value) obj;
+        return Objects.equal(type, other.type)
+                && Objects.equal(booleanValue, other.booleanValue)
+                && Objects.equal(floatValue, other.floatValue)
+                && Objects.equal(integerValue, other.integerValue);
     }
 
     static boolean integerTwoBoolean(final int in) {

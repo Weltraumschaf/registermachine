@@ -10,29 +10,23 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.typing;
+package de.weltraumschaf.registermachine.vm;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public enum Type {
+final class Pools {
 
-    NIL((byte) 0x00),
-    INTEGER((byte) 0x01),
-    FLOAT((byte) 0x02),
-    BOOLEAN((byte) 0x03);
-
-
-
-    private final byte typeByte;
-
-    Type(final byte typeByte) {
-        this.typeByte = typeByte;
+    private Pools() {
+        super();
     }
 
-    public byte asByte() {
-        return typeByte;
+    static Pool newVariablePool() {
+        return new VariablePool();
     }
 
+    static Pool newConstantPool() {
+        return new ConstantPool();
+    }
 }

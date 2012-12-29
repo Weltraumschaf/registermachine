@@ -11,47 +11,45 @@
 
 package de.weltraumschaf.registermachine.vm;
 
-import com.google.common.collect.Maps;
-import de.weltraumschaf.registermachine.typing.Value;
-import java.util.Map;
+class Scope {
 
-public class Scope {
+    private final Register registers;
+    private final Pool constants;
+    private final Pool variables;
+    private final Scope parent;
 
-    private final Map<Integer, Value> assigns = Maps.newHashMap();
-
-    public void setAssign(final int address, final Value value) {
-        assigns.put(address, value);
+    Scope() {
+        this(null);
     }
 
-    /**
-     *
-     * @param address
-     * @return
-     * @throws IndexOutOfBoundsException
-     */
-    public Value getAssign(final int address) {
-        return assigns.get(address);
+    Scope(final Scope parent) {
+        this(parent, new Register(), Pools.newConstantPool(), Pools.newVariablePool());
     }
 
-    public boolean isEmpty() {
-        return assigns.isEmpty();
+    Scope(final Scope parent, final Register registers, final Pool constants, final Pool variables) {
+        super();
+        this.registers = registers;
+        this.constants = constants;
+        this.variables = variables;
+        this.parent    = parent;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb  = new StringBuilder();
-        sb.append("\t\t");
-        final int cnt = assigns.size();
-
-        for (int i = 0; i < cnt; i++) {
-            if (i != 0) {
-                sb.append(",\t");
-            }
-
-            sb.append("s[").append(i).append("] = ").append(assigns.get(i));
-        }
-
-        return sb.toString();
+    Register getRegisters() {
+        return registers;
     }
+
+    Pool getConstants() {
+        return constants;
+    }
+
+    Pool getVariables() {
+        return variables;
+    }
+
+    Scope getParent() {
+        return parent;
+    }
+
+
 
 }

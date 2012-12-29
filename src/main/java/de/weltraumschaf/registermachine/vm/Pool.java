@@ -10,29 +10,18 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.typing;
+package de.weltraumschaf.registermachine.vm;
+
+import de.weltraumschaf.registermachine.typing.Value;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public enum Type {
+public interface Pool {
 
-    NIL((byte) 0x00),
-    INTEGER((byte) 0x01),
-    FLOAT((byte) 0x02),
-    BOOLEAN((byte) 0x03);
-
-
-
-    private final byte typeByte;
-
-    Type(final byte typeByte) {
-        this.typeByte = typeByte;
-    }
-
-    public byte asByte() {
-        return typeByte;
-    }
+    void assign(Value v);
+    boolean lookup(int index);
+    Value retrieve(int index);
 
 }

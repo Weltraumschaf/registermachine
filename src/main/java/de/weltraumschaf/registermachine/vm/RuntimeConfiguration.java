@@ -10,14 +10,21 @@
  */
 package de.weltraumschaf.registermachine.vm;
 
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.typing.Value;
+import java.util.Stack;
 
 public class RuntimeConfiguration {
 
-    private final Scope scope = new Scope();
-    private final Register registers = new Register();
+    private final Stack<Scope> scopes = new Stack<Scope>();
+
+    private Scope currentScope;
     private int instructionCounter;
+
+    public RuntimeConfiguration() {
+        super();
+        currentScope = new Scope();
+        scopes.push(currentScope);
+    }
 
     public int getInstructionCounter() {
         return instructionCounter;
@@ -32,15 +39,35 @@ public class RuntimeConfiguration {
     }
 
     public void setRegister(final int r, final Value v) {
-        registers.set(r, v);
+        currentScope.getRegisters().set(r, v);
     }
 
     public Value getRegister(final int r) {
-        return registers.get(r);
+        return currentScope.getRegisters().get(r);
     }
 
-    public Scope getScope() {
-        return scope;
+    public void assignConstant(final Value v) {
+        currentScope.getConstants().assign(v);
+    }
+
+    public boolean lookupConstant(final int index) {
+        return currentScope.getConstants().lookup(index);
+    }
+
+    public Value retireveConstant(final int index) {
+        return currentScope.getConstants().retrieve(index);
+    }
+
+    public void assignVariable(final Value v) {
+        currentScope.getVariables().assign(v);
+    }
+
+    public boolean lookupVariable(final int index) {
+        return currentScope.getVariables().lookup(index);
+    }
+
+    public Value retireveVariable(final int index) {
+        return currentScope.getVariables().retrieve(index);
     }
 
     @Override
@@ -49,12 +76,8 @@ public class RuntimeConfiguration {
         sb.append("Counter=")
           .append(instructionCounter)
           .append(" Registers=")
-          .append(registers);
-
-        if (!scope.isEmpty()) {
-            sb.append(Const.NL).append(scope.toString());
-        }
-
+          .append(currentScope.getRegisters());
         return sb.toString();
     }
+
 }
