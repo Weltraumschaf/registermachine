@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Factory.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.instr</a> &gt; <span class="el_source">Factory.java</span></div><h1>Factory.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+
+package de.weltraumschaf.registermachine.instr;
+
+import de.weltraumschaf.commons.IO;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
+
+/**
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+<span class="nc" id="L22">public final class Factory {</span>
+
+    private static void verifyArcCount(final OpCode bc, final int[] args) {
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (args.length != bc.getArgCount().getCount()) {</span>
+<span class="nc" id="L26">            throw  new IllegalArgumentException(String.format(&quot;Opcode %s requires %d arguments!&quot;, bc.toString(), bc.getArgCount().getCount()));</span>
+        }
+<span class="fc" id="L28">    }</span>
+
+    public static Instruction createInstruction(final OpCode bc, final int[] args, final IO io) {
+<span class="fc" id="L31">        verifyArcCount(bc, args);</span>
+<span class="fc" id="L32">        Instruction instr = new Nop();</span>
+
+<span class="pc bpc" id="L34" title="12 of 18 branches missed.">        switch (bc) {</span>
+            case MOVE:
+<span class="fc" id="L36">                instr = new Move(args[0], args[1]);</span>
+<span class="fc" id="L37">                break;</span>
+            case LOADC:
+<span class="fc" id="L39">                instr = new Loadc(args[0], args[1]);</span>
+<span class="fc" id="L40">                break;</span>
+            case ADD:
+<span class="fc" id="L42">                instr = new Add(args[0], args[1]);</span>
+<span class="fc" id="L43">                break;</span>
+            case SUB:
+<span class="nc" id="L45">                instr = new Sub(args[0], args[1]);</span>
+<span class="nc" id="L46">                break;</span>
+            case MUL:
+<span class="nc" id="L48">                instr = new Mul(args[0], args[1]);</span>
+<span class="nc" id="L49">                break;</span>
+            case DIV:
+<span class="nc" id="L51">                instr = new Div(args[0], args[1]);</span>
+<span class="nc" id="L52">                break;</span>
+            case MOD:
+<span class="nc" id="L54">                instr = new Mod(args[0], args[1]);</span>
+<span class="nc" id="L55">                break;</span>
+            case POW:
+<span class="nc" id="L57">                instr = new Pow(args[0], args[1]);</span>
+<span class="nc" id="L58">                break;</span>
+            case UNM:
+<span class="nc" id="L60">                instr = new Unm(args[0]);</span>
+<span class="nc" id="L61">                break;</span>
+            case NOT:
+<span class="nc" id="L63">                instr = new Not(args[0]);</span>
+<span class="nc" id="L64">                break;</span>
+            case JMP:
+<span class="nc" id="L66">                instr = new Jmp(args[0]);</span>
+<span class="nc" id="L67">                break;</span>
+            case EQ:
+<span class="nc" id="L69">                instr = new Eq(args[0], args[1]);</span>
+<span class="nc" id="L70">                break;</span>
+            case LT:
+<span class="fc" id="L72">                instr = new Lt(args[0], args[1]);</span>
+<span class="fc" id="L73">                break;</span>
+            case LE:
+<span class="nc" id="L75">                instr = new Le(args[0], args[1]);</span>
+<span class="nc" id="L76">                break;</span>
+            case TEST:
+<span class="fc" id="L78">                instr = new Test(args[0], args[1]);</span>
+<span class="fc" id="L79">                break;</span>
+            case PRINT:
+<span class="nc" id="L81">                instr = new Print(args[0], io);</span>
+<span class="nc" id="L82">                break;</span>
+            case PRINTLN:
+<span class="fc" id="L84">                instr = new PrintLn(args[0], io);</span>
+<span class="fc" id="L85">                break;</span>
+            default:
+<span class="nc" id="L87">                throw new IllegalArgumentException(String.format(&quot;Opcode not implemented yet: %s!&quot;, bc.toString()));</span>
+        }
+
+<span class="fc" id="L90">        return instr;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

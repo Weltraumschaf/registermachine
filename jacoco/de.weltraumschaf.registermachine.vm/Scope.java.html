@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Scope.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.vm</a> &gt; <span class="el_source">Scope.java</span></div><h1>Scope.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 42):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a beer in return.
+ *
+ */
+
+package de.weltraumschaf.registermachine.vm;
+
+import com.google.common.collect.Maps;
+import de.weltraumschaf.registermachine.typing.Value;
+import java.util.Map;
+
+<span class="fc" id="L18">public class Scope {</span>
+
+<span class="fc" id="L20">    private final Map&lt;Integer, Value&gt; assigns = Maps.newHashMap();</span>
+
+    public void setAssign(final int address, final Value value) {
+<span class="nc" id="L23">        assigns.put(address, value);</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+     *
+     * @param address
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
+    public Value getAssign(final int address) {
+<span class="nc" id="L33">        return assigns.get(address);</span>
+    }
+
+    public boolean isEmpty() {
+<span class="nc" id="L37">        return assigns.isEmpty();</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L42">        final StringBuilder sb  = new StringBuilder();</span>
+<span class="nc" id="L43">        sb.append(&quot;\t\t&quot;);</span>
+<span class="nc" id="L44">        final int cnt = assigns.size();</span>
+
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (int i = 0; i &lt; cnt; i++) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L48">                sb.append(&quot;,\t&quot;);</span>
+            }
+
+<span class="nc" id="L51">            sb.append(&quot;s[&quot;).append(i).append(&quot;] = &quot;).append(assigns.get(i));</span>
+        }
+
+<span class="nc" id="L54">        return sb.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

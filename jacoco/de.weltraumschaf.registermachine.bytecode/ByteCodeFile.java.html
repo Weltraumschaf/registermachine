@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ByteCodeFile.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.bytecode</a> &gt; <span class="el_source">ByteCodeFile.java</span></div><h1>ByteCodeFile.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.registermachine.bytecode;
+
+import de.weltraumschaf.registermachine.ByteInt;
+import de.weltraumschaf.registermachine.Const;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+/**
+ * Represents a byte code file.
+ *
+ * Format:
+ * &lt;pre&gt;
+ * [ 2 bytes header: 0xca 0x7e ]
+ * [ 2 bytes version           ]
+ * [ 1 ... 13 bytes opcode     ]
+ * ...
+ * [ 1 ... 13 bytes opcode     ]
+ * &lt;pre&gt;
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public class ByteCodeFile {
+    private static final int CODE_OFFSTET = 4;
+
+    private final byte[] bytecode;
+
+    public ByteCodeFile(final InputStream input) throws IOException {
+<span class="nc" id="L40">        this(new ByteCodeReader(input));</span>
+<span class="nc" id="L41">    }</span>
+
+    public ByteCodeFile(final ByteCodeReader bytecode) throws IOException {
+<span class="nc" id="L44">        super();</span>
+<span class="nc" id="L45">        this.bytecode = bytecode.read();</span>
+<span class="nc" id="L46">        bytecode.close();</span>
+<span class="nc" id="L47">    }</span>
+
+    public ByteCodeFile(final byte[] bytecode) {
+<span class="fc" id="L50">        super();</span>
+<span class="fc" id="L51">        this.bytecode = bytecode;</span>
+<span class="fc" id="L52">    }</span>
+
+    public boolean isValid() {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (bytecode.length &lt; CODE_OFFSTET) {</span>
+<span class="fc" id="L56">            return false;</span>
+        }
+
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">        return bytecode[0] == Const.BC_FST_HEADER_BYTE &amp;&amp; bytecode[1] == Const.BC_SND_HEADER_BYTE;</span>
+    }
+
+    public short getVersion() {
+<span class="fc" id="L63">        return ByteInt.shortFromBytes(Arrays.copyOfRange(bytecode, 2, 4));</span>
+    }
+
+    public byte[] getProgramm() {
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (bytecode.length &lt;= CODE_OFFSTET) {</span>
+<span class="nc" id="L68">            return new byte[0];</span>
+        }
+<span class="fc" id="L70">        return Arrays.copyOfRange(bytecode, CODE_OFFSTET, bytecode.length);</span>
+    }
+
+    public byte[] toArray() {
+<span class="nc" id="L74">        return bytecode;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

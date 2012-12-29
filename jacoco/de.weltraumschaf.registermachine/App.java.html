@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 42):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a beer in return.
+ *
+ */
+package de.weltraumschaf.registermachine;
+
+import de.weltraumschaf.commons.IOStreams;
+import de.weltraumschaf.commons.InvokableAdapter;
+import de.weltraumschaf.commons.Version;
+import de.weltraumschaf.registermachine.asm.Assembler;
+import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
+import de.weltraumschaf.registermachine.asm.Disassembler;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
+import de.weltraumschaf.registermachine.vm.Executor;
+import de.weltraumschaf.registermachine.vm.RegisterMachine;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+
+/**
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public final class App extends InvokableAdapter {
+
+    private static final String EXECUTABLE = &quot;machine&quot;;
+    private static final String HEADER_FMT = &quot;%n%nRegister based machine v%s.%n%n&quot;;
+    private static final String AUTHOR = &quot;Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;&quot;;
+    /**
+     * URI to issue tracker.
+     */
+    private static final String ISSUE_TRACKER = &quot;https://github.com/Weltraumschaf/registermachine/issues&quot;;
+    /**
+     * Usage footer.
+     */
+<span class="nc" id="L52">    private static final String FOOTER = String.format(&quot;%nWritten 2012 by %s%nWrite bugs to %s%n&quot;,</span>
+            AUTHOR, ISSUE_TRACKER);
+<span class="nc" id="L54">    private static final Options OPTIONS = new Options();</span>
+    private static final String CTASM_EXT = &quot;.ctasm&quot;;
+    private static final String BC_EXT = &quot;.ct&quot;;
+    private static final String HELP_OPT = &quot;h&quot;;
+    private static final String VERBOSE_OPT = &quot;v&quot;;
+    private static final String COMPILE_OPT = &quot;c&quot;;
+    private static final String PRINT_OPT = &quot;p&quot;;
+    private static final String EXECUTE_OPT = &quot;e&quot;;
+    private static final String DISASSEMBLE_OPT = &quot;d&quot;;
+
+    static {
+<span class="nc" id="L65">        OPTIONS.addOption(HELP_OPT, false, &quot;display help&quot;);</span>
+<span class="nc" id="L66">        OPTIONS.addOption(VERBOSE_OPT, false, &quot;be more verbose&quot;);</span>
+<span class="nc" id="L67">        OPTIONS.addOption(COMPILE_OPT, true, &quot;compile assembly source&quot;);</span>
+<span class="nc" id="L68">        OPTIONS.addOption(PRINT_OPT, false, &quot;print program output&quot;);</span>
+<span class="nc" id="L69">        OPTIONS.addOption(EXECUTE_OPT, true, &quot;executes byte code file&quot;);</span>
+<span class="nc" id="L70">        OPTIONS.addOption(DISASSEMBLE_OPT, true, &quot;disassemble byte code file&quot;);</span>
+
+    }
+<span class="nc" id="L73">    private static final CommandLineParser PARSER = new PosixParser();</span>
+    private final CommandLine commandLineArgs;
+
+    /**
+     * Hide constructor because it is not intended to create objects of this type outside of
+     * {@link App#main(de.weltraumschaf.commons.Invokable)}.
+     *
+     * @param args command line arguments
+     */
+    private App(final String[] args) {
+<span class="nc" id="L83">        super(args);</span>
+
+        try {
+<span class="nc" id="L86">            commandLineArgs = PARSER.parse(OPTIONS, getArgs());</span>
+<span class="nc" id="L87">        } catch (ParseException ex) {</span>
+<span class="nc" id="L88">            throw new RuntimeException(ex);</span>
+<span class="nc" id="L89">        }</span>
+<span class="nc" id="L90">    }</span>
+
+    private boolean isHelp() {
+<span class="nc" id="L93">        return commandLineArgs.hasOption(HELP_OPT);</span>
+    }
+
+    private boolean isVerbose() {
+<span class="nc" id="L97">        return commandLineArgs.hasOption(VERBOSE_OPT);</span>
+    }
+
+    private boolean isCompile() {
+<span class="nc" id="L101">        return commandLineArgs.hasOption(COMPILE_OPT);</span>
+    }
+
+    private String getCompile() {
+<span class="nc" id="L105">        return commandLineArgs.getOptionValue(COMPILE_OPT);</span>
+    }
+
+    private boolean isPrintProgram() {
+<span class="nc" id="L109">        return commandLineArgs.hasOption(PRINT_OPT);</span>
+    }
+
+    private boolean isExecute() {
+<span class="nc" id="L113">        return commandLineArgs.hasOption(EXECUTE_OPT);</span>
+    }
+
+    private String getExecute() {
+<span class="nc" id="L117">        return commandLineArgs.getOptionValue(EXECUTE_OPT);</span>
+    }
+
+    private boolean isDisassemble() {
+<span class="nc" id="L121">        return commandLineArgs.hasOption(DISASSEMBLE_OPT);</span>
+    }
+
+    private String getDisassemble() {
+<span class="nc" id="L125">        return commandLineArgs.getOptionValue(DISASSEMBLE_OPT);</span>
+    }
+
+    /**
+     * Main entry point for JVM.
+     *
+     * Catches all {@link Exception exception} and print their message to STDERR and exits with -1.
+     *
+     * @param args command line arguments
+     */
+    public static void main(final String[] args) {
+<span class="nc" id="L136">        final App app = new App(args);</span>
+
+        try {
+<span class="nc" id="L139">            InvokableAdapter.main(app, IOStreams.newDefault(), app.isVerbose());</span>
+<span class="nc" id="L140">        } catch (UnsupportedEncodingException ex) {</span>
+<span class="nc" id="L141">            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L142">            app.exit(-1);</span>
+<span class="nc" id="L143">        }</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Starts interactive shell.
+     *
+     * @throws Exception if, something bad happens at runtime.
+     */
+    @Override
+    public void execute() throws Exception {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (isHelp()) {</span>
+<span class="nc" id="L154">            showHelp();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        } else if (isCompile()) {</span>
+<span class="nc" id="L156">            assembleCode(getCompile());</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        } else if (isDisassemble()) {</span>
+<span class="nc" id="L158">            disassembleCode(getDisassemble());</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        } else if (isExecute()) {</span>
+<span class="nc" id="L160">            executeByteCode(getExecute());</span>
+        } else {
+<span class="nc" id="L162">            getIoStreams().errorln(&quot;Bad arguments!&quot;);</span>
+<span class="nc" id="L163">            showHelp();</span>
+        }
+<span class="nc" id="L165">    }</span>
+
+    private void disassembleCode(final String filename) throws FileNotFoundException, IOException {
+<span class="nc" id="L168">        final Disassembler disasm = new Disassembler();</span>
+<span class="nc" id="L169">        final String asm = disasm.disassamble(FileIo.newInputStream(filename));</span>
+<span class="nc" id="L170">        getIoStreams().println(asm);</span>
+<span class="nc" id="L171">    }</span>
+
+    private void executeByteCode(final String filename) throws IOException {
+<span class="nc" id="L174">        final ByteCodeFile bc = new ByteCodeFile(FileIo.newInputStream(filename));</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (!bc.isValid()) {</span>
+<span class="nc" id="L177">            throw new RuntimeException(&quot;Is not valid byte code!&quot;);</span>
+        }
+
+<span class="nc" id="L180">        getIoStreams().println(String.format(&quot;Executing byte code version %d ...&quot;, bc.getVersion()));</span>
+<span class="nc" id="L181">        final RegisterMachine vm = new RegisterMachine(getIoStreams(), isVerbose(), isPrintProgram());</span>
+<span class="nc" id="L182">        final Executor exec = new Executor(vm, getIoStreams());</span>
+<span class="nc" id="L183">        exec.execute(bc);</span>
+<span class="nc" id="L184">    }</span>
+
+    private static String generateCompiledFileName(final String inFilename)  {
+<span class="nc" id="L187">        return inFilename.replace(CTASM_EXT, &quot;&quot;) + BC_EXT;</span>
+    }
+
+    private void assembleCode(final String inFilename) throws IOException, AssemblerSyntaxException {
+<span class="nc" id="L191">        getIoStreams().println(String.format(&quot;Compiling assembly file '%s' ...&quot;, inFilename));</span>
+<span class="nc" id="L192">        final Assembler asm = new Assembler();</span>
+<span class="nc" id="L193">        final ByteCodeFile bc = asm.assamble(FileIo.newInputStream(inFilename));</span>
+<span class="nc" id="L194">        final String outFilename = generateCompiledFileName(inFilename);</span>
+<span class="nc" id="L195">        final ByteCodeWriter out = new ByteCodeWriter(FileIo.newOutputStream(outFilename));</span>
+<span class="nc" id="L196">        out.write(bc);</span>
+<span class="nc" id="L197">        getIoStreams().println(String.format(&quot;Saved assembled byte code to '%s'.&quot;, outFilename));</span>
+<span class="nc" id="L198">    }</span>
+
+    private void showHelp() throws IOException {
+<span class="nc" id="L201">        final PrintWriter writer = new PrintWriter(getIoStreams().getStdout());</span>
+<span class="nc" id="L202">        final HelpFormatter formatter = new HelpFormatter();</span>
+<span class="nc" id="L203">        final Version version = new Version(&quot;/de/weltraumschaf/registermachine/version.properties&quot;);</span>
+<span class="nc" id="L204">        version.load();</span>
+
+<span class="nc" id="L206">        formatter.printHelp(</span>
+                writer,
+                HelpFormatter.DEFAULT_WIDTH,
+                EXECUTABLE,
+                String.format(HEADER_FMT, version.toString()),
+                OPTIONS,
+                HelpFormatter.DEFAULT_LEFT_PAD,
+                HelpFormatter.DEFAULT_DESC_PAD,
+                FOOTER,
+                true);
+<span class="nc" id="L216">        writer.flush();</span>
+<span class="nc" id="L217">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RuntimeConfiguration.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.vm</a> &gt; <span class="el_source">RuntimeConfiguration.java</span></div><h1>RuntimeConfiguration.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 42):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a beer in return.
+ *
+ */
+package de.weltraumschaf.registermachine.vm;
+
+import de.weltraumschaf.registermachine.Const;
+import de.weltraumschaf.registermachine.typing.Value;
+
+<span class="fc" id="L16">public class RuntimeConfiguration {</span>
+
+<span class="fc" id="L18">    private final Scope scope = new Scope();</span>
+<span class="fc" id="L19">    private final Register registers = new Register();</span>
+    private int instructionCounter;
+
+    public int getInstructionCounter() {
+<span class="fc" id="L23">        return instructionCounter;</span>
+    }
+
+    public void setInstructionCounter(final int ic) {
+<span class="fc" id="L27">        this.instructionCounter = ic;</span>
+<span class="fc" id="L28">    }</span>
+
+    public void incInstructionCounter() {
+<span class="fc" id="L31">        instructionCounter++;</span>
+<span class="fc" id="L32">    }</span>
+
+    public void setRegister(final int r, final Value v) {
+<span class="fc" id="L35">        registers.set(r, v);</span>
+<span class="fc" id="L36">    }</span>
+
+    public Value getRegister(final int r) {
+<span class="fc" id="L39">        return registers.get(r);</span>
+    }
+
+    public Scope getScope() {
+<span class="nc" id="L43">        return scope;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L48">        final StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L49">        sb.append(&quot;Counter=&quot;)</span>
+          .append(instructionCounter)
+          .append(&quot; Registers=&quot;)
+          .append(registers);
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (!scope.isEmpty()) {</span>
+<span class="nc" id="L55">            sb.append(Const.NL).append(scope.toString());</span>
+        }
+
+<span class="nc" id="L58">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

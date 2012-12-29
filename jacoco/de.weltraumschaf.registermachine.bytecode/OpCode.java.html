@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OpCode.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.bytecode</a> &gt; <span class="el_source">OpCode.java</span></div><h1>OpCode.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 42):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a beer in return.
+ *
+ */
+package de.weltraumschaf.registermachine.bytecode;
+
+import com.google.common.collect.Maps;
+import de.weltraumschaf.registermachine.Const;
+import java.util.Map;
+
+/**
+ * Opcodes of the byte code.
+ *
+ * General format:
+ * &lt;pre&gt;
+ * [ opcode 1 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ]
+ * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ] [ arg3 4 byte ]
+ * &lt;pre&gt;
+ *
+ * TODO Make result register implicitly to 0.
+ *
+ * @author sxs
+ */
+<span class="pc" id="L32">public enum OpCode {</span>
+
+    /**
+     * Copy a value between registers.
+     *
+     * &lt;pre&gt;
+     * move SRC_REG DST_REG ; copy register SRC_REG into register DST_REG
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L41">    MOVE(0x01, ArgCount.TWO),</span>
+    /**
+     * Load a constant into a register.
+     *
+     * &lt;pre&gt;
+     * loadc DST_REG VALUE ; load integer value into register DST_REG
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L49">    LOADC(0x02, ArgCount.TWO),</span>
+    /**
+     * Addition operator.
+     *
+     * &lt;pre&gt;
+     * add OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in register 0
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L57">    ADD(0x03, ArgCount.TWO),</span>
+    /**
+     * Subtraction operator.
+     *
+     * &lt;pre&gt;
+     * sub OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in register 0
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L65">    SUB(0x04, ArgCount.TWO),</span>
+    /**
+     * Multiplication operator.
+     *
+     * &lt;pre&gt;
+     * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L73">    MUL(0x05, ArgCount.TWO),</span>
+    /**
+     * Division operator.
+     *
+     * &lt;pre&gt;
+     * div OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in register 0
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L81">    DIV(0x06, ArgCount.TWO),</span>
+    /**
+     * Modulus (remainder) operator.
+     *
+     * &lt;pre&gt;
+     * mod OP1_REG OP2_REG ; reminder divide value from OP1_REG and OP2_REG and stores result in register 0
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L89">    MOD(0x07, ArgCount.TWO),</span>
+    /**
+     * Exponentiation operator.
+     *
+     * &lt;pre&gt;
+     * pow OP1_REG OP2_REG ; powers value from OP1_REG and OP2_REG and stores result in register 0
+     * &lt;/pre&gt;
+     */
+<span class="fc" id="L97">    POW(0x08, ArgCount.TWO),</span>
+    /**
+     * Unary minus operator.
+     */
+<span class="fc" id="L101">    UNM(0x09, ArgCount.ONE),</span>
+    /**
+     * Logical NOT operator.
+     */
+<span class="fc" id="L105">    NOT(0x0a, ArgCount.ONE),</span>
+    /**
+     * Unconditional jump.
+     */
+<span class="fc" id="L109">    JMP(0x0b, ArgCount.ONE),</span>
+    /**
+     * Equality test.
+     */
+<span class="fc" id="L113">    EQ(0x0c, ArgCount.TWO),</span>
+    /**
+     * Less than test Less than or equal to test.
+     */
+<span class="fc" id="L117">    LT(0x0d, ArgCount.TWO),</span>
+    /**
+     * Less than or equals test Less than or equal to test.
+     */
+<span class="fc" id="L121">    LE(0x0e, ArgCount.TWO),</span>
+    /**
+     *Boolean test, with conditional jump.
+     */
+<span class="fc" id="L125">    TEST(0x0f, ArgCount.TWO),</span>
+    /**
+     *
+     */
+<span class="fc" id="L129">    PRINT(0x10, ArgCount.ONE),</span>
+    /**
+     *
+     */
+<span class="fc" id="L133">    PRINTLN(0x11, ArgCount.ONE),</span>
+    /**
+     * Unknown opcode wil stop execution.
+     */
+<span class="fc" id="L137">    UNKWONN(0xff);</span>
+
+<span class="fc" id="L139">    private static final Map&lt;String, OpCode&gt; MNEMONIC_LOOKUP = Maps.newHashMap();</span>
+<span class="fc" id="L140">    private static final Map&lt;Byte, OpCode&gt; OPCODE_LOOKUP = Maps.newHashMap();</span>
+
+    static {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (final OpCode code : OpCode.values()) {</span>
+<span class="fc" id="L144">            MNEMONIC_LOOKUP.put(code.name().toLowerCase(Const.LOCALE), code);</span>
+<span class="fc" id="L145">            OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);</span>
+        }
+<span class="fc" id="L147">    }</span>
+
+    private final byte code;
+    private final ArgCount argCount;
+
+    OpCode(final int code) {
+<span class="fc" id="L153">        this(code, ArgCount.NONE);</span>
+<span class="fc" id="L154">    }</span>
+
+    OpCode(final int code, ArgCount argCount) {
+<span class="fc" id="L157">        this((byte) code, argCount);</span>
+<span class="fc" id="L158">    }</span>
+
+<span class="fc" id="L160">    OpCode(final byte code, ArgCount argCount) {</span>
+<span class="fc" id="L161">        this.code = code;</span>
+<span class="fc" id="L162">        this.argCount = argCount;</span>
+<span class="fc" id="L163">    }</span>
+
+    public byte getCode() {
+<span class="fc" id="L166">        return code;</span>
+    }
+
+    public ArgCount getArgCount() {
+<span class="fc" id="L170">        return argCount;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L175">        return String.format(&quot;%s[0x%s]&quot;, name(), toHex(code));</span>
+    }
+
+    public String toHex() {
+<span class="nc" id="L179">        return toHex(code);</span>
+    }
+
+    public static String toHex(final byte b) {
+<span class="fc" id="L183">        final String hex = Integer.toHexString(0xFF &amp; b);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        return hex.length() == 1</span>
+                ? &quot;0&quot; + hex
+                : hex;
+    }
+
+    public static OpCode lokup(final String mnemonic) {
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Const.LOCALE))) {</span>
+<span class="fc" id="L191">            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Const.LOCALE));</span>
+        }
+
+<span class="fc" id="L194">        return UNKWONN;</span>
+    }
+
+    public static OpCode lookup(final byte b) {
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (OPCODE_LOOKUP.containsKey(Byte.valueOf(b))) {</span>
+<span class="fc" id="L199">            return OPCODE_LOOKUP.get(Byte.valueOf(b));</span>
+        }
+
+<span class="nc" id="L202">        return UNKWONN;</span>
+    }
+
+<span class="pc" id="L205">    public enum ArgCount {</span>
+<span class="fc" id="L206">        NONE(0), ONE(1), TWO(2), THREE(3);</span>
+
+        private final int count;
+
+<span class="fc" id="L210">        private ArgCount(final int count) {</span>
+<span class="fc" id="L211">            this.count = count;</span>
+<span class="fc" id="L212">        }</span>
+
+        public int getCount() {
+<span class="fc" id="L215">            return count;</span>
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

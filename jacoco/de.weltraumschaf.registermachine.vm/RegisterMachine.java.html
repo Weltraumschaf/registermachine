@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RegisterMachine.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine.vm</a> &gt; <span class="el_source">RegisterMachine.java</span></div><h1>RegisterMachine.java</h1><pre class="source lang-java linenums">/*
+ * LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 42):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a beer in return.
+ *
+ */
+
+package de.weltraumschaf.registermachine.vm;
+
+import de.weltraumschaf.commons.IO;
+import de.weltraumschaf.registermachine.Const;
+import de.weltraumschaf.registermachine.instr.Instruction;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
+
+public class RegisterMachine {
+    private static final int DEBUG_PAD = 26;
+
+    private final RuntimeConfiguration config;
+    private final boolean debug;
+    private final boolean printProgramm;
+    private final IO io;
+
+    private List&lt;Instruction&gt; program;
+
+    public  RegisterMachine(final IO io) {
+<span class="fc" id="L31">        this(io, false, false);</span>
+<span class="fc" id="L32">    }</span>
+
+    public  RegisterMachine(final IO io, boolean debug, boolean printProgramm) {
+<span class="fc" id="L35">        super();</span>
+<span class="fc" id="L36">        this.io = io;</span>
+<span class="fc" id="L37">        this.config = new RuntimeConfiguration();</span>
+<span class="fc" id="L38">        this.debug  = debug;</span>
+<span class="fc" id="L39">        this.printProgramm  = printProgramm;</span>
+<span class="fc" id="L40">    }</span>
+
+    public void setProgram(final List&lt;Instruction&gt; prog) {
+<span class="fc" id="L43">        program = prog;</span>
+<span class="fc" id="L44">    }</span>
+
+    public void run() {
+<span class="fc" id="L47">        final StringBuilder debugOutput = new StringBuilder();</span>
+<span class="fc" id="L48">        config.setInstructionCounter(0);</span>
+<span class="fc" id="L49">        debugInit(debugOutput);</span>
+
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (!program.isEmpty()) {</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            while ( config.getInstructionCounter() &lt; program.size()) {</span>
+<span class="fc" id="L53">                final Instruction instruction = program.get(config.getInstructionCounter());</span>
+<span class="fc" id="L54">                config.incInstructionCounter();</span>
+<span class="fc" id="L55">                instruction.evaluate(config);</span>
+<span class="fc" id="L56">                debugInstruction(debugOutput, instruction);</span>
+<span class="fc" id="L57">            }</span>
+<span class="fc" id="L58">            io.println(&quot;HALT.&quot;);</span>
+<span class="fc" id="L59">            io.println(&quot;&quot;);</span>
+        }
+
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (debug) {</span>
+<span class="nc" id="L63">            io.println(String.format(&quot;Debug:%n======%n%s&quot;, debugOutput.toString()));</span>
+        }
+
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (this.printProgramm) {</span>
+<span class="nc" id="L67">            this.printProgramm();</span>
+        }
+<span class="fc" id="L69">    }</span>
+
+    public void printProgramm() {
+<span class="nc" id="L72">        io.println(String.format(&quot;Programm:%n=========&quot;));</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        for (final Instruction instruction : program) {</span>
+<span class="nc" id="L75">            io.println(instruction.toString());</span>
+        }
+
+<span class="nc" id="L78">        io.print(Const.NL);</span>
+<span class="nc" id="L79">    }</span>
+
+    public void printConfiguration() {
+<span class="nc" id="L82">        io.println(config.toString());</span>
+<span class="nc" id="L83">    }</span>
+
+    public RuntimeConfiguration getConfiguration() {
+<span class="nc" id="L86">        return this.config;</span>
+    }
+
+    private void debugInit(final StringBuilder debugOutput) {
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (debug) {</span>
+<span class="nc" id="L91">            debugOutput.append(StringUtils.rightPad(&quot;Init&quot;, DEBUG_PAD))</span>
+                       .append(&quot; &gt; &quot;)
+                       .append(config.toString())
+                       .append(Const.NL);
+        }
+<span class="fc" id="L96">    }</span>
+
+    private void debugInstruction(final StringBuilder debugOutput, final Instruction instruction) {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (debug) {</span>
+<span class="nc" id="L100">            debugOutput.append(StringUtils.rightPad(&quot;Instruction '&quot; + instruction.toString() + &quot;'&quot;, DEBUG_PAD))</span>
+                       .append(&quot; &gt; &quot;)
+                       .append(config.toString())
+                       .append(Const.NL);
+        }
+<span class="fc" id="L105">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>

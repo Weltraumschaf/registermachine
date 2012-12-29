@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ByteInt.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Registermachine</a> &gt; <a href="index.html" class="el_package">de.weltraumschaf.registermachine</a> &gt; <span class="el_source">ByteInt.java</span></div><h1>ByteInt.java</h1><pre class="source lang-java linenums">/*
+ *  LICENSE
+ *
+ * &quot;THE BEER-WARE LICENSE&quot; (Revision 43):
+ * &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt; wrote this file.
+ * As long as you retain this notice you can do whatever you want with
+ * this stuff. If we meet some day, and you think this stuff is worth it,
+ * you can buy me a non alcohol-free beer in return.
+ *
+ * Copyright (C) 2012 &quot;Sven Strittmatter&quot; &lt;weltraumschaf@googlemail.com&gt;
+ */
+package de.weltraumschaf.registermachine;
+
+/**
+ * Converts integers to array of bytes and vice versa.
+ *
+ * Converts big endian.
+ *
+ * @author Sven Strittmatter &lt;weltraumschaf@googlemail.com&gt;
+ */
+public final class ByteInt {
+
+    /** How much bits to shift 2nd byte. */
+    private static final int SECOND_BYTE_SHIFT = 8;
+    /** How much bits to shift 3rd byte. */
+    private static final int THIRD_BYTE_SHIFT = 16;
+    /** How much bits to shift 4th byte. */
+    private static final int FOURTH_BYTE_SHIFT = 24;
+
+    public static final int ONE_BYTE_MASK = 0xFF;
+    private static final int TWO_BYTE_MASK = 0xFFFF;
+    private static final int THREE_BYTE_MASK = 0xFFFFFF;
+    private static final int FOUR_BYTE_MASK = 0xFFFFFFFF;
+
+    private static final int FIRST_BYTE = 0;
+    private static final int SECOND_BYTE = 1;
+    private static final int THIRD_BYTE = 2;
+    private static final int FOURTH_BYTE = 3;
+
+    private static final int BYTES_SHORT = 2;
+    private static final int BYTES_INT = 4;
+
+    private static final String BYTE_COUNT_ERROR_FMT = &quot;Need %d bytes exactly!&quot;;
+
+
+    /**
+     * Hide constructor for pure static class.
+     */
+    private ByteInt() {
+<span class="nc" id="L50">        super();</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * Converts 16 bit short to two byte arrays.
+     *
+     * @param value short to convert
+     * @return array with 2 bytes
+     */
+    public static byte[] bytesFromShort(final short value) {
+<span class="fc" id="L60">        final byte[] bytes = new byte[BYTES_SHORT];</span>
+<span class="fc" id="L61">        bytes[FIRST_BYTE]  = (byte) value;</span>
+<span class="fc" id="L62">        bytes[SECOND_BYTE] = (byte) (value &gt;&gt; SECOND_BYTE_SHIFT);</span>
+<span class="fc" id="L63">        return bytes;</span>
+    }
+
+    /**
+     * Converts array of two bytes into 16 bit short integer.
+     *
+     * @param bytes array with exactly 2 bytes
+     * @return short integer
+     * @throws IllegalArgumentException if, the passed in array does not have exactly 2 bytes
+     */
+    public static short shortFromBytes(final byte[] bytes) {
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (bytes.length != BYTES_SHORT) {</span>
+<span class="nc" id="L75">            throw new IllegalArgumentException(String.format(BYTE_COUNT_ERROR_FMT, BYTES_SHORT));</span>
+        }
+
+<span class="fc" id="L78">        short value = (short) (bytes[0]                         &amp; ONE_BYTE_MASK);</span>
+<span class="fc" id="L79">        value      |= (bytes[SECOND_BYTE] &lt;&lt; SECOND_BYTE_SHIFT) &amp; TWO_BYTE_MASK;</span>
+<span class="fc" id="L80">        return value;</span>
+    }
+
+    /**
+     * Converts 32 bit short to four byte arrays.
+     *
+     * @param value int to convert
+     * @return array with 4 bytes
+     */
+    public static byte[] bytesFromInt(final int value) {
+<span class="fc" id="L90">        final byte[] bytes = new byte[BYTES_INT];</span>
+<span class="fc" id="L91">        bytes[FIRST_BYTE]  = (byte) value;</span>
+<span class="fc" id="L92">        bytes[SECOND_BYTE] = (byte) (value &gt;&gt; SECOND_BYTE_SHIFT);</span>
+<span class="fc" id="L93">        bytes[THIRD_BYTE]  = (byte) (value &gt;&gt; THIRD_BYTE_SHIFT);</span>
+<span class="fc" id="L94">        bytes[FOURTH_BYTE] = (byte) (value &gt;&gt; FOURTH_BYTE_SHIFT);</span>
+<span class="fc" id="L95">        return bytes;</span>
+    }
+
+    /**
+     * Converts array of four bytes into 32 bit short integer.
+     *
+     * @param bytes array with exactly 4 bytes
+     * @return int integer
+     * @throws IllegalArgumentException if, the passed in array does not have exactly 4 bytes
+     */
+    public static int intFromBytes(final byte[] bytes) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (bytes.length != BYTES_INT) {</span>
+<span class="nc" id="L107">            throw new IllegalArgumentException(String.format(BYTE_COUNT_ERROR_FMT, BYTES_INT));</span>
+        }
+
+<span class="fc" id="L110">        int value = bytes[FIRST_BYTE]                         &amp; ONE_BYTE_MASK;</span>
+<span class="fc" id="L111">        value    |= (bytes[SECOND_BYTE] &lt;&lt; SECOND_BYTE_SHIFT) &amp; TWO_BYTE_MASK;</span>
+<span class="fc" id="L112">        value    |= (bytes[THIRD_BYTE]  &lt;&lt; THIRD_BYTE_SHIFT)  &amp; THREE_BYTE_MASK;</span>
+<span class="fc" id="L113">        value    |= (bytes[FOURTH_BYTE] &lt;&lt; FOURTH_BYTE_SHIFT) &amp; FOUR_BYTE_MASK;</span>
+<span class="fc" id="L114">        return value;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.1.201212231917</span></div></body></html>
