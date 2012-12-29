@@ -63,6 +63,7 @@ public final class App extends InvokableAdapter {
     private static final String EXECUTE_OPT = "e";
     private static final String DISASSEMBLE_OPT = "d";
     private static final String PRINT_OPCODES_OPT = "o";
+    private static final String INTERPRET_OPT = "i";
 
     static {
         OPTIONS.addOption(HELP_OPT, false, "display help");
@@ -72,6 +73,7 @@ public final class App extends InvokableAdapter {
         OPTIONS.addOption(EXECUTE_OPT, true, "executes byte code file");
         OPTIONS.addOption(DISASSEMBLE_OPT, true, "disassemble byte code file");
         OPTIONS.addOption(PRINT_OPCODES_OPT, false, "print list of al opcodes");
+        OPTIONS.addOption(INTERPRET_OPT, true, "interpret assembly source");
     }
 
     private static final CommandLineParser PARSER = new PosixParser();
@@ -133,6 +135,14 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.hasOption(PRINT_OPCODES_OPT);
     }
 
+    private boolean isInterpret() {
+        return commandLineArgs.hasOption(INTERPRET_OPT);
+    }
+
+    private String getInterpret() {
+        return commandLineArgs.getOptionValue(INTERPRET_OPT);
+    }
+
     /**
      * Main entry point for JVM.
      *
@@ -168,6 +178,8 @@ public final class App extends InvokableAdapter {
             executeByteCode(getExecute());
         } else if (isPrintOpCodes()) {
             printOpCodes();
+        } else if (isInterpret()) {
+            interpretAssemblv(getInterpret());
         } else {
             getIoStreams().errorln("Bad arguments!");
             showHelp();
@@ -181,16 +193,7 @@ public final class App extends InvokableAdapter {
     }
 
     private void executeByteCode(final String filename) throws IOException {
-        final ByteCodeFile bc = new ByteCodeFile(FileIo.newInputStream(filename));
-
-        if (!bc.isValid()) {
-            throw new RuntimeException("Is not valid byte code!");
-        }
-
-        getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
-        final RegisterMachine vm = new RegisterMachine(getIoStreams(), isVerbose(), isPrintProgram());
-        final Executor exec = new Executor(vm, getIoStreams());
-        exec.execute(bc);
+        executeByteCode(new ByteCodeFile(FileIo.newInputStream(filename)));
     }
 
     private static String generateCompiledFileName(final String inFilename)  {
@@ -199,11 +202,9 @@ public final class App extends InvokableAdapter {
 
     private void assembleCode(final String inFilename) throws IOException, AssemblerSyntaxException {
         getIoStreams().println(String.format("Compiling assembly file '%s' ...", inFilename));
-        final Assembler asm = new Assembler();
-        final ByteCodeFile bc = asm.assamble(FileIo.newInputStream(inFilename));
         final String outFilename = generateCompiledFileName(inFilename);
         final ByteCodeWriter out = new ByteCodeWriter(FileIo.newOutputStream(outFilename));
-        out.write(bc);
+        out.write(assembleFile(inFilename));
         getIoStreams().println(String.format("Saved assembled byte code to '%s'.", outFilename));
     }
 
@@ -245,6 +246,27 @@ public final class App extends InvokableAdapter {
             buffer.append(String.format(fmt, StringUtils.rightPad(mnemonic.toString(), 16), op.toHex()));
         }
         getIoStreams().print(buffer.toString());
+    }
+
+    private void interpretAssemblv(String inFilename) throws IOException, AssemblerSyntaxException {
+        ByteCodeFile bc = assembleFile(inFilename);
+        executeByteCode(bc);
+    }
+
+    private void executeByteCode(final ByteCodeFile bc) throws RuntimeException {
+        if (!bc.isValid()) {
+            throw new RuntimeException("Is not valid byte code!");
+        }
+
+        getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
+        final RegisterMachine vm = new RegisterMachine(getIoStreams(), isVerbose(), isPrintProgram());
+        final Executor exec = new Executor(vm, getIoStreams());
+        exec.execute(bc);
+    }
+
+    private ByteCodeFile assembleFile(final String inFilename) throws AssemblerSyntaxException, IOException {
+        final Assembler asm = new Assembler();
+        return asm.assamble(FileIo.newInputStream(inFilename));
     }
 
 }
