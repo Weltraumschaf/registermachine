@@ -45,13 +45,13 @@ public class RegisterMachine {
 
     public void run() {
         final StringBuilder debugOutput = new StringBuilder();
-        config.setInstructionCounter(0);
+        config.setProgramCounter(0);
         debugInit(debugOutput);
 
         if (!program.isEmpty()) {
-            while ( config.getInstructionCounter() < program.size()) {
-                final Instruction instruction = program.get(config.getInstructionCounter());
-                config.incInstructionCounter();
+            while ( config.getProgramCounter() < program.size()) {
+                final Instruction instruction = program.get(config.getProgramCounter());
+                config.incrementProgramCounter();
                 instruction.evaluate(config);
                 debugInstruction(debugOutput, instruction);
             }

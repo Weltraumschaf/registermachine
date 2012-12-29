@@ -18,7 +18,7 @@ public class RuntimeConfiguration {
     private final Stack<Scope> scopes = new Stack<Scope>();
 
     private Scope currentScope;
-    private int instructionCounter;
+    private int programCounter;
 
     public RuntimeConfiguration() {
         super();
@@ -26,16 +26,16 @@ public class RuntimeConfiguration {
         scopes.push(currentScope);
     }
 
-    public int getInstructionCounter() {
-        return instructionCounter;
+    public int getProgramCounter() {
+        return programCounter;
     }
 
-    public void setInstructionCounter(final int ic) {
-        this.instructionCounter = ic;
+    public void setProgramCounter(final int ic) {
+        this.programCounter = ic;
     }
 
-    public void incInstructionCounter() {
-        instructionCounter++;
+    public void incrementProgramCounter() {
+        programCounter++;
     }
 
     public void setRegister(final int r, final Value v) {
@@ -74,7 +74,7 @@ public class RuntimeConfiguration {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Counter=")
-          .append(instructionCounter)
+          .append(programCounter)
           .append(" Registers=")
           .append(currentScope.getRegisters());
         return sb.toString();

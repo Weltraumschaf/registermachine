@@ -31,7 +31,7 @@ public class Jmp implements Instruction {
     @Override
     public void evaluate(final RuntimeConfiguration config) {
         final Value jmpDst = config.getRegister(srcReg);
-        config.setInstructionCounter(jmpDst.getIntegerValue());
+        config.setProgramCounter(jmpDst.getIntegerValue());
     }
 
     @Override
