@@ -18,6 +18,7 @@ import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
 import de.weltraumschaf.registermachine.asm.Disassembler;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.vm.Executor;
 import de.weltraumschaf.registermachine.vm.RegisterMachine;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -60,6 +62,7 @@ public final class App extends InvokableAdapter {
     private static final String PRINT_OPT = "p";
     private static final String EXECUTE_OPT = "e";
     private static final String DISASSEMBLE_OPT = "d";
+    private static final String PRINT_OPCODES_OPT = "o";
 
     static {
         OPTIONS.addOption(HELP_OPT, false, "display help");
@@ -68,8 +71,9 @@ public final class App extends InvokableAdapter {
         OPTIONS.addOption(PRINT_OPT, false, "print program output");
         OPTIONS.addOption(EXECUTE_OPT, true, "executes byte code file");
         OPTIONS.addOption(DISASSEMBLE_OPT, true, "disassemble byte code file");
-
+        OPTIONS.addOption(PRINT_OPCODES_OPT, false, "print list of al opcodes");
     }
+
     private static final CommandLineParser PARSER = new PosixParser();
     private final CommandLine commandLineArgs;
 
@@ -125,6 +129,10 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.getOptionValue(DISASSEMBLE_OPT);
     }
 
+    private boolean isPrintOpCodes() {
+        return commandLineArgs.hasOption(PRINT_OPCODES_OPT);
+    }
+
     /**
      * Main entry point for JVM.
      *
@@ -158,6 +166,8 @@ public final class App extends InvokableAdapter {
             disassembleCode(getDisassemble());
         } else if (isExecute()) {
             executeByteCode(getExecute());
+        } else if (isPrintOpCodes()) {
+            printOpCodes();
         } else {
             getIoStreams().errorln("Bad arguments!");
             showHelp();
@@ -214,6 +224,27 @@ public final class App extends InvokableAdapter {
                 FOOTER,
                 true);
         writer.flush();
+    }
+
+    private void printOpCodes() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append("mnemonic args   byte")
+              .append(Const.NL)
+              .append("--------------------")
+              .append(Const.NL);
+        final String fmt = "%s0x%s%n";
+        for (final OpCode op : OpCode.values()) {
+            final StringBuilder mnemonic = new StringBuilder();
+            mnemonic.append(StringUtils.rightPad(op.name().toLowerCase(Const.LOCALE), 8))
+                    .append(' ');
+            char c = 'A';
+            for (int i = 0; i < op.getArgCount().getCount(); ++i) {
+                mnemonic.append(c).append(' ');
+                ++c;
+            }
+            buffer.append(String.format(fmt, StringUtils.rightPad(mnemonic.toString(), 16), op.toHex()));
+        }
+        getIoStreams().print(buffer.toString());
     }
 
 }
