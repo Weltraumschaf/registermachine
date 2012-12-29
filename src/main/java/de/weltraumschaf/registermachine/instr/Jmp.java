@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -29,8 +30,8 @@ public class Jmp implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int jmpDst = config.getRegister(srcReg);
-        config.setInstructionCounter(jmpDst);
+        final Value jmpDst = config.getRegister(srcReg);
+        config.setInstructionCounter(jmpDst.getIntegerValue());
     }
 
     @Override

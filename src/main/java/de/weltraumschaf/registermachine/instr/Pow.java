@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -31,10 +32,10 @@ class Pow implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int op1 = config.getRegister(op1Reg);
-        final int op2 = config.getRegister(op2Reg);
-        final int result = (int) Math.pow(op1, op2);
-        config.setRegister(RESULT_REGISTER, result);
+        final Value op1 = config.getRegister(op1Reg);
+        final Value op2 = config.getRegister(op2Reg);
+        final int result = (int) Math.pow(op1.getIntegerValue(), op2.getIntegerValue());
+        config.setRegister(RESULT_REGISTER, new Value(result));
     }
 
     @Override

@@ -11,6 +11,7 @@
 package de.weltraumschaf.registermachine.vm;
 
 import de.weltraumschaf.registermachine.Const;
+import de.weltraumschaf.registermachine.typing.Value;
 
 public class RuntimeConfiguration {
 
@@ -30,11 +31,11 @@ public class RuntimeConfiguration {
         instructionCounter++;
     }
 
-    public void setRegister(final int r, final int v) {
+    public void setRegister(final int r, final Value v) {
         registers.set(r, v);
     }
 
-    public int getRegister(final int r) {
+    public Value getRegister(final int r) {
         return registers.get(r);
     }
 

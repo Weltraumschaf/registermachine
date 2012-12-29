@@ -30,8 +30,8 @@ public class Test implements Instruction {
 
     @Override
     public void evaluate(RuntimeConfiguration config) {
-        if (0 != config.getRegister(testReg)) {
-            config.setInstructionCounter(config.getRegister(jumpReg));
+        if (config.getRegister(testReg).getBooleanValue()) {
+            config.setInstructionCounter(config.getRegister(jumpReg).getIntegerValue()); // Use arguemnt directly
         }
     }
 

@@ -26,7 +26,7 @@ class Print implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        io.print(String.valueOf(config.getRegister(srcReg)));
+        io.print(config.getRegister(srcReg).toString());
     }
 
     @Override

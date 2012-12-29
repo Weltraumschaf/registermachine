@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -30,8 +31,7 @@ class Move implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int value = config.getRegister(srcReg);
-        config.setRegister(dstReg, value);
+        config.setRegister(dstReg, config.getRegister(srcReg));
     }
 
     @Override

@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -28,10 +29,12 @@ public class Not implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        int value = 0;
-        if (0 == config.getRegister(srcReg)) {
-            value = 1;
+        Value value = Value.getTrue();
+
+        if (config.getRegister(srcReg).getBooleanValue()) {
+            value = Value.getFalse();
         }
+
         config.setRegister(RESULT_REGISTER, value);
     }
 

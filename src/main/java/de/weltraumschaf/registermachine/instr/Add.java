@@ -10,6 +10,7 @@
  */
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 class Add implements Instruction {
@@ -25,9 +26,9 @@ class Add implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int op1 = config.getRegister(op1Reg);
-        final int op2 = config.getRegister(op2Reg);
-        config.setRegister(RESULT_REGISTER, op1 + op2);
+        final Value op1 = config.getRegister(op1Reg);
+        final Value op2 = config.getRegister(op2Reg);
+        config.setRegister(RESULT_REGISTER, new Value(op1.getIntegerValue() + op2.getIntegerValue()));
     }
 
     @Override

@@ -11,6 +11,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 class Loadc implements Instruction {
@@ -26,7 +27,7 @@ class Loadc implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        config.setRegister(register, value);
+        config.setRegister(register, new Value(value));
     }
 
     @Override

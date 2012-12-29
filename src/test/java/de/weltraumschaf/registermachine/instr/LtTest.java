@@ -12,10 +12,11 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -28,28 +29,28 @@ public class LtTest {
     @Test
     public void evaluate_firstOperandLessIsTrue() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, 2);
-        config.setRegister(2, 5);
+        config.setRegister(1, new Value(2));
+        config.setRegister(2, new Value(5));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER), is(1));
+        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(1));
     }
 
     @Test
     public void evaluate_firstOperandNotLessIsFalse() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, 5);
-        config.setRegister(2, 2);
+        config.setRegister(1, new Value(5));
+        config.setRegister(2, new Value(2));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER), is(0));
+        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(0));
     }
 
     @Test
     public void evaluate_sameIsFalse() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, 5);
-        config.setRegister(2, 5);
+        config.setRegister(1, new Value(5));
+        config.setRegister(2, new Value(5));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER), is(0));
+        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(0));
     }
 
 }

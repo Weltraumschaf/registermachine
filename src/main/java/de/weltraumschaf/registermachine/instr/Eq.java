@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -29,14 +30,15 @@ public class Eq implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        final int op1 = config.getRegister(op1Reg);
-        final int op2 = config.getRegister(op2Reg);
-
-        if (op1 == op2) {
-            config.setRegister(RESULT_REGISTER, 1);
+        final Value op1 = config.getRegister(op1Reg);
+        final Value op2 = config.getRegister(op2Reg);
+        Value result;
+        if (op1.getIntegerValue() == op2.getIntegerValue()) {
+            config.setRegister(RESULT_REGISTER, Value.getTrue());
         } else {
-            config.setRegister(RESULT_REGISTER, 0);
+            config.setRegister(RESULT_REGISTER, Value.getFalse());
         }
+
     }
 
     @Override

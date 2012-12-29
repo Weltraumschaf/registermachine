@@ -12,8 +12,8 @@
 
 package de.weltraumschaf.registermachine.vm;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
+import de.weltraumschaf.registermachine.typing.Value;
 import java.util.Map;
 
 /**
@@ -22,16 +22,16 @@ import java.util.Map;
  */
 class Register {
 
-    private final Map<Integer, Integer> store = Maps.newHashMap();
+    private final Map<Integer, Value> store = Maps.newHashMap();
 
-    void set(final int r, final int v) {
+    void set(final int r, final Value v) {
         if (r < 0) {
             throw new IllegalArgumentException("Register address must be greater equal 0! Given: " + r);
         }
-        store.put(Integer.valueOf(r), Integer.valueOf(v));
+        store.put(Integer.valueOf(r), v);
     }
 
-    int get(final int r) {
+    Value get(final int r) {
         if (r < 0) {
             throw new IllegalArgumentException("Register address must be greater equal 0! Given: " + r);
         }
@@ -40,7 +40,7 @@ class Register {
             return store.get(Integer.valueOf(r));
         }
 
-        return 0;
+        return Value.getNil();
     }
 
     @Override

@@ -12,6 +12,7 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**
@@ -28,7 +29,7 @@ class Unm implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        config.setRegister(RESULT_REGISTER, -config.getRegister(srcReg));
+        config.setRegister(RESULT_REGISTER, new Value(-config.getRegister(srcReg).getIntegerValue()));
     }
 
     @Override
