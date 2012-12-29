@@ -16,6 +16,7 @@ class Scope {
     private final Register registers;
     private final Pool constants;
     private final Pool variables;
+    private final FunctionTable functions;
     private final Scope parent;
 
     Scope() {
@@ -23,14 +24,15 @@ class Scope {
     }
 
     Scope(final Scope parent) {
-        this(parent, new Register(), Pools.newConstantPool(), Pools.newVariablePool());
+        this(parent, new Register(), Pools.newConstantPool(), Pools.newVariablePool(), new FunctionTable());
     }
 
-    Scope(final Scope parent, final Register registers, final Pool constants, final Pool variables) {
+    Scope(final Scope parent, final Register registers, final Pool constants, final Pool variables, final FunctionTable functions) {
         super();
         this.registers = registers;
         this.constants = constants;
         this.variables = variables;
+        this.functions = functions;
         this.parent    = parent;
     }
 
