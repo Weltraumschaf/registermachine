@@ -45,6 +45,10 @@ class CharStream {
         }
     }
 
+    char peekChar() {
+        return str.charAt(index + 1);
+    }
+
     boolean hasNextChar() {
         return index < str.length() - 1;
     }
