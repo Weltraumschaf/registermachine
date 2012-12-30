@@ -42,12 +42,23 @@ public class LineScannerTest {
         tokens = sut.parse("          ");
         assertThat(tokens.size(), is(0));
     }
-    @Test @Ignore
-    public void scanLiteral() {
+
+    @Test
+    public void scanLiteral() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("  snafu ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.LITERAL));
+        assertThat(token.getValue(), is("snafu"));
     }
 
-    @Test @Ignore
-    public void scanOpCode() {
+    @Test
+    public void scanOpCode() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("  add ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.OPCODE));
+        assertThat(token.getValue(), is("add"));
     }
 
     @Test

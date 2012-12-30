@@ -13,6 +13,7 @@
 package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
@@ -45,8 +46,8 @@ class LineScanner {
 //                scaenString(line);
 //            } else if (StringUtils.isNumeric(String.valueOf(c))) {
 //                scaenNumber(line);
-//            } else if (StringUtils.isAlpha(String.valueOf(c))) {
-//                scaenLiteral(line);
+            } else if (StringUtils.isAlpha(String.valueOf(c))) {
+                tokens.add(scaenOpCodeOrLiteral(line));
             } else if (StringUtils.isWhitespace(String.valueOf(c))) {
                 // ignore
             } else {
@@ -68,8 +69,34 @@ class LineScanner {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private Token scaenLiteral(CharStream line) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private Token scaenOpCodeOrLiteral(final CharStream line) {
+        final StringBuilder value = new StringBuilder();
+        value.append(line.getCurrentChar());
+        TokenType type = null;
+
+        while (line.hasNextChar()) {
+            line.nextChar();
+            final char c = line.getCurrentChar();
+
+            if (StringUtils.isAlpha(String.valueOf(c))) {
+                value.append(c);
+            } else if (StringUtils.isNumeric(String.valueOf(c))) {
+                value.append(c);
+                type = TokenType.LITERAL; // Memonics can not contain numbers.
+            } else {
+                break;
+            }
+        }
+
+        if (null == type) {
+            if (OpCode.lokup(value.toString()) == OpCode.UNKWONN) {
+                type = TokenType.LITERAL;
+            } else {
+                type = TokenType.OPCODE;
+            }
+        }
+
+        return new Token(type, value.toString());
     }
 
     private Token scanMeta(final CharStream line) {
