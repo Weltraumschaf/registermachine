@@ -136,36 +136,51 @@ public enum OpCode {
      */
     UNKWONN(0xff);
 
+    /** Lookup table opcodes by mnemonic. */
     private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();
+    /** Lookup table opcodes by opcode byte. */
     private static final Map<Byte, OpCode> OPCODE_LOOKUP = Maps.newHashMap();
 
     static {
+        // Initialize lookups.
         for (final OpCode code : OpCode.values()) {
             MNEMONIC_LOOKUP.put(code.name().toLowerCase(Const.LOCALE), code);
             OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
     }
 
+    /** Opcode byte. */
     private final byte code;
+    /** Describes how much arguments an opcode has. */
     private final ArgCount argCount;
 
     OpCode(final int code) {
         this(code, ArgCount.NONE);
     }
 
-    OpCode(final int code, ArgCount argCount) {
+    OpCode(final int code, final ArgCount argCount) {
         this((byte) code, argCount);
     }
 
-    OpCode(final byte code, ArgCount argCount) {
+    OpCode(final byte code, final ArgCount argCount) {
         this.code = code;
         this.argCount = argCount;
     }
 
+    /**
+     * Get opcode byte.
+     *
+     * @return
+     */
     public byte getCode() {
         return code;
     }
 
+    /**
+     * Get arg count description.
+     *
+     * @return descriptiive enum
+     */
     public ArgCount getArgCount() {
         return argCount;
     }
@@ -175,10 +190,25 @@ public enum OpCode {
         return String.format("%s[0x%s]", name(), toHex(code));
     }
 
+    /**
+     * Get the hex representation.
+     *
+     * Not preceded with "0x".
+     *
+     * @return two character string
+     */
     public String toHex() {
         return toHex(code);
     }
 
+    /**
+     * Calculates a two character long hex string of a given byte.
+     *
+     * Numbers below 0x0f will be preceded with a '0' character.
+     *
+     * @param b byte to convert
+     * @return two digit hex string
+     */
     public static String toHex(final byte b) {
         final String hex = Integer.toHexString(0xFF & b);
         return hex.length() == 1
@@ -186,6 +216,12 @@ public enum OpCode {
                 : hex;
     }
 
+    /**
+     * Lookup for the given mnemonic string if an opcode exists.
+     *
+     * @param mnemonic mnemonic name
+     * @return {@link #UNKWONN} for unknown mnemonics
+     */
     public static OpCode lokup(final String mnemonic) {
         if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Const.LOCALE))) {
             return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Const.LOCALE));
@@ -194,6 +230,12 @@ public enum OpCode {
         return UNKWONN;
     }
 
+    /**
+     * Lookup for the given opcode byte if an opcode exists.
+     *
+     * @param b opcode byte
+     * @return {@link #UNKWONN} for unknown mnemonics
+     */
     public static OpCode lookup(final byte b) {
         if (OPCODE_LOOKUP.containsKey(Byte.valueOf(b))) {
             return OPCODE_LOOKUP.get(Byte.valueOf(b));
@@ -202,15 +244,24 @@ public enum OpCode {
         return UNKWONN;
     }
 
+    /**
+     * Describes the count of arguments an opcode has.
+     */
     public enum ArgCount {
         NONE(0), ONE(1), TWO(2), THREE(3);
 
+        /** Number of arguments. */
         private final int count;
 
-        private ArgCount(final int count) {
+        ArgCount(final int count) {
             this.count = count;
         }
 
+        /**
+         * Get count of required arguments.
+         *
+         * @return amount as integer >= 0
+         */
         public int getCount() {
             return count;
         }

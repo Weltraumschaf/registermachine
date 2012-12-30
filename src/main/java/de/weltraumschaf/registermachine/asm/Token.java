@@ -13,25 +13,46 @@
 package de.weltraumschaf.registermachine.asm;
 
 /**
+ * Assembler token.
+ *
+ * Object is immutable.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class Token {
 
+    /** Token type. */
     private final TokenType type;
+    /** Token raw value. */
     private final String value;
 
+    /**
+     * Creates a token.
+     *
+     * @param type the token type
+     * @param value the tokens raw value, beginning and ending " of strings should be removed
+     */
     public Token(final TokenType type, final String value) {
         this.type = type;
         this.value = value;
     }
 
+    /**
+     * Get the token type.
+     *
+     * @return tokens type
+     */
     public TokenType getType() {
         return type;
     }
 
+    /**
+     * Get the token value.
+     *
+     * @return the tokens raw value.
+     */
     public String getValue() {
         return value;
     }
-    
+
 }

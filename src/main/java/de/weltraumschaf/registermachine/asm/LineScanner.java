@@ -19,15 +19,30 @@ import org.apache.commons.lang.StringUtils;
 
 
 /**
+ * Scans a line of assembler codes into tokens.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class LineScanner {
 
+    /**
+     * Convenience method for handling strings.
+     *
+     * @param line line string
+     * @return list of tokens, may be empty list, never null
+     * @throws AssemblerSyntaxException if, a syntax error is found
+     */
     List<Token> parse(final String line) throws AssemblerSyntaxException {
         return parse(new CharStream(line));
     }
 
+    /**
+     * Parses a given {@link CharStream} into tokens.
+     * 
+     * @param line line in a character accessible form
+     * @return list of tokens, may be empty list, never null
+     * @throws AssemblerSyntaxException if, a syntax error is found
+     */
     List<Token> parse(final CharStream line) throws AssemblerSyntaxException {
         final List<Token> tokens = Lists.newArrayList();
 
