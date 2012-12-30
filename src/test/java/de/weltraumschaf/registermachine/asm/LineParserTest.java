@@ -12,6 +12,8 @@
 package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.typing.Code;
 import de.weltraumschaf.registermachine.typing.Function;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.util.List;
@@ -62,7 +64,8 @@ public class LineParserTest {
         assertThat(main.getVariable(2), is(Value.valueOf(23)));
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void parse_mainWithThreeVariablesFunction() throws AssemblerSyntaxException {
         final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".var \"a\"", ".var \"b\"");
         final Function main = sut.parseLines(src);
@@ -94,5 +97,35 @@ public class LineParserTest {
         assertThat(main.getConstant(0), is(Value.valueOf(40)));
         assertThat(main.getConstant(1), is(Value.valueOf(42)));
         assertThat(main.getConstant(2), is(Value.valueOf(23)));
+    }
+
+    private List<Integer> createArgsList(final int... inArgs) {
+        final List<Integer> args = Lists.newArrayList();
+
+        for (int i = 0; i < inArgs.length; ++i) {
+            args.add(inArgs[i]);
+        }
+
+        return args;
+    }
+
+    @Test
+    public void parse_mainWithCode() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3",
+                "loadc 0 1",
+                "add 1 2",
+                "return 0 1");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+
+        final List<Code> code = main.getCode();
+        assertThat(code.size(), is(3));
+        assertThat(code.get(0), is(new Code(OpCode.LOADC, createArgsList(0, 1))));
+        assertThat(code.get(1), is(new Code(OpCode.ADD, createArgsList(1, 2))));
+        assertThat(code.get(2), is(new Code(OpCode.RETURN, createArgsList(0, 1))));
+
     }
 }

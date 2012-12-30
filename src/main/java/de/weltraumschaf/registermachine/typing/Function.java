@@ -55,6 +55,10 @@ public class Function {
         return code;
     }
 
+    public void addCode(final Code c) {
+        code.add(c);
+    }
+
     public int getNups() {
         return nups;
     }

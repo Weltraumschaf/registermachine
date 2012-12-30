@@ -131,6 +131,7 @@ public enum OpCode {
      *
      */
     PRINTLN(0x11, ArgCount.ONE),
+    RETURN(0x12, ArgCount.TWO),
     /**
      * Unknown opcode wil stop execution.
      */

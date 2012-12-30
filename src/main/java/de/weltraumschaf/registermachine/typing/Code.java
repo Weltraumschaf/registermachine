@@ -11,7 +11,9 @@
  */
 package de.weltraumschaf.registermachine.typing;
 
+import com.google.common.base.Objects;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
+import java.util.List;
 
 /**
  *
@@ -20,12 +22,27 @@ import de.weltraumschaf.registermachine.bytecode.OpCode;
 public class Code {
 
     private final OpCode op;
-    private final int[] args;
+    private final List<Integer> args;
 
-    public Code(OpCode op, int[] args) {
+    public Code(OpCode op, List<Integer> args) {
         super();
         this.op = op;
         this.args = args;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(op, args);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (! (obj instanceof Code)) {
+            return false;
+        }
+
+        final Code other = (Code) obj;
+
+        return Objects.equal(op, other.op) && Objects.equal(args, other.args);
+    }
 }

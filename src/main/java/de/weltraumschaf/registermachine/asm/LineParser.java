@@ -11,6 +11,9 @@
  */
 package de.weltraumschaf.registermachine.asm;
 
+import com.google.common.collect.Lists;
+import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.typing.Code;
 import de.weltraumschaf.registermachine.typing.Function;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.util.List;
@@ -74,16 +77,16 @@ class LineParser {
     }
 
     private void parseMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
-        final Token firstToken = tokens.get(0);
+        final Token metaCode = tokens.get(0);
 
-        if (".function".equals(firstToken.getValue())) {
+        if (".function".equals(metaCode.getValue())) {
             parseFunctionMetaCode(tokens.subList(1, tokens.size()));
-        } else if (".const".equals(firstToken.getValue())) {
+        } else if (".const".equals(metaCode.getValue())) {
             parseConstantMetaCode(tokens.subList(1, tokens.size()));
-        } else if (".var".equals(firstToken.getValue())) {
+        } else if (".var".equals(metaCode.getValue())) {
             parseVariableMetaCode(tokens.subList(1, tokens.size()));
         } else {
-            throw new AssemblerSyntaxException(String.format("Unsupported meta code mnemonic %s!", firstToken), getCurrentLine());
+            throw new AssemblerSyntaxException(String.format("Unsupported meta code mnemonic %s!", metaCode), getCurrentLine());
         }
     }
 
@@ -131,8 +134,31 @@ class LineParser {
         functions.peek().addVariable(value);
     }
 
-    private void parseOpCode(List<Token> tokens) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void parseOpCode(final List<Token> tokens) throws AssemblerSyntaxException {
+        final Token opCode = tokens.get(0);
+        final OpCode op = OpCode.lokup(opCode.getValue());
+
+        if (OpCode.UNKWONN == op) {
+            throw new AssemblerSyntaxException(String.format("Unknown opcode mnemonic %s!", opCode.getValue()), getCurrentLine());
+        }
+
+        List<Token> args = tokens.subList(1, tokens.size());
+
+        if (args.size() != op.getArgCount().getCount()) {
+            throw new AssemblerSyntaxException(String.format("Opcode %s requires %d arguments! %d arguments given.",
+                                                             op.toString(), op.getArgCount().getCount(), args.size()),
+                                               getCurrentLine());
+        }
+
+        final List<Integer> typedArgs = Lists.newArrayListWithCapacity(args.size());
+
+        for (final Token arg : args) {
+            if (TokenType.INTEGER != arg.getType()) {
+                throw new AssemblerSyntaxException(String.format("All arguments of opcode %s must be integers!", op.toString()), getCurrentLine());
+            }
+            typedArgs.add(parseToInt(arg));
+        }
+        functions.peek().addCode(new Code(op, typedArgs));
     }
 
     private Value deterineValue(final Token token) throws AssemblerSyntaxException, UnsupportedOperationException {
