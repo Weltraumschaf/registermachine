@@ -14,7 +14,6 @@ package de.weltraumschaf.registermachine.typing;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
 
 /**
@@ -24,7 +23,10 @@ import java.util.List;
  */
 public class Function {
 
-    private final List<Instruction> code = Lists.newArrayList();
+    private final List<Code> code = Lists.newArrayList();
+    private final List<Value> variables = Lists.newArrayList();
+    private final List<Value> constants = Lists.newArrayList();
+    private final List<Function> functions = Lists.newArrayList();
     private final int nups;
     private final int numparams;
     private final int isVararg;
@@ -49,7 +51,7 @@ public class Function {
                       .toString();
     }
 
-    public List<Instruction> getCode() {
+    public List<Code> getCode() {
         return code;
     }
 
