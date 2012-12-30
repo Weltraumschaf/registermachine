@@ -88,8 +88,13 @@ public class LineScannerTest {
         assertThat(token.getValue(), is(".const"));
     }
 
-    @Test @Ignore
-    public void scanString() {
+    @Test
+    public void scanString() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("  \"foo  bar;\"   ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.STRING));
+        assertThat(token.getValue(), is("foo  bar;"));
     }
 
     @Test @Ignore

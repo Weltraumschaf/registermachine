@@ -42,8 +42,8 @@ class LineScanner {
                 return tokens; // ignore rest of line
             } else if ('.' == c) {
                 tokens.add(scanMeta(line));
-//            } else if ('"' == c) {
-//                scaenString(line);
+            } else if ('"' == c) {
+                tokens.add(scaenString(line));
 //            } else if (StringUtils.isNumeric(String.valueOf(c))) {
 //                scaenNumber(line);
             } else if (StringUtils.isAlpha(String.valueOf(c))) {
@@ -61,8 +61,34 @@ class LineScanner {
         return tokens;
     }
 
-    private Token scaenString(CharStream line) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    // TODO Fix the problem if " are insidethe string.
+    private Token scaenString(final CharStream line) throws AssemblerSyntaxException {
+        line.nextChar(); // consume "
+        if (! line.hasNextChar()) {
+            throw new AssemblerSyntaxException("Unterminated string!", line.getLineNumber());
+        }
+
+        final StringBuilder value = new StringBuilder();
+        value.append(line.getCurrentChar());
+        boolean terminationSeen = false;
+        while (line.hasNextChar()) {
+            line.nextChar();
+            final char c = line.getCurrentChar();
+
+            if ('"' == c) {
+                terminationSeen = true;
+                line.nextChar(); // consume "
+                break;
+            }
+
+            value.append(c);
+        }
+
+        if (!terminationSeen) {
+            throw new AssemblerSyntaxException("Unterminated string!", line.getLineNumber());
+        }
+
+        return new Token(TokenType.STRING, value.toString());
     }
 
     private Token scaenNumber(CharStream line) {
