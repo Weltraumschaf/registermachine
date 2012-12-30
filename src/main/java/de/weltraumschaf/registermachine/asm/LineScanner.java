@@ -77,7 +77,9 @@ class LineScanner {
     // TODO Fix the problem if " are insidethe string.
     private Token scaenString(final CharStream line) throws AssemblerSyntaxException {
         if ('"' != line.getCurrentChar()) {
-            throw new AssemblerSyntaxException(String.format("String must start with \" at column %d!", line.getIndex()), line.getLineNumber());
+            throw new AssemblerSyntaxException(
+                    String.format("String must start with \" at column %d!", line.getIndex()),
+                    line.getLineNumber());
         }
         final String errorMessage = "Unterminated string at column %d!";
         line.nextChar(); // consume "
@@ -111,7 +113,8 @@ class LineScanner {
 
     private Token scaenNumber(CharStream line) throws AssemblerSyntaxException {
         if (!CharUtils.isNumeric(line.getCurrentChar())) {
-            throw new AssemblerSyntaxException(String.format("Number must start with digit at index %d!", line.getIndex()),
+            throw new AssemblerSyntaxException(
+                    String.format("Number must start with digit at index %d!", line.getIndex()),
                     line.getLineNumber());
         }
         final StringBuilder value = new StringBuilder();
@@ -131,7 +134,8 @@ class LineScanner {
             } else if (CharUtils.isWhitespace(peek) || peek == CharStream.EOL) {
                 break;
             } else {
-                throw new AssemblerSyntaxException(String.format("Unexpected character %s at column %d!", peek, line.getIndex()),
+                throw new AssemblerSyntaxException(
+                        String.format("Unexpected character %s at column %d!", peek, line.getIndex()),
                         line.getLineNumber());
             }
         }
@@ -141,7 +145,9 @@ class LineScanner {
 
     private Token scaenOpCodeOrLiteral(final CharStream line) throws AssemblerSyntaxException {
         if (!CharUtils.isAlpha(line.getCurrentChar())) {
-            throw new AssemblerSyntaxException(String.format("Opcodes or literals must start with alpha character at column %d!", line.getIndex()), line.getLineNumber());
+            throw new AssemblerSyntaxException(
+                    String.format("Opcodes or literals must start with alpha character at column %d!", line.getIndex()),
+                    line.getLineNumber());
         }
         final StringBuilder value = new StringBuilder();
         value.append(line.getCurrentChar());
@@ -175,7 +181,8 @@ class LineScanner {
 
     private Token scanMeta(final CharStream line) throws AssemblerSyntaxException {
         if (line.getCurrentChar() != '.') {
-            throw new AssemblerSyntaxException(String.format("Meta mnemonic at index %d must start with '.'!", line.getIndex()),
+            throw new AssemblerSyntaxException(
+                    String.format("Meta mnemonic at index %d must start with '.'!", line.getIndex()),
                     line.getLineNumber());
         }
 
@@ -183,7 +190,9 @@ class LineScanner {
         value.append(line.getCurrentChar());
 
         if (!line.hasNextChar() || !CharUtils.isAlpha(line.peekChar())) {
-            throw new AssemblerSyntaxException(String.format("Too short meta code mnemonic at column %d!", line.getIndex()), line.getLineNumber());
+            throw new AssemblerSyntaxException(
+                    String.format("Too short meta code mnemonic at column %d!", line.getIndex()),
+                    line.getLineNumber());
         }
 
         do {

@@ -20,7 +20,7 @@ class CharStream {
 
     /** Indicates end of line. */
     static final char EOL = (char) 0;
-    
+
     /**
      * Line number in the source.
      *

@@ -23,20 +23,46 @@ import java.util.List;
  */
 public class Function {
 
+    /**
+     * Contains function code.
+     */
     private final List<Code> code = Lists.newArrayList();
+    /**
+     * Contains local variables.
+     */
     private final List<Value> variables = Lists.newArrayList();
+    /**
+     * Contains local contains.
+     */
     private final List<Value> constants = Lists.newArrayList();
+    /**
+     * Contains nested functions.
+     */
     private final List<Function> functions = Lists.newArrayList();
+    /**
+     * Number of up values.
+     */
     private final int nups;
+    /**
+     * Number of parameters.
+     */
     private final int numparams;
+    /**
+     * Var arg description.
+     *
+     * TODO Remove this.
+     */
     private final int isVararg;
+    /**
+     * Max stack size.
+     */
     private final int maxStackSize;
 
-    public Function(int nups, int numparams, int is_vararg, int maxstacksize) {
+    public Function(int nups, int numparams, int isVararg, int maxstacksize) {
         super();
         this.nups = nups;
         this.numparams = numparams;
-        this.isVararg = is_vararg;
+        this.isVararg = isVararg;
         this.maxStackSize = maxstacksize;
     }
 

@@ -25,6 +25,11 @@ import org.apache.commons.lang.StringUtils;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class LineParser {
+    private static final int FUNCTION_ARG_COUNT = 4;
+    private static final int FIRST_ARG = 0;
+    private static final int SECOND_ARG = 1;
+    private static final int THIRD_ARG = 2;
+    private static final int FOURTH_ARG = 3;
 
     private final LineScanner scanner = new LineScanner();
     private final Stack<Function> functions = new Stack<Function>();
@@ -65,12 +70,14 @@ class LineParser {
                     parseOpCode(tokens);
                     break;
                 default:
-                    throw new AssemblerSyntaxException(String.format("First token of line neither mnemonic nor metacode!"), getCurrentLine());
+                    throw new AssemblerSyntaxException(
+                            String.format("First token of line neither mnemonic nor metacode!"), getCurrentLine());
             }
         }
 
         if (1 != functions.size()) {
-            throw new AssemblerSyntaxException("There must be exactly one function on parse stack at end of parsen! Found " + functions.size());
+            throw new AssemblerSyntaxException(
+                    "There must be exactly one function on parse stack at end of parsen! Found " + functions.size());
         }
 
         return functions.pop();
@@ -86,25 +93,30 @@ class LineParser {
         } else if (".var".equals(metaCode.getValue())) {
             parseVariableMetaCode(tokens.subList(1, tokens.size()));
         } else {
-            throw new AssemblerSyntaxException(String.format("Unsupported meta code mnemonic %s!", metaCode), getCurrentLine());
+            throw new AssemblerSyntaxException(
+                    String.format("Unsupported meta code mnemonic %s!", metaCode), getCurrentLine());
         }
     }
 
     private void parseFunctionMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
-        if (tokens.size() != 4) {
-            throw new AssemblerSyntaxException(String.format("Function mnemonic expects exactly 4 parameters! Given " + tokens.size()), getCurrentLine());
+        if (tokens.size() != FUNCTION_ARG_COUNT) {
+            throw new AssemblerSyntaxException(
+                    String.format("Function mnemonic expects exactly %d parameters but was %d!",
+                                  FUNCTION_ARG_COUNT, tokens.size()),
+                    getCurrentLine());
         }
 
         for (final Token t : tokens) {
             if (t.getType() != TokenType.INTEGER) {
-                throw new AssemblerSyntaxException("All four arguments of function mnemonic must be integers!", getCurrentLine());
+                throw new AssemblerSyntaxException("All four arguments of function mnemonic must be integers!",
+                                                   getCurrentLine());
             }
         }
 
-        functions.push(new Function(parseToInt(tokens.get(0)),
-                                    parseToInt(tokens.get(1)),
-                                    parseToInt(tokens.get(2)),
-                                    parseToInt(tokens.get(3))));
+        functions.push(new Function(parseToInt(tokens.get(FIRST_ARG)),
+                                    parseToInt(tokens.get(SECOND_ARG)),
+                                    parseToInt(tokens.get(THIRD_ARG)),
+                                    parseToInt(tokens.get(FOURTH_ARG))));
     }
 
     private static float parseToFloat(final Token t) {
@@ -116,7 +128,9 @@ class LineParser {
 
     private void parseConstantMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
         if (tokens.size() != 1) {
-            throw new AssemblerSyntaxException(String.format("Constant mnemonic expects exactly 1 parameters! Given " + tokens.size()), getCurrentLine());
+            throw new AssemblerSyntaxException(
+                    String.format("Constant mnemonic expects exactly 1 parameters! Given " + tokens.size()),
+                    getCurrentLine());
         }
 
         final Token token = tokens.get(0);
@@ -126,7 +140,9 @@ class LineParser {
 
     private void parseVariableMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
         if (tokens.size() != 1) {
-            throw new AssemblerSyntaxException(String.format("Variable mnemonic expects exactly 1 parameters! Given " + tokens.size()), getCurrentLine());
+            throw new AssemblerSyntaxException(
+                    String.format("Variable mnemonic expects exactly 1 parameters! Given " + tokens.size()),
+                    getCurrentLine());
         }
 
         final Token token = tokens.get(0);
@@ -139,10 +155,11 @@ class LineParser {
         final OpCode op = OpCode.lokup(opCode.getValue());
 
         if (OpCode.UNKWONN == op) {
-            throw new AssemblerSyntaxException(String.format("Unknown opcode mnemonic %s!", opCode.getValue()), getCurrentLine());
+            throw new AssemblerSyntaxException(String.format("Unknown opcode mnemonic %s!", opCode.getValue()),
+                                               getCurrentLine());
         }
 
-        List<Token> args = tokens.subList(1, tokens.size());
+        final List<Token> args = tokens.subList(1, tokens.size());
 
         if (args.size() != op.getArgCount().getCount()) {
             throw new AssemblerSyntaxException(String.format("Opcode %s requires %d arguments! %d arguments given.",
@@ -154,14 +171,16 @@ class LineParser {
 
         for (final Token arg : args) {
             if (TokenType.INTEGER != arg.getType()) {
-                throw new AssemblerSyntaxException(String.format("All arguments of opcode %s must be integers!", op.toString()), getCurrentLine());
+                throw new AssemblerSyntaxException(
+                        String.format("All arguments of opcode %s must be integers!", op.toString()),
+                        getCurrentLine());
             }
             typedArgs.add(parseToInt(arg));
         }
         functions.peek().addCode(new Code(op, typedArgs));
     }
 
-    private Value deterineValue(final Token token) throws AssemblerSyntaxException, UnsupportedOperationException {
+    private Value deterineValue(final Token token) throws AssemblerSyntaxException {
         Value value;
         switch (token.getType()) {
             case INTEGER:
@@ -169,6 +188,7 @@ class LineParser {
                 break;
             case FLOAT:
                 value = Value.valueOf(parseToFloat(token));
+                break;
             case LITERAL:
                 if ("nil".equals(token.getValue())) {
                     value = Value.getNil();
@@ -177,13 +197,15 @@ class LineParser {
                 } else if ("false".equals(token.getValue())) {
                     value = Value.getFalse();
                 } else {
-                    throw new AssemblerSyntaxException(String.format("Unsupported literal %s!", token.getValue()), getCurrentLine());
+                    throw new AssemblerSyntaxException(String.format("Unsupported literal %s!", token.getValue()),
+                                                       getCurrentLine());
                 }
                 break;
             case STRING:
                 throw new UnsupportedOperationException("Not yet implemented");
             default:
-                throw new AssemblerSyntaxException(String.format("Unsupported constant type %s!", token.getType()), getCurrentLine());
+                throw new AssemblerSyntaxException(String.format("Unsupported constant type %s!", token.getType()),
+                                                   getCurrentLine());
 
         }
         return value;

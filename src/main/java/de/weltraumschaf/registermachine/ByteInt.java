@@ -27,7 +27,7 @@ public final class ByteInt {
     /** How much bits to shift 4th byte. */
     private static final int FOURTH_BYTE_SHIFT = 24;
 
-    public static final int ONE_BYTE_MASK = 0xFF;
+    private static final int ONE_BYTE_MASK = 0xFF;
     private static final int TWO_BYTE_MASK = 0xFFFF;
     private static final int THREE_BYTE_MASK = 0xFFFFFF;
     private static final int FOUR_BYTE_MASK = 0xFFFFFFFF;

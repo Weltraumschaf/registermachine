@@ -13,12 +13,33 @@ package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
+/**
+ * Interface for machine instructions.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 public interface Instruction {
 
+    /**
+     * Address of register A.
+     *
+     * Usually used as accumulator
+     */
     int REG_A = 0;
+    /**
+     * Address of register B.
+     */
     int REG_B = 1;
+    /**
+     * Address of register C.
+     */
     int REG_C = 2;
 
+    /**
+     * Evaluates the instruction with given configuration.
+     *
+     * @param config runtime configuration
+     */
     void evaluate(RuntimeConfiguration config);
 
 }

@@ -113,8 +113,6 @@ public class Assembler {
         }
     }
 
-    private static final String ARG_CNT_ERR_FMT = "Opcode %s requires %d arguments!";
-
     private List<Byte> createByteListFromNumericArg(final String arg) throws AssemblerSyntaxException {
         if (!StringUtils.isNumeric(arg)) {
             throw new AssemblerSyntaxException("Argument one not numeric!", getCurrentLine());
@@ -127,7 +125,7 @@ public class Assembler {
 
     private void assertArgCount(final List<String> args, final OpCode bc) throws AssemblerSyntaxException {
         if (args.size() != bc.getArgCount().getCount()) {
-            throw new AssemblerSyntaxException(String.format(ARG_CNT_ERR_FMT,
+            throw new AssemblerSyntaxException(String.format("Opcode %s requires %d arguments!",
                                                              bc.name(),
                                                              bc.getArgCount().getCount()),
                     getCurrentLine());

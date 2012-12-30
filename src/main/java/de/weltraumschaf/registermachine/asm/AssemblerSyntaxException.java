@@ -21,7 +21,7 @@ public class AssemblerSyntaxException extends Exception {
 
     /**
      * Sets the line to -1.
-     * 
+     *
      * @param syntaxError the human readable error message
      */
     public AssemblerSyntaxException(final String syntaxError) {

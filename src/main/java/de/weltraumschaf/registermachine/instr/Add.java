@@ -13,6 +13,11 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
+/**
+ * Add instruction.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 class Add implements Instruction {
 
     private final int op1Reg;
@@ -21,7 +26,7 @@ class Add implements Instruction {
     public Add() {
         this(REG_B, REG_C);
     }
-    
+
     public Add(final int op1Reg, final int op2Reg) {
         super();
         this.op1Reg = op1Reg;

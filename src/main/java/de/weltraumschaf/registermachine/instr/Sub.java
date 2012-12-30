@@ -14,6 +14,11 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
+/**
+ * Subtract instruction.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 class Sub implements Instruction {
 
     private final int op1Reg;

@@ -23,7 +23,7 @@ import java.util.Map;
  * [ opcode 1 byte ] [ arg1 4 byte ]
  * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ]
  * [ opcode 1 byte ] [ arg1 4 byte ] [ arg2 4 byte ] [ arg3 4 byte ]
- * <pre>
+ * </pre>
  *
  * TODO Make result register implicitly to 0.
  *

@@ -17,6 +17,11 @@ import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Implements the register based virtual machine.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 public class RegisterMachine {
     private static final int DEBUG_PAD = 26;
 
@@ -49,7 +54,7 @@ public class RegisterMachine {
         debugInit(debugOutput);
 
         if (!program.isEmpty()) {
-            while ( config.getProgramCounter() < program.size()) {
+            while (config.getProgramCounter() < program.size()) {
                 final Instruction instruction = program.get(config.getProgramCounter());
                 config.incrementProgramCounter();
                 instruction.evaluate(config);

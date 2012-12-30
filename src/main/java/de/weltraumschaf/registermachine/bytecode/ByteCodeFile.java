@@ -27,13 +27,20 @@ import java.util.Arrays;
  * [ 1 ... 13 bytes opcode     ]
  * ...
  * [ 1 ... 13 bytes opcode     ]
- * <pre>
+ * </pre>
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ByteCodeFile {
+
+    /** Byte position of version start. */
+    private static final int VERSION_OFFSET = 2;
+    /** Byte position of code start. */
     private static final int CODE_OFFSTET = 4;
 
+    /**
+     * The byte code w/o header.
+     */
     private final byte[] bytecode;
 
     public ByteCodeFile(final InputStream input) throws IOException {
@@ -60,7 +67,7 @@ public class ByteCodeFile {
     }
 
     public short getVersion() {
-        return ByteInt.shortFromBytes(Arrays.copyOfRange(bytecode, 2, 4));
+        return ByteInt.shortFromBytes(Arrays.copyOfRange(bytecode, VERSION_OFFSET, CODE_OFFSTET));
     }
 
     public byte[] getProgramm() {

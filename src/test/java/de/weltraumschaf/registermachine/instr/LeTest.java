@@ -27,7 +27,7 @@ public class LeTest {
 
     @Test
     public void evaluate_firstOperandLessIsTrue() {
-        RuntimeConfiguration config = new RuntimeConfiguration();
+        final RuntimeConfiguration config = new RuntimeConfiguration();
         config.setRegister(1, Value.valueOf(2));
         config.setRegister(2, Value.valueOf(5));
         sut.evaluate(config);
@@ -36,7 +36,7 @@ public class LeTest {
 
     @Test
     public void evaluate_firstOperandNotLessIsFalse() {
-        RuntimeConfiguration config = new RuntimeConfiguration();
+        final RuntimeConfiguration config = new RuntimeConfiguration();
         config.setRegister(1, Value.valueOf(5));
         config.setRegister(2, Value.valueOf(2));
         sut.evaluate(config);
@@ -45,7 +45,7 @@ public class LeTest {
 
     @Test
     public void evaluate_sameIsTrue() {
-        RuntimeConfiguration config = new RuntimeConfiguration();
+        final RuntimeConfiguration config = new RuntimeConfiguration();
         config.setRegister(1, Value.valueOf(5));
         config.setRegister(2, Value.valueOf(5));
         sut.evaluate(config);

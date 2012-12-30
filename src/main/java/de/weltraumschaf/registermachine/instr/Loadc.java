@@ -14,6 +14,11 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
+/**
+ * Load constant instruction.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 class Loadc implements Instruction {
 
     private final int register;

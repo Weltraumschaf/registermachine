@@ -11,12 +11,34 @@
 
 package de.weltraumschaf.registermachine.vm;
 
+/**
+ * Represents a scope.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 class Scope {
 
+    /**
+     * Registers of current scope.
+     */
     private final Register registers;
+    /**
+     * Constant values pool.
+     */
     private final Pool constants;
+    /**
+     * Variable values pool.
+     */
     private final Pool variables;
+    /**
+     * Functions defined in this scope.
+     */
     private final FunctionTable functions;
+    /**
+     * Parent scope.
+     *
+     * Is null for the root scope of main function.
+     */
     private final Scope parent;
 
     Scope() {
@@ -51,7 +73,5 @@ class Scope {
     Scope getParent() {
         return parent;
     }
-
-
 
 }

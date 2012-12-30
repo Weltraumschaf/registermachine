@@ -21,7 +21,6 @@ import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.vm.Executor;
 import de.weltraumschaf.registermachine.vm.RegisterMachine;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -36,47 +35,95 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * Main application invoked by JVM.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class App extends InvokableAdapter {
 
+    /**
+     * Name of the executable displayed in usage.
+     */
     private static final String EXECUTABLE = "machine";
+    /**
+     * Help message header.
+     */
     private static final String HEADER_FMT = "%n%nRegister based machine v%s.%n%n";
+    /**
+     * Author for help message footer.
+     */
     private static final String AUTHOR = "Sven Strittmatter <weltraumschaf@googlemail.com>";
     /**
      * URI to issue tracker.
      */
     private static final String ISSUE_TRACKER = "https://github.com/Weltraumschaf/registermachine/issues";
     /**
-     * Usage footer.
+     * Help footer.
      */
     private static final String FOOTER = String.format("%nWritten 2012 by %s%nWrite bugs to %s%n",
             AUTHOR, ISSUE_TRACKER);
-    private static final Options OPTIONS = new Options();
+    /**
+     * File extension for assembly files.
+     */
     private static final String CTASM_EXT = ".ctasm";
+    /**
+     * File extension for byte code files.
+     */
     private static final String BC_EXT = ".ct";
+    /**
+     * Help option string.
+     */
     private static final String HELP_OPT = "h";
+    /**
+     * Verbose option string.
+     */
     private static final String VERBOSE_OPT = "v";
+    /**
+     * Compile option string.
+     */
     private static final String COMPILE_OPT = "c";
-    private static final String PRINT_OPT = "p";
+    /**
+     * Print program option string.
+     */
+    private static final String PRINT_PROGRAM_OPT = "p";
+    /**
+     * Execute option string.
+     */
     private static final String EXECUTE_OPT = "e";
+    /**
+     * Disassemble option string.
+     */
     private static final String DISASSEMBLE_OPT = "d";
+    /**
+     * Print opcode list option string.
+     */
     private static final String PRINT_OPCODES_OPT = "o";
+    /**
+     * Interpret option string.
+     */
     private static final String INTERPRET_OPT = "i";
+    /**
+     * Command line options.
+     */
+    private static final Options OPTIONS = new Options();
 
     static {
         OPTIONS.addOption(HELP_OPT, false, "display help");
         OPTIONS.addOption(VERBOSE_OPT, false, "be more verbose");
         OPTIONS.addOption(COMPILE_OPT, true, "compile assembly source");
-        OPTIONS.addOption(PRINT_OPT, false, "print program output");
+        OPTIONS.addOption(PRINT_PROGRAM_OPT, false, "print program output");
         OPTIONS.addOption(EXECUTE_OPT, true, "executes byte code file");
         OPTIONS.addOption(DISASSEMBLE_OPT, true, "disassemble byte code file");
         OPTIONS.addOption(PRINT_OPCODES_OPT, false, "print list of al opcodes");
         OPTIONS.addOption(INTERPRET_OPT, true, "interpret assembly source");
     }
-
+    /**
+     * Command line argument parser.
+     */
     private static final CommandLineParser PARSER = new PosixParser();
+    /**
+     * Command line arguments.
+     */
     private final CommandLine commandLineArgs;
 
     /**
@@ -112,7 +159,7 @@ public final class App extends InvokableAdapter {
     }
 
     private boolean isPrintProgram() {
-        return commandLineArgs.hasOption(PRINT_OPT);
+        return commandLineArgs.hasOption(PRINT_PROGRAM_OPT);
     }
 
     private boolean isExecute() {
@@ -186,7 +233,7 @@ public final class App extends InvokableAdapter {
         }
     }
 
-    private void disassembleCode(final String filename) throws FileNotFoundException, IOException {
+    private void disassembleCode(final String filename) throws IOException {
         final Disassembler disasm = new Disassembler();
         final String asm = disasm.disassamble(FileIo.newInputStream(filename));
         getIoStreams().println(asm);
@@ -196,7 +243,7 @@ public final class App extends InvokableAdapter {
         executeByteCode(new ByteCodeFile(FileIo.newInputStream(filename)));
     }
 
-    private static String generateCompiledFileName(final String inFilename)  {
+    private static String generateCompiledFileName(final String inFilename) {
         return inFilename.replace(CTASM_EXT, "") + BC_EXT;
     }
 
@@ -230,9 +277,9 @@ public final class App extends InvokableAdapter {
     private void printOpCodes() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append("mnemonic args   byte")
-              .append(Const.NL)
-              .append("--------------------")
-              .append(Const.NL);
+                .append(Const.NL)
+                .append("--------------------")
+                .append(Const.NL);
         final String fmt = "%s0x%s%n";
         for (final OpCode op : OpCode.values()) {
             final StringBuilder mnemonic = new StringBuilder();
@@ -248,9 +295,8 @@ public final class App extends InvokableAdapter {
         getIoStreams().print(buffer.toString());
     }
 
-    private void interpretAssemblv(String inFilename) throws IOException, AssemblerSyntaxException {
-        ByteCodeFile bc = assembleFile(inFilename);
-        executeByteCode(bc);
+    private void interpretAssemblv(final String inFilename) throws IOException, AssemblerSyntaxException {
+        executeByteCode(assembleFile(inFilename));
     }
 
     private void executeByteCode(final ByteCodeFile bc) throws RuntimeException {
@@ -268,5 +314,4 @@ public final class App extends InvokableAdapter {
         final Assembler asm = new Assembler();
         return asm.assamble(FileIo.newInputStream(inFilename));
     }
-
 }

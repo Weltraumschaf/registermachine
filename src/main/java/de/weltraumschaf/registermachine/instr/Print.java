@@ -14,6 +14,11 @@ package de.weltraumschaf.registermachine.instr;
 import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
+/**
+ * Print instruction.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 class Print implements Instruction {
     private final int srcReg;
     private final IO io;

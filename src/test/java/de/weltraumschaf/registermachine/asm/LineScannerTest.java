@@ -14,7 +14,6 @@ package de.weltraumschaf.registermachine.asm;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -207,12 +206,12 @@ public class LineScannerTest {
     }
 
 
-    @Test(expected=AssemblerSyntaxException.class)
+    @Test(expected = AssemblerSyntaxException.class)
     public void scan_unterminatedEmptyString() throws AssemblerSyntaxException {
         sut.parse("  \"");
     }
 
-    @Test(expected=AssemblerSyntaxException.class)
+    @Test(expected = AssemblerSyntaxException.class)
     public void scan_unterminatedString() throws AssemblerSyntaxException {
         sut.parse("  \"foo  ");
     }

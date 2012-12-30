@@ -96,4 +96,5 @@ public class AssemblerTest {
         assertThat(program[43], is((byte) 0x00)); // arg 2
         assertThat(program[44], is((byte) 0x00)); // arg 2
     }
+
 }

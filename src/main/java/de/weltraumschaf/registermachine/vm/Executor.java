@@ -46,7 +46,8 @@ public class Executor {
 
     private void validateVersion(ByteCodeFile bc) {
         if (VERSION < bc.getVersion()) {
-            throw new IllegalArgumentException(String.format("Too new byte code ver. %d for executor ver. %d!", bc.getVersion(), VERSION));
+            throw new IllegalArgumentException(
+                    String.format("Too new byte code ver. %d for executor ver. %d!", bc.getVersion(), VERSION));
         }
     }
 

@@ -14,17 +14,21 @@ import de.weltraumschaf.registermachine.instr.Instruction;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.util.Stack;
 
+/**
+ * Runtime environment configuration.
+ *
+ * Manages a stack of scopes and a program counter.
+ *
+ * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ */
 public class RuntimeConfiguration {
 
     private final Stack<Scope> scopes = new Stack<Scope>();
-
-    private Scope currentScope;
     private int programCounter;
 
     public RuntimeConfiguration() {
         super();
-        currentScope = new Scope();
-        scopes.push(currentScope);
+        scopes.push(new Scope());
     }
 
     public int getProgramCounter() {
@@ -50,8 +54,9 @@ public class RuntimeConfiguration {
     public void setRegisterC(final Value v) {
         setRegister(Instruction.REG_C, v);
     }
+
     public void setRegister(final int r, final Value v) {
-        currentScope.getRegisters().set(r, v);
+        scopes.peek().getRegisters().set(r, v);
     }
 
     public Value getRegisterA() {
@@ -67,40 +72,40 @@ public class RuntimeConfiguration {
     }
 
     public Value getRegister(final int r) {
-        return currentScope.getRegisters().get(r);
+        return scopes.peek().getRegisters().get(r);
     }
 
     public void assignConstant(final Value v) {
-        currentScope.getConstants().assign(v);
+        scopes.peek().getConstants().assign(v);
     }
 
     public boolean lookupConstant(final int index) {
-        return currentScope.getConstants().lookup(index);
+        return scopes.peek().getConstants().lookup(index);
     }
 
     public Value retireveConstant(final int index) {
-        return currentScope.getConstants().retrieve(index);
+        return scopes.peek().getConstants().retrieve(index);
     }
 
     public void assignVariable(final Value v) {
-        currentScope.getVariables().assign(v);
+        scopes.peek().getVariables().assign(v);
     }
 
     public boolean lookupVariable(final int index) {
-        return currentScope.getVariables().lookup(index);
+        return scopes.peek().getVariables().lookup(index);
     }
 
     public Value retireveVariable(final int index) {
-        return currentScope.getVariables().retrieve(index);
+        return scopes.peek().getVariables().retrieve(index);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Counter=")
-          .append(programCounter)
-          .append(" Registers=")
-          .append(currentScope.getRegisters());
+                .append(programCounter)
+                .append(" Registers=")
+                .append(scopes.peek().getRegisters());
         return sb.toString();
     }
 

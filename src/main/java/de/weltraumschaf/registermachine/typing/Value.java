@@ -32,6 +32,7 @@ public final class Value {
      * Universal FALSE.
      */
     private static final Value FALSE = new Value(false);
+    private static final double FLOAT_COMPARE_DELTA = 0.00001;
     /**
      * Type of value.
      */
@@ -140,7 +141,7 @@ public final class Value {
     }
 
     static boolean floatToBoolean(final float in) {
-        return Math.abs(in - 0.0) > 0.00001;
+        return Math.abs(in - 0.0) > FLOAT_COMPARE_DELTA;
     }
 
     static int booleanToInteger(final boolean in) {

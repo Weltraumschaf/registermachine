@@ -9,21 +9,4 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
-package de.weltraumschaf.registermachine.instr;
-
-import org.junit.Test;
-import org.junit.Ignore;
-
-/**
- *
- * @author Sven Strittmatter <weltraumschaf@googlemail.com>
- */
-public class LoadTest {
-
-    @Test @Ignore("Icomplete")
-    public void evaluate() {
-
-    }
-
-}
+package de.weltraumschaf.registermachine.typing;
