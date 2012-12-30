@@ -38,7 +38,7 @@ class LineScanner {
 
     /**
      * Parses a given {@link CharStream} into tokens.
-     * 
+     *
      * @param line line in a character accessible form
      * @return list of tokens, may be empty list, never null
      * @throws AssemblerSyntaxException if, a syntax error is found
@@ -63,7 +63,7 @@ class LineScanner {
                 tokens.add(scaenNumber(line));
             } else if (StringUtils.isAlpha(String.valueOf(c))) {
                 tokens.add(scaenOpCodeOrLiteral(line));
-            } else if (StringUtils.isWhitespace(String.valueOf(c))) {
+            } else if (StringUtils.isWhitespace(String.valueOf(c))) { // NOPMD
                 // ignore
             } else {
                 throw new AssemblerSyntaxException(String.format("Unexpected character '%s' at column %d!",

@@ -9,24 +9,48 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.instr;
 
 import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 
 /**
+ * Creates concrete instruction objects.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class Factory {
 
+    /**
+     * Hide constructor for pure static class.
+     */
+    private Factory() {
+        super();
+    }
+
+    /**
+     * Verify that an instruction has correct number of arguments.
+     *
+     * @param bc opcode to verify for
+     * @param args arguments
+     * @throws IllegalArgumentException if, amount of arguments does not match
+     */
     private static void verifyArcCount(final OpCode bc, final int[] args) {
         if (args.length != bc.getArgCount().getCount()) {
-            throw  new IllegalArgumentException(String.format("Opcode %s requires %d arguments!", bc.toString(), bc.getArgCount().getCount()));
+            throw new IllegalArgumentException(String.format("Opcode %s requires %d arguments!",
+                                                             bc.toString(), bc.getArgCount().getCount()));
         }
     }
 
+    /**
+     * Creates instruction.
+     *
+     * @param bc opcode to create for
+     * @param args args for instruction
+     * @param io used for I/O
+     * @return concrete instruction
+     * @throws IllegalArgumentException if, amount of arguments does not match
+     */
     public static Instruction createInstruction(final OpCode bc, final int[] args, final IO io) {
         verifyArcCount(bc, args);
         Instruction instr = new Nop();

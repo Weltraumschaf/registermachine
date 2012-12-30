@@ -102,8 +102,9 @@ public final class Value {
             case BOOLEAN:
                 return String.valueOf(getBooleanValue());
             case NIL:
-            default:
                 return "NIL";
+            default:
+                return "UNKNOWN";
 
         }
     }

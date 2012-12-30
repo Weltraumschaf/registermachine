@@ -32,7 +32,7 @@ public class Eq implements Instruction {
     public void evaluate(final RuntimeConfiguration config) {
         final Value op1 = config.getRegister(op1Reg);
         final Value op2 = config.getRegister(op2Reg);
-        Value result;
+
         if (op1.getIntegerValue() == op2.getIntegerValue()) {
             config.setRegister(REG_A, Value.getTrue());
         } else {

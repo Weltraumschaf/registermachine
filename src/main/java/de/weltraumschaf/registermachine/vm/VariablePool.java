@@ -45,7 +45,12 @@ class VariablePool implements Pool {
 
     @Override
     public boolean lookup(final int index) {
-        return values.contains(index);
+        try {
+            values.get(index);
+            return true;
+        } catch (IndexOutOfBoundsException ex) {
+            return false;
+        }
     }
 
     @Override
