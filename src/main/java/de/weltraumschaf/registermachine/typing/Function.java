@@ -55,4 +55,38 @@ public class Function {
         return code;
     }
 
+    public int getNups() {
+        return nups;
+    }
+
+    public int getNumparams() {
+        return numparams;
+    }
+
+    public int getIsVararg() {
+        return isVararg;
+    }
+
+    public int getMaxStackSize() {
+        return maxStackSize;
+    }
+
+    public void addVariable(final Value v) {
+        variables.add(v);
+    }
+
+    public Value getVariable(final int index) {
+        return variables.get(index);
+    }
+
+    public void addConstant(final Value v) {
+        constants.add(v);
+    }
+
+    public Value getConstant(final int index) {
+        return constants.get(index);
+    }
+
+
+
 }

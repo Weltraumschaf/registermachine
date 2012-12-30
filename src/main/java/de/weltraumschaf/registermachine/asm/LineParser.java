@@ -9,11 +9,12 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.asm;
 
 import de.weltraumschaf.registermachine.typing.Function;
+import de.weltraumschaf.registermachine.typing.Value;
 import java.util.List;
+import java.util.Stack;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -23,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 class LineParser {
 
     private final LineScanner scanner = new LineScanner();
-    private Function mainfunction = null;
+    private final Stack<Function> functions = new Stack<Function>();
     private int currentLine;
 
     private void resetCurrentLine() {
@@ -50,7 +51,7 @@ class LineParser {
             final List<Token> tokens = scanner.parse(line);
 
             if (tokens.isEmpty()) {
-                throw new AssemblerSyntaxException(String.format("Can't compile! No tokens found."), getCurrentLine());
+                continue;
             }
 
             switch (tokens.get(0).getType()) {
@@ -65,15 +66,102 @@ class LineParser {
             }
         }
 
-        return mainfunction;
+        if (1 != functions.size()) {
+            throw new AssemblerSyntaxException("There must be exactly one function on parse stack at end of parsen! Found " + functions.size());
+        }
+
+        return functions.pop();
     }
 
-    private void parseMetaCode(List<Token> tokens) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void parseMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
+        final Token firstToken = tokens.get(0);
+
+        if (".function".equals(firstToken.getValue())) {
+            parseFunctionMetaCode(tokens.subList(1, tokens.size()));
+        } else if (".const".equals(firstToken.getValue())) {
+            parseConstantMetaCode(tokens.subList(1, tokens.size()));
+        } else if (".var".equals(firstToken.getValue())) {
+            parseVariableMetaCode(tokens.subList(1, tokens.size()));
+        } else {
+            throw new AssemblerSyntaxException(String.format("Unsupported meta code mnemonic %s!", firstToken), getCurrentLine());
+        }
+    }
+
+    private void parseFunctionMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
+        if (tokens.size() != 4) {
+            throw new AssemblerSyntaxException(String.format("Function mnemonic expects exactly 4 parameters! Given " + tokens.size()), getCurrentLine());
+        }
+
+        for (final Token t : tokens) {
+            if (t.getType() != TokenType.INTEGER) {
+                throw new AssemblerSyntaxException("All four arguments of function mnemonic must be integers!", getCurrentLine());
+            }
+        }
+
+        functions.push(new Function(parseToInt(tokens.get(0)),
+                                    parseToInt(tokens.get(1)),
+                                    parseToInt(tokens.get(2)),
+                                    parseToInt(tokens.get(3))));
+    }
+
+    private static float parseToFloat(final Token t) {
+        return Float.parseFloat(t.getValue());
+    }
+    private static int parseToInt(final Token t) {
+        return Integer.parseInt(t.getValue());
+    }
+
+    private void parseConstantMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
+        if (tokens.size() != 1) {
+            throw new AssemblerSyntaxException(String.format("Constant mnemonic expects exactly 1 parameters! Given " + tokens.size()), getCurrentLine());
+        }
+
+        final Token token = tokens.get(0);
+        final Value value = deterineValue(token);
+        functions.peek().addConstant(value);
+    }
+
+    private void parseVariableMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
+        if (tokens.size() != 1) {
+            throw new AssemblerSyntaxException(String.format("Variable mnemonic expects exactly 1 parameters! Given " + tokens.size()), getCurrentLine());
+        }
+
+        final Token token = tokens.get(0);
+        final Value value = deterineValue(token);
+        functions.peek().addVariable(value);
     }
 
     private void parseOpCode(List<Token> tokens) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    private Value deterineValue(final Token token) throws AssemblerSyntaxException, UnsupportedOperationException {
+        Value value;
+        switch (token.getType()) {
+            case INTEGER:
+                value = Value.valueOf(parseToInt(token));
+                break;
+            case FLOAT:
+                value = Value.valueOf(parseToFloat(token));
+            case LITERAL:
+                if ("nil".equals(token.getValue())) {
+                    value = Value.getNil();
+                } else if ("true".equals(token.getValue())) {
+                    value = Value.getTrue();
+                } else if ("false".equals(token.getValue())) {
+                    value = Value.getFalse();
+                } else {
+                    throw new AssemblerSyntaxException(String.format("Unsupported literal %s!", token.getValue()), getCurrentLine());
+                }
+                break;
+            case STRING:
+                throw new UnsupportedOperationException("Not yet implemented");
+            default:
+                throw new AssemblerSyntaxException(String.format("Unsupported constant type %s!", token.getType()), getCurrentLine());
+
+        }
+        return value;
+    }
+
 
 }

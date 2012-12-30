@@ -63,12 +63,12 @@ public class LineScannerTest {
 
     @Test
     public void scan_localMetaCodeWithStringArg() throws AssemblerSyntaxException {
-        final List<Token> tokens = sut.parse(".local \"b\"");
+        final List<Token> tokens = sut.parse(".var \"b\"");
         assertThat(tokens.size(), is(2));
 
         final Token metaCodeToken = tokens.get(0);
         assertThat(metaCodeToken.getType(), is(TokenType.METACODE));
-        assertThat(metaCodeToken.getValue(), is(".local"));
+        assertThat(metaCodeToken.getValue(), is(".var"));
 
         final Token nupsToken = tokens.get(1);
         assertThat(nupsToken.getType(), is(TokenType.STRING));
@@ -77,12 +77,12 @@ public class LineScannerTest {
 
     @Test
     public void scan_localMetaCodeWithIntegerArg() throws AssemblerSyntaxException {
-        final List<Token> tokens = sut.parse(".local 42");
+        final List<Token> tokens = sut.parse(".var 42");
         assertThat(tokens.size(), is(2));
 
         final Token metaCodeToken = tokens.get(0);
         assertThat(metaCodeToken.getType(), is(TokenType.METACODE));
-        assertThat(metaCodeToken.getValue(), is(".local"));
+        assertThat(metaCodeToken.getValue(), is(".var"));
 
         final Token nupsToken = tokens.get(1);
         assertThat(nupsToken.getType(), is(TokenType.INTEGER));
@@ -181,11 +181,11 @@ public class LineScannerTest {
 
     @Test
     public void scan_localMetaCode() throws AssemblerSyntaxException {
-        final List<Token> tokens = sut.parse("    .local   ");
+        final List<Token> tokens = sut.parse("    .var   ");
         assertThat(tokens.size(), is(1));
         final Token token = tokens.get(0);
         assertThat(token.getType(), is(TokenType.METACODE));
-        assertThat(token.getValue(), is(".local"));
+        assertThat(token.getValue(), is(".var"));
     }
 
     @Test
@@ -237,7 +237,7 @@ public class LineScannerTest {
 
     @Test
     public void scan_variousTokens() throws AssemblerSyntaxException {
-        final List<Token> tokens = sut.parse(".function 23 \"foo\" 42 .local 11");
+        final List<Token> tokens = sut.parse(".function 23 \"foo\" 42 .var 11");
         assertThat(tokens.size(), is(6));
 
         Token token = tokens.get(0);
@@ -258,7 +258,7 @@ public class LineScannerTest {
 
         token = tokens.get(4);
         assertThat(token.getType(), is(TokenType.METACODE));
-        assertThat(token.getValue(), is(".local"));
+        assertThat(token.getValue(), is(".var"));
 
         token = tokens.get(5);
         assertThat(token.getType(), is(TokenType.INTEGER));

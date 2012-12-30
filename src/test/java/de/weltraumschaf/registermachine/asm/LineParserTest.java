@@ -9,11 +9,16 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.asm;
 
-import org.junit.Test;
+import com.google.common.collect.Lists;
+import de.weltraumschaf.registermachine.typing.Function;
+import de.weltraumschaf.registermachine.typing.Value;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -21,8 +26,73 @@ import static org.junit.Assert.*;
  */
 public class LineParserTest {
 
+    private final LineParser sut = new LineParser();
+
     @Test
-    public void parse_mainFunction() {
+    public void parse_emptyMainFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
     }
 
+    @Test
+    public void parse_mainWithOneIntegerVariableFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".var 40");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+        assertThat(main.getVariable(0), is(Value.valueOf(40)));
+    }
+
+    @Test
+    public void parse_mainWithThreeIntegerVariableFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".var 40", ".var 42", ".var 23");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+        assertThat(main.getVariable(0), is(Value.valueOf(40)));
+        assertThat(main.getVariable(1), is(Value.valueOf(42)));
+        assertThat(main.getVariable(2), is(Value.valueOf(23)));
+    }
+
+    @Test @Ignore
+    public void parse_mainWithThreeVariablesFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".var \"a\"", ".var \"b\"");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+    }
+
+    @Test
+    public void parse_mainWithOneIntegerConstantFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".const 40");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+        assertThat(main.getConstant(0), is(Value.valueOf(40)));
+    }
+
+    @Test
+    public void parse_mainWithThreeConstantVariableFunction() throws AssemblerSyntaxException {
+        final List<String> src = Lists.newArrayList(".function 0 1 2 3", ".const 40", ".const 42", ".const 23");
+        final Function main = sut.parseLines(src);
+        assertThat(main.getNups(), is(0));
+        assertThat(main.getNumparams(), is(1));
+        assertThat(main.getIsVararg(), is(2));
+        assertThat(main.getMaxStackSize(), is(3));
+        assertThat(main.getConstant(0), is(Value.valueOf(40)));
+        assertThat(main.getConstant(1), is(Value.valueOf(42)));
+        assertThat(main.getConstant(2), is(Value.valueOf(23)));
+    }
 }

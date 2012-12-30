@@ -33,7 +33,7 @@ enum TokenType {
     /**
      * Meta codes.
      *
-     * meta = ".function" | ".local" | ".const" .
+     * meta = ".function" | ".var" | ".const" .
      */
     METACODE,
     /**
