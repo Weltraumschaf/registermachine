@@ -49,6 +49,11 @@ public class CharStreamTest {
 
         assertThat(sut.getCurrentChar(), is('o'));
         assertThat(sut.getIndex(), is(2));
+        assertThat(sut.hasNextChar(), is(true));
+        sut.nextChar();
+
+        assertThat(sut.getCurrentChar(), is(CharStream.EOL));
+        assertThat(sut.getIndex(), is(3));
         assertThat(sut.hasNextChar(), is(false));
     }
 

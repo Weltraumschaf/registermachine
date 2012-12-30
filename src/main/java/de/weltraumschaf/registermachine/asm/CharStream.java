@@ -18,6 +18,9 @@ package de.weltraumschaf.registermachine.asm;
  */
 class CharStream {
 
+    /** Indicates end of line. */
+    static final char EOL = (char) 0;
+    
     /**
      * Line number in the source.
      *
@@ -44,7 +47,7 @@ class CharStream {
 
     /**
      * Dedicated constructor.
-     * 
+     *
      * @param str representing the line
      * @param lineNumber line number in the source string
      */
@@ -59,7 +62,11 @@ class CharStream {
     }
 
     char getCurrentChar() {
-        return str.charAt(index);
+        try {
+            return str.charAt(index);
+        } catch (IndexOutOfBoundsException ex) {
+            return EOL;
+        }
     }
 
     void nextChar() {
@@ -69,11 +76,15 @@ class CharStream {
     }
 
     char peekChar() {
-        return str.charAt(index + 1);
+        try {
+            return str.charAt(index + 1);
+        } catch (IndexOutOfBoundsException ex) {
+            return EOL;
+        }
     }
 
     boolean hasNextChar() {
-        return index < str.length() - 1;
+        return index < str.length();
     }
 
     int getIndex() {
@@ -83,5 +94,4 @@ class CharStream {
     int getLineNumber() {
         return lineNumber;
     }
-
 }
