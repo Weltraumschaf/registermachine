@@ -51,9 +51,30 @@ public class LineScannerTest {
     }
 
     @Test
-    public void scanMetaCode() throws AssemblerSyntaxException {
+    public void scan_functionMetaCode() throws AssemblerSyntaxException {
         final List<Token> tokens = sut.parse(".function");
         assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.METACODE));
+        assertThat(token.getValue(), is(".function"));
+    }
+
+    @Test
+    public void scan_localMetaCode() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("    .local   ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.METACODE));
+        assertThat(token.getValue(), is(".local"));
+    }
+
+    @Test
+    public void scan_contMetaCode() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse(".const   ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.METACODE));
+        assertThat(token.getValue(), is(".const"));
     }
 
     @Test @Ignore

@@ -89,46 +89,4 @@ class LineScanner {
         return new Token(TokenType.METACODE, value.toString());
     }
 
-    private static final class CharStream {
-        private final int lineNumber;
-        private final String str;
-        private int index;
-
-        CharStream(final String str) {
-            this(str, -1);
-        }
-
-        CharStream(final String str, final int lineNumber) {
-            this.str = str;
-            this.lineNumber = lineNumber;
-        }
-
-        boolean isEmpty() {
-            return str.isEmpty();
-        }
-
-        char getCurrentChar() {
-            return str.charAt(index);
-        }
-
-        void nextChar() {
-            if (hasNextChar()) {
-                ++index;
-            }
-        }
-
-        boolean hasNextChar() {
-            return index < str.length();
-        }
-
-        int getIndex() {
-            return index;
-        }
-
-        int getLineNumber() {
-            return lineNumber;
-        }
-
-
-    }
 }
