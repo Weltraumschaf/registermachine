@@ -10,3 +10,4 @@ bin/*.ctasm
 nbactions.xml
 registermachine.sublime-project
 registermachine.sublime-workspace
+nb-configuration.xml
