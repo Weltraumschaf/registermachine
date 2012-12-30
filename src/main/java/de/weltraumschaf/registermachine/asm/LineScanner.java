@@ -44,8 +44,8 @@ class LineScanner {
                 tokens.add(scanMeta(line));
             } else if ('"' == c) {
                 tokens.add(scaenString(line));
-//            } else if (StringUtils.isNumeric(String.valueOf(c))) {
-//                scaenNumber(line);
+            } else if (StringUtils.isNumeric(String.valueOf(c))) {
+                tokens.add(scaenNumber(line));
             } else if (StringUtils.isAlpha(String.valueOf(c))) {
                 tokens.add(scaenOpCodeOrLiteral(line));
             } else if (StringUtils.isWhitespace(String.valueOf(c))) {
@@ -63,9 +63,10 @@ class LineScanner {
 
     // TODO Fix the problem if " are insidethe string.
     private Token scaenString(final CharStream line) throws AssemblerSyntaxException {
+        final String errorMessage = "Unterminated string at column %d!";
         line.nextChar(); // consume "
         if (! line.hasNextChar()) {
-            throw new AssemblerSyntaxException("Unterminated string!", line.getLineNumber());
+            throw new AssemblerSyntaxException(String.format(errorMessage, line.getIndex()), line.getLineNumber());
         }
 
         final StringBuilder value = new StringBuilder();
@@ -85,14 +86,34 @@ class LineScanner {
         }
 
         if (!terminationSeen) {
-            throw new AssemblerSyntaxException("Unterminated string!", line.getLineNumber());
+            throw new AssemblerSyntaxException(String.format(errorMessage, line.getIndex()), line.getLineNumber());
         }
 
         return new Token(TokenType.STRING, value.toString());
     }
 
-    private Token scaenNumber(CharStream line) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private Token scaenNumber(CharStream line) throws AssemblerSyntaxException {
+        final StringBuilder value = new StringBuilder();
+        value.append(line.getCurrentChar());
+        TokenType type = TokenType.INTEGER;
+
+        while (line.hasNextChar()) {
+            line.nextChar();
+            final char c = line.getCurrentChar();
+
+            if (StringUtils.isNumeric(String.valueOf(c))) {
+                value.append(c);
+            } else if ('.' == c) {
+                value.append(c);
+                type = TokenType.FLOAT;
+            } else if (StringUtils.isWhitespace(String.valueOf(c))) {
+                break;
+            } else {
+                throw new AssemblerSyntaxException(String.format("Unexpected character %s at column %d!", c, line.getIndex()), line.getLineNumber());
+            }
+        }
+
+        return new Token(type, value.toString());
     }
 
     private Token scaenOpCodeOrLiteral(final CharStream line) {

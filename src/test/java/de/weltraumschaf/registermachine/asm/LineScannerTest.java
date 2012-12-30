@@ -89,7 +89,7 @@ public class LineScannerTest {
     }
 
     @Test
-    public void scanString() throws AssemblerSyntaxException {
+    public void scan_string() throws AssemblerSyntaxException {
         final List<Token> tokens = sut.parse("  \"foo  bar;\"   ");
         assertThat(tokens.size(), is(1));
         final Token token = tokens.get(0);
@@ -97,11 +97,33 @@ public class LineScannerTest {
         assertThat(token.getValue(), is("foo  bar;"));
     }
 
-    @Test @Ignore
-    public void scanFloat() {
+
+    @Test(expected=AssemblerSyntaxException.class) @Ignore
+    public void scan_unterminatedEmptyString() throws AssemblerSyntaxException {
+        sut.parse("  \"");
     }
 
-    @Test @Ignore
-    public void scanInteger() {
+    @Test(expected=AssemblerSyntaxException.class)
+    public void scan_unterminatedString() throws AssemblerSyntaxException {
+        sut.parse("  \"foo  ");
     }
+
+    @Test
+    public void scanFloat() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("  3.1415  ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.FLOAT));
+        assertThat(token.getValue(), is("3.1415"));
+    }
+
+    @Test
+    public void scanInteger() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse("  23  ");
+        assertThat(tokens.size(), is(1));
+        final Token token = tokens.get(0);
+        assertThat(token.getType(), is(TokenType.INTEGER));
+        assertThat(token.getValue(), is("23"));
+    }
+
 }
