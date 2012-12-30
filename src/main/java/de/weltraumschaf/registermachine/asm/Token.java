@@ -33,6 +33,7 @@ class Token {
      * @param value the tokens raw value, beginning and ending " of strings should be removed
      */
     public Token(final TokenType type, final String value) {
+        super();
         this.type = type;
         this.value = value;
     }
@@ -53,6 +54,11 @@ class Token {
      */
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s=%s", type, value);
     }
 
 }
