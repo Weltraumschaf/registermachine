@@ -15,8 +15,10 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 public interface Instruction {
 
-    int RESULT_REGISTER = 0;
-    
+    int REG_A = 0;
+    int REG_B = 1;
+    int REG_C = 2;
+
     void evaluate(RuntimeConfiguration config);
 
 }

@@ -24,7 +24,12 @@ public class Mod implements Instruction {
     private final int op1Reg;
     private final int op2Reg;
 
+    public Mod() {
+        this(REG_B, REG_C);
+    }
+
     public Mod(final int op1Reg, final int op2Reg) {
+        super();
         this.op1Reg = op1Reg;
         this.op2Reg = op2Reg;
     }
@@ -33,7 +38,7 @@ public class Mod implements Instruction {
     public void evaluate(final RuntimeConfiguration config) {
         final Value op1 = config.getRegister(op1Reg);
         final Value op2 = config.getRegister(op2Reg);
-        config.setRegister(RESULT_REGISTER, new Value(op1.getIntegerValue() % op2.getIntegerValue()));
+        config.setRegister(REG_A, Value.valueOf(op1.getIntegerValue() % op2.getIntegerValue()));
     }
 
     @Override

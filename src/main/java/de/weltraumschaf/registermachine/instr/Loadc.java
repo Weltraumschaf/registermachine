@@ -27,7 +27,7 @@ class Loadc implements Instruction {
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        config.setRegister(register, new Value(value));
+        config.setRegister(register, Value.valueOf(value));
     }
 
     @Override

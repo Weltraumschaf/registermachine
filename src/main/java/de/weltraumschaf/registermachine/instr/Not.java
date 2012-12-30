@@ -35,7 +35,7 @@ public class Not implements Instruction {
             value = Value.getFalse();
         }
 
-        config.setRegister(RESULT_REGISTER, value);
+        config.setRegister(REG_A, value);
     }
 
     @Override

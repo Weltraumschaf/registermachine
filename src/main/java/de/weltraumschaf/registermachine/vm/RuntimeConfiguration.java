@@ -10,6 +10,7 @@
  */
 package de.weltraumschaf.registermachine.vm;
 
+import de.weltraumschaf.registermachine.instr.Instruction;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.util.Stack;
 
@@ -38,8 +39,31 @@ public class RuntimeConfiguration {
         programCounter++;
     }
 
+    public void setRegisterA(final Value v) {
+        setRegister(Instruction.REG_A, v);
+    }
+
+    public void setRegisterB(final Value v) {
+        setRegister(Instruction.REG_B, v);
+    }
+
+    public void setRegisterC(final Value v) {
+        setRegister(Instruction.REG_C, v);
+    }
     public void setRegister(final int r, final Value v) {
         currentScope.getRegisters().set(r, v);
+    }
+
+    public Value getRegisterA() {
+        return getRegister(Instruction.REG_A);
+    }
+
+    public Value getRegisterB() {
+        return getRegister(Instruction.REG_B);
+    }
+
+    public Value getRegisterC() {
+        return getRegister(Instruction.REG_C);
     }
 
     public Value getRegister(final int r) {

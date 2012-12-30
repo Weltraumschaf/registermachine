@@ -24,6 +24,10 @@ class Pow implements Instruction {
     private final int op1Reg;
     private final int op2Reg;
 
+    public Pow() {
+        this(REG_B, REG_C);
+    }
+
     public Pow(final int op1Reg, final int op2Reg) {
         super();
         this.op1Reg = op1Reg;
@@ -35,7 +39,7 @@ class Pow implements Instruction {
         final Value op1 = config.getRegister(op1Reg);
         final Value op2 = config.getRegister(op2Reg);
         final int result = (int) Math.pow(op1.getIntegerValue(), op2.getIntegerValue());
-        config.setRegister(RESULT_REGISTER, new Value(result));
+        config.setRegisterA(Value.valueOf(result));
     }
 
     @Override

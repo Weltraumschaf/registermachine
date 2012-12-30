@@ -23,13 +23,17 @@ class Unm implements Instruction {
 
     private final int srcReg;
 
+    public Unm() {
+        this(REG_B);
+    }
+
     public Unm(int srcReg) {
         this.srcReg = srcReg;
     }
 
     @Override
     public void evaluate(final RuntimeConfiguration config) {
-        config.setRegister(RESULT_REGISTER, new Value(-config.getRegister(srcReg).getIntegerValue()));
+        config.setRegisterA(Value.valueOf(-config.getRegister(srcReg).getIntegerValue()));
     }
 
     @Override

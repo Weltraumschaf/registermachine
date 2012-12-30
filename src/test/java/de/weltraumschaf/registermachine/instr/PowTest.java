@@ -12,30 +12,27 @@
 
 package de.weltraumschaf.registermachine.instr;
 
+import de.weltraumschaf.registermachine.typing.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
+import static org.hamcrest.CoreMatchers.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class Move implements Instruction {
+public class PowTest {
 
-    private final int srcReg;
-    private final int dstReg;
+    private final Instruction sut = new Pow();
+    private final RuntimeConfiguration config = new RuntimeConfiguration();
 
-    public Move(final int srcReg, final int dstReg) {
-        this.srcReg = srcReg;
-        this.dstReg = dstReg;
-    }
-
-    @Override
-    public void evaluate(final RuntimeConfiguration config) {
-        config.setRegister(dstReg, config.getRegister(srcReg));
-    }
-
-    @Override
-    public String toString() {
-        return String.format("move %d, %d", srcReg, dstReg);
+    @Test
+    public void powersTwoIntegers() {
+        config.setRegisterB(Value.valueOf(4));
+        config.setRegisterC(Value.valueOf(2));
+        sut.evaluate(config);
+        assertThat(config.getRegisterA(), is(Value.valueOf(16)));
     }
 
 }

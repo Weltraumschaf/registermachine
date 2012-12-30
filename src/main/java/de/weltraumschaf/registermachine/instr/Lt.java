@@ -36,9 +36,9 @@ public class Lt implements Instruction {
         final Value op2 = config.getRegister(op2Reg);
 
         if (op1.getIntegerValue() < op2.getIntegerValue()) {
-            config.setRegister(RESULT_REGISTER, Value.getTrue());
+            config.setRegister(REG_A, Value.getTrue());
         } else {
-            config.setRegister(RESULT_REGISTER, Value.getFalse());
+            config.setRegister(REG_A, Value.getFalse());
         }
     }
 

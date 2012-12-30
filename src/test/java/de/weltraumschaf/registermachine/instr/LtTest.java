@@ -29,28 +29,28 @@ public class LtTest {
     @Test
     public void evaluate_firstOperandLessIsTrue() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, new Value(2));
-        config.setRegister(2, new Value(5));
+        config.setRegister(1, Value.valueOf(2));
+        config.setRegister(2, Value.valueOf(5));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(1));
+        assertThat(config.getRegister(Instruction.REG_A).getIntegerValue(), is(1));
     }
 
     @Test
     public void evaluate_firstOperandNotLessIsFalse() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, new Value(5));
-        config.setRegister(2, new Value(2));
+        config.setRegister(1, Value.valueOf(5));
+        config.setRegister(2, Value.valueOf(2));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(0));
+        assertThat(config.getRegister(Instruction.REG_A).getIntegerValue(), is(0));
     }
 
     @Test
     public void evaluate_sameIsFalse() {
         RuntimeConfiguration config = new RuntimeConfiguration();
-        config.setRegister(1, new Value(5));
-        config.setRegister(2, new Value(5));
+        config.setRegister(1, Value.valueOf(5));
+        config.setRegister(2, Value.valueOf(5));
         sut.evaluate(config);
-        assertThat(config.getRegister(Instruction.RESULT_REGISTER).getIntegerValue(), is(0));
+        assertThat(config.getRegister(Instruction.REG_A).getIntegerValue(), is(0));
     }
 
 }

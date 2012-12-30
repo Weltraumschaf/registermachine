@@ -14,15 +14,27 @@ package de.weltraumschaf.registermachine.typing;
 import com.google.common.base.Objects;
 
 /**
+ * Imutable representation of a value.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Value {
+public final class Value {
 
+    /**
+     * Universal NIL.
+     */
     private static final Value NIL = new Value();
+    /**
+     * Universal TRUE.
+     */
     private static final Value TRUE = new Value(true);
+    /**
+     * Universal FALSE.
+     */
     private static final Value FALSE = new Value(false);
-
+    /**
+     * Type of value.
+     */
     private final Type type;
     private final int integerValue;
     private final float floatValue;
@@ -32,11 +44,11 @@ public class Value {
         this(Type.NIL, 0, (float) 0.0, false);
     }
 
-    public Value(final int integerValue) {
+    private Value(final int integerValue) {
         this(Type.INTEGER, integerValue, integerToFloat(integerValue), integerTwoBoolean(integerValue));
     }
 
-    public Value(final float floatValue) {
+    private Value(final float floatValue) {
         this(Type.FLOAT, floatToInteger(floatValue), floatValue, floatToBoolean(floatValue));
     }
 
@@ -48,7 +60,7 @@ public class Value {
         super();
         this.type = type;
         this.integerValue = integerValue;
-        this.floatValue   = floatValue;
+        this.floatValue = floatValue;
         this.booleanValue = booleanValue;
     }
 
@@ -103,7 +115,7 @@ public class Value {
 
     @Override
     public boolean equals(final Object obj) {
-        if (! (obj instanceof Value)) {
+        if (!(obj instanceof Value)) {
             return false;
         }
 
@@ -130,7 +142,7 @@ public class Value {
         return Math.abs(in - 0.0) > 0.00001;
     }
 
-    static int booleanToInteger(final boolean  in) {
+    static int booleanToInteger(final boolean in) {
         return in ? 1 : 0;
     }
 
@@ -138,4 +150,35 @@ public class Value {
         return in ? (float) 1.0 : (float) 0.0;
     }
 
+    public static Value valueOf(final boolean value) {
+        return new Value(value);
+    }
+
+    public static Value valueOf(final int value) {
+        return new Value(value);
+    }
+
+    public static Value valueOf(final float value) {
+        return new Value(value);
+    }
+
+    Value castTo(Type t) {
+        if (t == type) {
+            return this;
+        }
+
+        return new Value(t, integerValue, floatValue, booleanValue);
+    }
+
+    Value castToBoolean() {
+        return castTo(Type.BOOLEAN);
+    }
+
+    Value castToInteger() {
+        return castTo(Type.INTEGER);
+    }
+
+    Value castToFloValue() {
+        return castTo(Type.FLOAT);
+    }
 }
