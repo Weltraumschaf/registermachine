@@ -15,7 +15,6 @@ package de.weltraumschaf.registermachine;
 import de.weltraumschaf.commons.CapturingOutputStream;
 import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.commons.IOStreams;
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.asm.Assembler;
 import de.weltraumschaf.registermachine.asm.AssemblerSyntaxException;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
@@ -23,17 +22,17 @@ import de.weltraumschaf.registermachine.vm.Executor;
 import de.weltraumschaf.registermachine.vm.RegisterMachine;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
+@SystemTest
 public class CompileAndRunTest {
 
     private static final String PACKAGE_PREFIX = "/de/weltraumschaf/registermachine/vm";
