@@ -19,11 +19,25 @@ package de.weltraumschaf.registermachine.asm;
 enum TokenType {
 
     /**
-     * Mnemonics, true, false and nil.
+     * Literal strings, like: true, false nil, a, zet etc.
+     *
+     * literal = "a" .. "Z" [ { "a" .. "Z" | "0" .. "9" } ]
      */
     LITERAL,
     /**
-     * Everything between "...".
+     * Everything defined in {@link OpCode}.
+     *
+     * opcode = "a" .. "z" [ { "a" .. "z" } ]
+     */
+    OPCODE,
+    /**
+     * Meta codes.
+     *
+     * meta = ".function" | ".local" | ".const" .
+     */
+    METACODE,
+    /**
+     * Everything between quotes.
      */
     STRING,
     /**
@@ -33,14 +47,6 @@ enum TokenType {
     /**
      * Numbers without a dot in it.
      */
-    INTEGER,
-    /**
-     * Starts with # followed by a integer.
-     */
-    REGISTER,
-    /**
-     * Evereything preceeded by ;
-     */
-    COMMENT;
+    INTEGER;
 
 }
