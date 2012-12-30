@@ -9,11 +9,13 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.asm;
 
-import org.junit.Test;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
@@ -22,9 +24,47 @@ import static org.junit.Assert.*;
 public class LineScannerTest {
 
     private final LineScanner sut = new LineScanner();
-    
+
     @Test
-    public void scanComment() {
+    public void scanComment() throws AssemblerSyntaxException {
+        List<Token> tokens = sut.parse("; a comment");
+        assertThat(tokens.size(), is(0));
+        tokens = sut.parse("   ; a comment");
+        assertThat(tokens.size(), is(0));
     }
 
+    @Test
+    public void scanEmpty() throws AssemblerSyntaxException {
+        List<Token> tokens = sut.parse("");
+        assertThat(tokens.size(), is(0));
+        tokens = sut.parse("     ");
+        assertThat(tokens.size(), is(0));
+        tokens = sut.parse("          ");
+        assertThat(tokens.size(), is(0));
+    }
+    @Test @Ignore
+    public void scanLiteral() {
+    }
+
+    @Test @Ignore
+    public void scanOpCode() {
+    }
+
+    @Test
+    public void scanMetaCode() throws AssemblerSyntaxException {
+        final List<Token> tokens = sut.parse(".function");
+        assertThat(tokens.size(), is(1));
+    }
+
+    @Test @Ignore
+    public void scanString() {
+    }
+
+    @Test @Ignore
+    public void scanFloat() {
+    }
+
+    @Test @Ignore
+    public void scanInteger() {
+    }
 }

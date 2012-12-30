@@ -30,23 +30,28 @@ class LineScanner {
     List<Token> parse(final CharStream line) throws AssemblerSyntaxException {
         final List<Token> tokens = Lists.newArrayList();
 
+        if (line.isEmpty()) {
+            return tokens;
+        }
+
         do {
             char c = line.getCurrentChar();
 
             if (';' == c) {
-                scanComment(line);
-            } else if ('#' == c) {
-                scanRegister(line);
-            } else if ('"' == c) {
-                scaenString(line);
-            } else if (StringUtils.isNumeric(String.valueOf(c))) {
-                scaenNumber(line);
-            } else if (StringUtils.isAlpha(String.valueOf(c))) {
-                scaenLiteral(line);
+                return tokens; // ignore rest of line
+            } else if ('.' == c) {
+                tokens.add(scanMeta(line));
+//            } else if ('"' == c) {
+//                scaenString(line);
+//            } else if (StringUtils.isNumeric(String.valueOf(c))) {
+//                scaenNumber(line);
+//            } else if (StringUtils.isAlpha(String.valueOf(c))) {
+//                scaenLiteral(line);
             } else if (StringUtils.isWhitespace(String.valueOf(c))) {
                 // ignore
             } else {
-                throw new AssemblerSyntaxException(String.format("Unexpected character '%s' at column %d!", String.valueOf(c), line.getIndex()), line.getLineNumber());
+                throw new AssemblerSyntaxException(String.format("Unexpected character '%s' at column %d!",
+                        String.valueOf(c), line.getIndex()), line.getLineNumber());
             }
 
             line.nextChar();
@@ -55,24 +60,33 @@ class LineScanner {
         return tokens;
     }
 
-    private void scanComment(CharStream line) {
+    private Token scaenString(CharStream line) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void scanRegister(CharStream line) {
+    private Token scaenNumber(CharStream line) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void scaenString(CharStream line) {
+    private Token scaenLiteral(CharStream line) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void scaenNumber(CharStream line) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    private Token scanMeta(final CharStream line) {
+        final StringBuilder value = new StringBuilder();
+        value.append(line.getCurrentChar());
 
-    private void scaenLiteral(CharStream line) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        while (line.hasNextChar()) {
+            line.nextChar();
+            final char c = line.getCurrentChar();
+
+            if (StringUtils.isAlpha(String.valueOf(c))) {
+                value.append(c);
+            } else {
+                break;
+            }
+        }
+        return new Token(TokenType.METACODE, value.toString());
     }
 
     private static final class CharStream {
@@ -87,6 +101,10 @@ class LineScanner {
         CharStream(final String str, final int lineNumber) {
             this.str = str;
             this.lineNumber = lineNumber;
+        }
+
+        boolean isEmpty() {
+            return str.isEmpty();
         }
 
         char getCurrentChar() {
