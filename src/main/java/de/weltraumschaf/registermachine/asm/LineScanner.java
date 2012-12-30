@@ -9,14 +9,11 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
-
 
 /**
  * Scans a line of assembler codes into tokens.
@@ -50,43 +47,48 @@ class LineScanner {
             return tokens;
         }
 
-        do {
-            char c = line.getCurrentChar();
+        while (line.hasNextChar()) {
+            final char c = line.getCurrentChar();
 
             if (';' == c) {
                 return tokens; // ignore rest of line
             } else if ('.' == c) {
                 tokens.add(scanMeta(line));
+                line.nextChar(); // consume last char
             } else if ('"' == c) {
                 tokens.add(scaenString(line));
-            } else if (StringUtils.isNumeric(String.valueOf(c))) {
+            } else if (CharUtils.isNumeric(c)) {
                 tokens.add(scaenNumber(line));
-            } else if (StringUtils.isAlpha(String.valueOf(c))) {
+                line.nextChar();
+            } else if (CharUtils.isAlpha(c)) {
                 tokens.add(scaenOpCodeOrLiteral(line));
-            } else if (StringUtils.isWhitespace(String.valueOf(c))) { // NOPMD
-                // ignore
+                line.nextChar();
+            } else if (CharUtils.isWhitespace(c)) { // NOPMD
+                line.nextChar(); // consume and ignore whitespace
             } else {
                 throw new AssemblerSyntaxException(String.format("Unexpected character '%s' at column %d!",
                         String.valueOf(c), line.getIndex()), line.getLineNumber());
             }
-
-            line.nextChar();
-        } while (line.hasNextChar()) ;
+        }
 
         return tokens;
     }
 
     // TODO Fix the problem if " are insidethe string.
     private Token scaenString(final CharStream line) throws AssemblerSyntaxException {
+        if ('"' != line.getCurrentChar()) {
+            throw new AssemblerSyntaxException(String.format("String must start with \" at column %d!", line.getIndex()), line.getLineNumber());
+        }
         final String errorMessage = "Unterminated string at column %d!";
         line.nextChar(); // consume "
-        if (! line.hasNextChar()) {
+        if (!line.hasNextChar()) {
             throw new AssemblerSyntaxException(String.format(errorMessage, line.getIndex()), line.getLineNumber());
         }
 
         final StringBuilder value = new StringBuilder();
         value.append(line.getCurrentChar());
         boolean terminationSeen = false;
+
         while (line.hasNextChar()) {
             line.nextChar();
             final char c = line.getCurrentChar();
@@ -108,47 +110,57 @@ class LineScanner {
     }
 
     private Token scaenNumber(CharStream line) throws AssemblerSyntaxException {
+        if (!CharUtils.isNumeric(line.getCurrentChar())) {
+            throw new AssemblerSyntaxException(String.format("Number must start with digit at index %d!", line.getIndex()),
+                    line.getLineNumber());
+        }
         final StringBuilder value = new StringBuilder();
         value.append(line.getCurrentChar());
         TokenType type = TokenType.INTEGER;
 
         while (line.hasNextChar()) {
-            line.nextChar();
-            final char c = line.getCurrentChar();
+            final char peek = line.peekChar();
 
-            if (StringUtils.isNumeric(String.valueOf(c))) {
-                value.append(c);
-            } else if ('.' == c) {
-                value.append(c);
+            if (CharUtils.isNumeric(peek)) {
+                line.nextChar();
+                value.append(line.getCurrentChar());
+            } else if ('.' == peek) {
+                line.nextChar();
+                value.append(line.getCurrentChar());
                 type = TokenType.FLOAT;
-            } else if (StringUtils.isWhitespace(String.valueOf(c))) {
+            } else if (CharUtils.isWhitespace(peek) || peek == CharStream.EOL) {
                 break;
             } else {
-                throw new AssemblerSyntaxException(String.format("Unexpected character %s at column %d!", c, line.getIndex()), line.getLineNumber());
+                throw new AssemblerSyntaxException(String.format("Unexpected character %s at column %d!", peek, line.getIndex()),
+                        line.getLineNumber());
             }
         }
 
         return new Token(type, value.toString());
     }
 
-    private Token scaenOpCodeOrLiteral(final CharStream line) {
+    private Token scaenOpCodeOrLiteral(final CharStream line) throws AssemblerSyntaxException {
+        if (!CharUtils.isAlpha(line.getCurrentChar())) {
+            throw new AssemblerSyntaxException(String.format("Opcodes or literals must start with alpha character at column %d!", line.getIndex()), line.getLineNumber());
+        }
         final StringBuilder value = new StringBuilder();
         value.append(line.getCurrentChar());
         TokenType type = null;
 
-        while (line.hasNextChar()) {
-            line.nextChar();
-            final char c = line.getCurrentChar();
+        do {
+            final char peek = line.peekChar();
 
-            if (StringUtils.isAlpha(String.valueOf(c))) {
-                value.append(c);
-            } else if (StringUtils.isNumeric(String.valueOf(c))) {
-                value.append(c);
+            if (CharUtils.isAlpha(peek)) {
+                line.nextChar();
+                value.append(line.getCurrentChar());
+            } else if (CharUtils.isNumeric(peek)) {
+                line.nextChar();
+                value.append(line.getCurrentChar());
                 type = TokenType.LITERAL; // Memonics can not contain numbers.
             } else {
                 break;
             }
-        }
+        } while (line.hasNextChar());
 
         if (null == type) {
             if (OpCode.lokup(value.toString()) == OpCode.UNKWONN) {
@@ -161,21 +173,24 @@ class LineScanner {
         return new Token(type, value.toString());
     }
 
-    private Token scanMeta(final CharStream line) {
+    private Token scanMeta(final CharStream line) throws AssemblerSyntaxException {
+        if (line.getCurrentChar() != '.') {
+            throw new AssemblerSyntaxException(String.format("Meta mnemonic at index %d must start with '.'!", line.getIndex()),
+                    line.getLineNumber());
+        }
+
         final StringBuilder value = new StringBuilder();
         value.append(line.getCurrentChar());
 
-        while (line.hasNextChar()) {
-            line.nextChar();
-            final char c = line.getCurrentChar();
-
-            if (StringUtils.isAlpha(String.valueOf(c))) {
-                value.append(c);
-            } else {
-                break;
-            }
+        if (!line.hasNextChar() || !CharUtils.isAlpha(line.peekChar())) {
+            throw new AssemblerSyntaxException(String.format("Too short meta code mnemonic at column %d!", line.getIndex()), line.getLineNumber());
         }
+
+        do {
+            line.nextChar();
+            value.append(line.getCurrentChar());
+        } while (line.hasNextChar() && CharUtils.isAlpha(line.peekChar()));
+
         return new Token(TokenType.METACODE, value.toString());
     }
-
 }
