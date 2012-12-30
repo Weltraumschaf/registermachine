@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine.asm.vm;
+package de.weltraumschaf.registermachine;
 
 import de.weltraumschaf.commons.CapturingOutputStream;
 import de.weltraumschaf.commons.IO;
