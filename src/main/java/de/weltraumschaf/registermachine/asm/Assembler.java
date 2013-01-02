@@ -13,6 +13,7 @@
 package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
+import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.ByteArray;
 import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
@@ -46,7 +47,7 @@ public class Assembler {
     }
 
     public ByteCodeFile assamble(final InputStream input) throws IOException, AssemblerSyntaxException {
-        final List<String> lines = IOUtils.readLines(input, Const.ENCODING);
+        final List<String> lines = IOUtils.readLines(input, App.ENCODING);
         IOUtils.closeQuietly(input);
         final List<Byte> bytecode = createByteCodeHeader();
         processLines(bytecode, lines);

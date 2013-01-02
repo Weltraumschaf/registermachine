@@ -12,6 +12,7 @@
 package de.weltraumschaf.registermachine.vm;
 
 import de.weltraumschaf.commons.IO;
+import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
@@ -80,7 +81,7 @@ public class RegisterMachine {
             io.println(instruction.toString());
         }
 
-        io.print(Const.NL);
+        io.print(App.NL);
     }
 
     public void printConfiguration() {
@@ -96,7 +97,7 @@ public class RegisterMachine {
             debugOutput.append(StringUtils.rightPad("Init", DEBUG_PAD))
                        .append(" > ")
                        .append(config.toString())
-                       .append(Const.NL);
+                       .append(App.NL);
         }
     }
 
@@ -105,7 +106,7 @@ public class RegisterMachine {
             debugOutput.append(StringUtils.rightPad("Instruction '" + instruction.toString() + "'", DEBUG_PAD))
                        .append(" > ")
                        .append(config.toString())
-                       .append(Const.NL);
+                       .append(App.NL);
         }
     }
 

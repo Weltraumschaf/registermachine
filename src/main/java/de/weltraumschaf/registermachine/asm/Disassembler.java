@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.registermachine.asm;
 
+import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.ByteInt;
 import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
@@ -32,7 +33,7 @@ public class Disassembler {
             throw new RuntimeException("Not a valid byte code file!");
         }
 
-        buffer.append("; byte code version ").append(bc.getVersion()).append(Const.NL);
+        buffer.append("; byte code version ").append(bc.getVersion()).append(App.NL);
         disassembleProgram(buffer, bc.getProgramm());
         return buffer.toString();
     }
@@ -46,7 +47,7 @@ public class Disassembler {
                 throw new RuntimeException(String.format("Unknown opcode: %s!", bc.toHex()));
             }
 
-            buffer.append(bc.name().toLowerCase(Const.LOCALE));
+            buffer.append(bc.name().toLowerCase(App.LOCALE));
             ++i;
 
             if (bc.getArgCount() != OpCode.ArgCount.NONE) {
@@ -63,7 +64,7 @@ public class Disassembler {
                 }
             }
 
-            buffer.append(Const.NL);
+            buffer.append(App.NL);
         }
     }
 }

@@ -11,7 +11,7 @@
 package de.weltraumschaf.registermachine.bytecode;
 
 import com.google.common.collect.Maps;
-import de.weltraumschaf.registermachine.Const;
+import de.weltraumschaf.registermachine.App;
 import java.util.Map;
 
 /**
@@ -145,7 +145,7 @@ public enum OpCode {
     static {
         // Initialize lookups.
         for (final OpCode code : OpCode.values()) {
-            MNEMONIC_LOOKUP.put(code.name().toLowerCase(Const.LOCALE), code);
+            MNEMONIC_LOOKUP.put(code.name().toLowerCase(App.LOCALE), code);
             OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
     }
@@ -224,8 +224,8 @@ public enum OpCode {
      * @return {@link #UNKWONN} for unknown mnemonics
      */
     public static OpCode lokup(final String mnemonic) {
-        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(Const.LOCALE))) {
-            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(Const.LOCALE));
+        if (MNEMONIC_LOOKUP.containsKey(mnemonic.toLowerCase(App.LOCALE))) {
+            return MNEMONIC_LOOKUP.get(mnemonic.toLowerCase(App.LOCALE));
         }
 
         return UNKWONN;

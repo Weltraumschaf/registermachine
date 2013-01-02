@@ -25,6 +25,7 @@ import de.weltraumschaf.registermachine.vm.RegisterMachine;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
@@ -41,6 +42,10 @@ import org.apache.commons.lang.StringUtils;
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class App extends InvokableAdapter {
+
+    public static String ENCODING = "UTF-8";
+    public static Locale LOCALE = Locale.ENGLISH;
+    public static String NL = String.format("%n");
 
     /**
      * Name of the executable displayed in usage.
@@ -107,7 +112,13 @@ public final class App extends InvokableAdapter {
      * Command line options.
      */
     private static final Options OPTIONS = new Options();
+    /**
+     * Pads the opcode mnemonic string for output.
+     */
     private static final int MNEMONIC_PAD = 8;
+    /**
+     * PAds the mnemonic with argument place holders for output.
+     */
     private static final int OPCODE_PAD = 16;
 
     static {
@@ -280,13 +291,13 @@ public final class App extends InvokableAdapter {
     private void printOpCodes() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append("mnemonic args   byte")
-                .append(Const.NL)
+                .append(NL)
                 .append("--------------------")
-                .append(Const.NL);
+                .append(NL);
         final String fmt = "%s0x%s%n";
         for (final OpCode op : OpCode.values()) {
             final StringBuilder mnemonic = new StringBuilder();
-            mnemonic.append(StringUtils.rightPad(op.name().toLowerCase(Const.LOCALE), MNEMONIC_PAD))
+            mnemonic.append(StringUtils.rightPad(op.name().toLowerCase(LOCALE), MNEMONIC_PAD))
                     .append(' ');
             char c = 'A';
             for (int i = 0; i < op.getArgCount().getCount(); ++i) {

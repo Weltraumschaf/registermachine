@@ -20,15 +20,9 @@ import java.util.Locale;
  */
 public interface Const {
 
-    String ENCODING = "UTF-8";
-    Locale LOCALE = Locale.ENGLISH;
-
     byte BC_FST_HEADER_BYTE = (byte) 0xCA;
     byte BC_SND_HEADER_BYTE = (byte) 0x7E;
     short BC_CURRENT_VERSION = (short) 0x01;
-
-    String NL = String.format("%n");
-
     int ARG_BYTE_COUNT = 4;
 
 }

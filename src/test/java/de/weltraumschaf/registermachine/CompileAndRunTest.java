@@ -49,12 +49,12 @@ public class CompileAndRunTest {
         assertThat(bc.isValid(), is(true));
         final Executor exec = new Executor(new RegisterMachine(io), io);
         exec.execute(bc);
-        assertThat(out.getCapturedOutput(), is("0" + Const.NL
-                + "1" + Const.NL
-                + "2" + Const.NL
-                + "3" + Const.NL
-                + "4" + Const.NL
-                + "HALT." + Const.NL + Const.NL));
+        assertThat(out.getCapturedOutput(), is("0" + App.NL
+                + "1" + App.NL
+                + "2" + App.NL
+                + "3" + App.NL
+                + "4" + App.NL
+                + "HALT." + App.NL + App.NL));
     }
 
 }
