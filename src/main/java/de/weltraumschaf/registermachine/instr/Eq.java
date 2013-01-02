@@ -20,10 +20,17 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 public class Eq implements Instruction {
 
+    /**
+     * First operand register.
+     */
     private final int op1Reg;
+    /**
+     * Second operand register.
+     */
     private final int op2Reg;
 
     public Eq(int op1Reg, int op2Reg) {
+        super();
         this.op1Reg = op1Reg;
         this.op2Reg = op2Reg;
     }

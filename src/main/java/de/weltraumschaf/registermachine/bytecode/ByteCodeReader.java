@@ -17,21 +17,40 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Reads byte code from file.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ByteCodeReader {
 
+    /**
+     * USed to read from.
+     */
     private final InputStream input;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param input used to read from
+     */
     public ByteCodeReader(final InputStream input) {
+        super();
         this.input = input;
     }
 
+    /**
+     * Read all bytes as array.
+     *
+     * @return byte code as array of bytes
+     * @throws IOException if, I/O errors happened
+     */
     public byte[] read() throws IOException {
         return IOUtils.toByteArray(input);
     }
 
+    /**
+     * Close input stream quietly.
+     */
     public void close() {
         IOUtils.closeQuietly(input);
     }

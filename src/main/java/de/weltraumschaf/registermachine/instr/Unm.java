@@ -21,6 +21,9 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 class Unm implements Instruction {
 
+    /**
+     * Source register.
+     */
     private final int srcReg;
 
     public Unm() {
@@ -28,6 +31,7 @@ class Unm implements Instruction {
     }
 
     public Unm(int srcReg) {
+        super();
         this.srcReg = srcReg;
     }
 

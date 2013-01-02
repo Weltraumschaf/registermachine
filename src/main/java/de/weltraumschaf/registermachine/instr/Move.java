@@ -20,10 +20,17 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 class Move implements Instruction {
 
+    /**
+     * Source register.
+     */
     private final int srcReg;
+    /**
+     * Destination register.
+     */
     private final int dstReg;
 
     public Move(final int srcReg, final int dstReg) {
+        super();
         this.srcReg = srcReg;
         this.dstReg = dstReg;
     }

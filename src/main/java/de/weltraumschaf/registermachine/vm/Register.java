@@ -17,13 +17,25 @@ import de.weltraumschaf.registermachine.typing.Value;
 import java.util.Map;
 
 /**
+ * A runtime register.
+ *
+ * Holds a value in its field.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class Register {
 
+    /**
+     * Stores the values.
+     */
     private final Map<Integer, Value> store = Maps.newHashMap();
 
+    /**
+     * Set a register.
+     *
+     * @param r register index
+     * @param v register value
+     */
     void set(final int r, final Value v) {
         if (r < 0) {
             throw new IllegalArgumentException("Register address must be greater equal 0! Given: " + r);
@@ -31,6 +43,13 @@ class Register {
         store.put(Integer.valueOf(r), v);
     }
 
+    /**
+     * Get a register.
+     *
+     * @param r register index
+     * @return always a value, may be {@link Value#NIL} if register was not set
+     * @throws IllegalArgumentException if, r is less than 0
+     */
     Value get(final int r) {
         if (r < 0) {
             throw new IllegalArgumentException("Register address must be greater equal 0! Given: " + r);

@@ -21,9 +21,13 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 public class Not implements Instruction {
 
+    /**
+     * Source register.
+     */
     private final int srcReg;
 
     public Not(int srcReg) {
+        super();
         this.srcReg = srcReg;
     }
 

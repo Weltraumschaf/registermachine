@@ -17,22 +17,43 @@ import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Writes byte code to file.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ByteCodeWriter {
 
+    /**
+     * Stream used to write.
+     */
     private final OutputStream output;
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param output stream to write to
+     */
     public ByteCodeWriter(final OutputStream output) {
+        super();
         this.output = output;
     }
 
-
+    /**
+     * Writes {@link ByteCodeFile}.
+     *
+     * @param code byte code to write
+     * @throws IOException if, file I/O errors happened
+     */
     public void write(final ByteCodeFile code) throws IOException {
         write(code.toArray());
     }
 
+    /**
+     * Write byte array to file.
+     *
+     * @param code byte code array
+     * @throws IOException if, file I/O errors happened
+     */
     public void write(final byte[] code) throws IOException {
         IOUtils.write(code, output);
         IOUtils.closeQuietly(output);

@@ -20,10 +20,17 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 public class Test implements Instruction {
 
+    /**
+     * Register to test.
+     */
     private final int testReg;
+    /**
+     * Register with address to jump to.
+     */
     private final int jumpReg;
 
     public Test(int testReg, int jumpReg) {
+        super();
         this.testReg = testReg;
         this.jumpReg = jumpReg;
     }

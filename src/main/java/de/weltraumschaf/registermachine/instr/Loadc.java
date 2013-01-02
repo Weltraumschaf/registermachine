@@ -21,7 +21,13 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 class Loadc implements Instruction {
 
+    /**
+     * Register to load into.
+     */
     private final int register;
+    /**
+     * Value to load.
+     */
     private final int value;
 
     public  Loadc(final int register, final int value) {

@@ -21,7 +21,13 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 class Sub implements Instruction {
 
+    /**
+     * First operand register.
+     */
     private final int op1Reg;
+    /**
+     * Second operand register.
+     */
     private final int op2Reg;
 
     public Sub() {

@@ -21,6 +21,9 @@ import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
  */
 public class Jmp implements Instruction {
 
+    /**
+     * Source register.
+     */
     private final int srcReg;
 
     public Jmp(int srcReg) {
