@@ -19,6 +19,7 @@ import de.weltraumschaf.registermachine.asm.Disassembler;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeWriter;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.vm.ExecutionException;
 import de.weltraumschaf.registermachine.vm.Executor;
 import de.weltraumschaf.registermachine.vm.RegisterMachine;
 import java.io.IOException;
@@ -106,6 +107,8 @@ public final class App extends InvokableAdapter {
      * Command line options.
      */
     private static final Options OPTIONS = new Options();
+    private static final int MNEMONIC_PAD = 8;
+    private static final int OPCODE_PAD = 16;
 
     static {
         OPTIONS.addOption(HELP_OPT, false, "display help");
@@ -239,7 +242,7 @@ public final class App extends InvokableAdapter {
         getIoStreams().println(asm);
     }
 
-    private void executeByteCode(final String filename) throws IOException {
+    private void executeByteCode(final String filename) throws IOException, ExecutionException {
         executeByteCode(new ByteCodeFile(FileIo.newInputStream(filename)));
     }
 
@@ -283,25 +286,25 @@ public final class App extends InvokableAdapter {
         final String fmt = "%s0x%s%n";
         for (final OpCode op : OpCode.values()) {
             final StringBuilder mnemonic = new StringBuilder();
-            mnemonic.append(StringUtils.rightPad(op.name().toLowerCase(Const.LOCALE), 8))
+            mnemonic.append(StringUtils.rightPad(op.name().toLowerCase(Const.LOCALE), MNEMONIC_PAD))
                     .append(' ');
             char c = 'A';
             for (int i = 0; i < op.getArgCount().getCount(); ++i) {
                 mnemonic.append(c).append(' ');
                 ++c;
             }
-            buffer.append(String.format(fmt, StringUtils.rightPad(mnemonic.toString(), 16), op.toHex()));
+            buffer.append(String.format(fmt, StringUtils.rightPad(mnemonic.toString(), OPCODE_PAD), op.toHex()));
         }
         getIoStreams().print(buffer.toString());
     }
 
-    private void interpretAssemblv(final String inFilename) throws IOException, AssemblerSyntaxException {
+    private void interpretAssemblv(final String inFilename) throws IOException, AssemblerSyntaxException, ExecutionException {
         executeByteCode(assembleFile(inFilename));
     }
 
-    private void executeByteCode(final ByteCodeFile bc) throws RuntimeException {
+    private void executeByteCode(final ByteCodeFile bc) throws ExecutionException {
         if (!bc.isValid()) {
-            throw new RuntimeException("Is not valid byte code!");
+            throw new ExecutionException("Is not valid byte code!");
         }
 
         getIoStreams().println(String.format("Executing byte code version %d ...", bc.getVersion()));
