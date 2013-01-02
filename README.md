@@ -34,6 +34,66 @@ loadc   #3 "string" ; load constant string into reg 3
 
 ## Byte Code format
 
+    [ 2 byte header signature               ]
+    [ 2 byte version number                 ]
+    [ 4 byte source name length             ]
+    [ 4 * length byte source name string    ]
+    [ 1 byte nups                           ] (function 0, level 0 aka. main)
+    [ 1 byte numParams                      ]
+    [ 1 byte isVararg                       ]
+    [ 1 byte maxStackSize                   ]
+    [ 1 byte sizeCode                       ]
+    [ n bytes bytecode                      ]
+    ...
+    [ 1 byte sizeConstants                  ]
+    [ 1 byte type (integer)                 ]
+    [ 4 byte integer                        ]
+    [ 1 byte type (float)                   ]
+    [ 4 byte float                          ]
+    [ 1 byte type (boolean)                 ]
+    [ 1 byte boolean                        ]
+    [ 1 byte type (string)                  ]
+    [ 4 byte stringLength                   ]
+    [ 4 * n byte string                     ]
+    ...
+    [ 1 byte sizeVariables                  ]
+    [ 1 byte type (integer)                 ]
+    [ 4 byte integer                        ]
+    [ 1 byte type (float)                   ]
+    [ 4 byte float                          ]
+    [ 1 byte type (boolean)                 ]
+    [ 1 byte boolean                        ]
+    [ 1 byte type (string)                  ]
+    [ 4 byte stringLength                   ]
+    [ 4 * n byte string                     ]
+    ...
+    [ 1 byte sizeFunctions                  ] 
+    [ 1 byte nups                           ] (function 0, level 1)
+    [ 1 byte numParams                      ]
+    [ 1 byte isVararg                       ]
+    [ 1 byte maxStackSize                   ]
+    [ 1 byte sizeCode                       ]
+    [ n bytes bytecode                      ]
+    ...
+    [ 1 byte sizeConstants                  ]
+    ...
+    [ 1 byte sizeVariables                  ]
+    ...
+    [ 1 byte sizeFunctions                  ] 
+    [ 1 byte nups                           ] (function 1, level 1)
+    [ 1 byte numParams                      ]
+    [ 1 byte isVararg                       ]
+    [ 1 byte maxStackSize                   ]
+    [ 1 byte sizeCode                       ]
+    [ n bytes bytecode                      ]
+    ...
+    [ 1 byte sizeConstants                  ]
+    ...
+    [ 1 byte sizeVariables                  ]
+    ...
+
+Example:
+
     Pos     Hex                                 Description
     ---------------------------------------------------------------------------
     0000    ca  7e                              Header signature
@@ -42,11 +102,11 @@ loadc   #3 "string" ; load constant string into reg 3
     0008    73  69 6d 70 6c  65 2e 6c 75 61 00  Source name string "simple.lua"
                                                 ** function: [0] level 1
     0013    00                                  nups 0
-    0014    00                                  numparams 0
-    0015    02                                  is_vararg 2
-    0016    02                                  maxstacksize 2
+    0014    00                                  numParams 0
+    0015    02                                  isVararg 2
+    0016    02                                  maxStackSize 2
                                                 * code:
-    0017    09                                  sizecode 
+    0017    09                                  sizeCode 
     0018    02  01 00 00 00  00 00 00 00        [1] loadc 1 0  ; result
     0021    02  02 00 00 00  01 00 00 00        [2] loadc 2 1  ; incrementor
     002a    02  03 00 00 00  05 00 00 00        [3] loadc 3 5  ; end condition
@@ -57,7 +117,7 @@ loadc   #3 "string" ; load constant string into reg 3
     0053    0d  01 00 00 00  03 00 00 00        [8] lt 1 3     ; test if value in register #1 < #3
     005c    0f  00 00 00 00  04 00 00 00        [9] test 0 4   ; if register #0 contians 0 jump to #4
     0065                                        * constants:
-    0065    02                                  size 2
+    0065    02                                  sizeConstants 2
     0066    01                                  type 1 integer
     0067    01 00 00 00                         const[0] = 1
     006b    01                                  type 1 integer
