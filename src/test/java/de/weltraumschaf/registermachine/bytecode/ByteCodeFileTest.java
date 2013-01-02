@@ -57,7 +57,7 @@ public class ByteCodeFileTest {
     @Test
     public void getProgramm() {
         final ByteCodeFile sut = new ByteCodeFile(new byte[]{
-            (byte) 0xCA, (byte) 0x7E, (byte) 0x01, (byte) 0x00, (byte) 0x03, (byte) 0x04, (byte) 0x05});
+            (byte) 0xCA, (byte) 0x7E, (byte) 0x01, (byte) 0x00, (byte) 0x03, (byte) 0x04, (byte) 0x05, });
         assertThat(sut.getProgramm(), is(new byte[]{(byte) 0x03, (byte) 0x04, (byte) 0x05}));
     }
 }
