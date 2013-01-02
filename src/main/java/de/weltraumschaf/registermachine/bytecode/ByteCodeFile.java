@@ -39,6 +39,8 @@ public class ByteCodeFile {
 
     /**
      * The byte code w/o header.
+     *
+     * TODO Use ByteCodeStream
      */
     private final byte[] bytecode;
 

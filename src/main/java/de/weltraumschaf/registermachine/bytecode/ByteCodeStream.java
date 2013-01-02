@@ -49,6 +49,15 @@ final public class ByteCodeStream {
         }
     }
 
+    byte[] nextBytes(final int n) {
+        byte[] result = new byte[n];
+        for (int i = 0; i < n; ++i) {
+            nextByte();
+            result[i] = getCurrentByte();
+        }
+        return result;
+    }
+
     boolean hasNextByte() {
         if (isEmpty()) {
             return false;
