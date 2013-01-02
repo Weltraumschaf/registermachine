@@ -16,7 +16,7 @@ package de.weltraumschaf.registermachine.asm;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-class CharStream {
+final class CharStream {
 
     /** Indicates end of line. */
     static final char EOL = (char) 0;
@@ -94,4 +94,5 @@ class CharStream {
     int getLineNumber() {
         return lineNumber;
     }
+
 }

@@ -12,7 +12,6 @@
 package de.weltraumschaf.registermachine.bytecode;
 
 import de.weltraumschaf.registermachine.ByteInt;
-import de.weltraumschaf.registermachine.Const;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -63,7 +62,7 @@ public class ByteCodeFile {
             return false;
         }
 
-        return bytecode[0] == Const.BC_FST_HEADER_BYTE && bytecode[1] == Const.BC_SND_HEADER_BYTE;
+        return bytecode[0] == ByteCodeStream.BC_FST_HEADER_BYTE && bytecode[1] == ByteCodeStream.BC_SND_HEADER_BYTE;
     }
 
     public short getVersion() {

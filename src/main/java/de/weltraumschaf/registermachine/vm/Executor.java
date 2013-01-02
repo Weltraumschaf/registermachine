@@ -14,8 +14,8 @@ package de.weltraumschaf.registermachine.vm;
 import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.ByteInt;
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.instr.Factory;
 import de.weltraumschaf.registermachine.instr.Instruction;
@@ -68,13 +68,13 @@ public class Executor {
             } else {
                 final int argCount = bc.getArgCount().getCount();
                 args = new int[argCount];
-                final int byteCount = argCount * Const.ARG_BYTE_COUNT;
-                final byte[] bytes = new byte[Const.ARG_BYTE_COUNT];
+                final int byteCount = argCount * ByteCodeStream.ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[ByteCodeStream.ARG_BYTE_COUNT];
                 int argI = 0;
                 for (int shift = 0; shift < byteCount; ++shift) {
-                    bytes[shift % Const.ARG_BYTE_COUNT] = programm[i];
+                    bytes[shift % ByteCodeStream.ARG_BYTE_COUNT] = programm[i];
 
-                    if (shift % Const.ARG_BYTE_COUNT == Const.ARG_BYTE_COUNT - 1) {
+                    if (shift % ByteCodeStream.ARG_BYTE_COUNT == ByteCodeStream.ARG_BYTE_COUNT - 1) {
                         args[argI] = ByteInt.intFromBytes(bytes);
                         ++argI;
                     }

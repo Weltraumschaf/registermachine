@@ -13,7 +13,6 @@ package de.weltraumschaf.registermachine.vm;
 
 import de.weltraumschaf.commons.IO;
 import de.weltraumschaf.registermachine.App;
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.instr.Instruction;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;

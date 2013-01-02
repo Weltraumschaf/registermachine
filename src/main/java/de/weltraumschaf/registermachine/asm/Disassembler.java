@@ -13,8 +13,8 @@ package de.weltraumschaf.registermachine.asm;
 
 import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.ByteInt;
-import de.weltraumschaf.registermachine.Const;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
+import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,12 +51,12 @@ public class Disassembler {
             ++i;
 
             if (bc.getArgCount() != OpCode.ArgCount.NONE) {
-                final int count = bc.getArgCount().getCount() * Const.ARG_BYTE_COUNT;
-                final byte[] bytes = new byte[Const.ARG_BYTE_COUNT];
+                final int count = bc.getArgCount().getCount() * ByteCodeStream.ARG_BYTE_COUNT;
+                final byte[] bytes = new byte[ByteCodeStream.ARG_BYTE_COUNT];
                 for (int shift = 0; shift < count; ++shift) {
-                    bytes[shift % Const.ARG_BYTE_COUNT] = programm[i];
+                    bytes[shift % ByteCodeStream.ARG_BYTE_COUNT] = programm[i];
 
-                    if (shift % Const.ARG_BYTE_COUNT == Const.ARG_BYTE_COUNT - 1) {
+                    if (shift % ByteCodeStream.ARG_BYTE_COUNT == ByteCodeStream.ARG_BYTE_COUNT - 1) {
                         buffer.append(' ');
                         buffer.append(ByteInt.intFromBytes(bytes));
                     }
