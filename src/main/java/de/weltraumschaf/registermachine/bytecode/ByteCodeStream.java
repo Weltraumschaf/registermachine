@@ -15,7 +15,7 @@ package de.weltraumschaf.registermachine.bytecode;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-final public class ByteCodeStream {
+public final class ByteCodeStream {
 
     public static final byte BC_FST_HEADER_BYTE = (byte) 0xCA;
     public static final byte BC_SND_HEADER_BYTE = (byte) 0x7E;
@@ -50,7 +50,7 @@ final public class ByteCodeStream {
     }
 
     byte[] nextBytes(final int n) {
-        byte[] result = new byte[n];
+        final byte[] result = new byte[n];
         for (int i = 0; i < n; ++i) {
             nextByte();
             result[i] = getCurrentByte();

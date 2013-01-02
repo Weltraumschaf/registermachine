@@ -133,7 +133,7 @@ public enum OpCode {
     PRINTLN(0x11, ArgCount.ONE),
     RETURN(0x12, ArgCount.TWO),
     /**
-     * Unknown opcode wil stop execution.
+     * Unknown opcode will stop execution.
      */
     UNKWONN(0xff);
 
@@ -141,6 +141,7 @@ public enum OpCode {
     private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();
     /** Lookup table opcodes by opcode byte. */
     private static final Map<Byte, OpCode> OPCODE_LOOKUP = Maps.newHashMap();
+    private static final int HEX_MASK = 0xFF;
 
     static {
         // Initialize lookups.
@@ -211,7 +212,7 @@ public enum OpCode {
      * @return two digit hex string
      */
     public static String toHex(final byte b) {
-        final String hex = Integer.toHexString(0xFF & b);
+        final String hex = Integer.toHexString(HEX_MASK & b);
         return hex.length() == 1
                 ? "0" + hex
                 : hex;

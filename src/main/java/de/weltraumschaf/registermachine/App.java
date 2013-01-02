@@ -43,9 +43,18 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class App extends InvokableAdapter {
 
-    public static String ENCODING = "UTF-8";
-    public static Locale LOCALE = Locale.ENGLISH;
-    public static String NL = String.format("%n");
+    /**
+     * Encoding used for all file I/O.
+     */
+    public static final String ENCODING = "UTF-8";
+    /**
+     * Locale used for all strings.
+     */
+    public static final Locale LOCALE = Locale.ENGLISH;
+    /**
+     * System dependent new line character.
+     */
+    public static final String NL = String.format("%n");
 
     /**
      * Name of the executable displayed in usage.
@@ -156,14 +165,29 @@ public final class App extends InvokableAdapter {
         }
     }
 
+    /**
+     * Is help option flag present?
+     *
+     * @return true id -h present in CLI args, else false
+     */
     private boolean isHelp() {
         return commandLineArgs.hasOption(HELP_OPT);
     }
 
+    /**
+     * Is verbose option flag present?
+     *
+     * @return true id -v present in CLI args, else false
+     */
     private boolean isVerbose() {
         return commandLineArgs.hasOption(VERBOSE_OPT);
     }
 
+    /**
+     * Is compile option flag present?
+     *
+     * @return true id -c present in CLI args, else false
+     */
     private boolean isCompile() {
         return commandLineArgs.hasOption(COMPILE_OPT);
     }
@@ -172,10 +196,20 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.getOptionValue(COMPILE_OPT);
     }
 
+    /**
+     * Is print program option flag present?
+     *
+     * @return true id -p present in CLI args, else false
+     */
     private boolean isPrintProgram() {
         return commandLineArgs.hasOption(PRINT_PROGRAM_OPT);
     }
 
+    /**
+     * Is execute option flag present?
+     *
+     * @return true id -e present in CLI args, else false
+     */
     private boolean isExecute() {
         return commandLineArgs.hasOption(EXECUTE_OPT);
     }
@@ -184,6 +218,11 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.getOptionValue(EXECUTE_OPT);
     }
 
+    /**
+     * Is disassemble option flag present?
+     *
+     * @return true id -d present in CLI args, else false
+     */
     private boolean isDisassemble() {
         return commandLineArgs.hasOption(DISASSEMBLE_OPT);
     }
@@ -192,10 +231,20 @@ public final class App extends InvokableAdapter {
         return commandLineArgs.getOptionValue(DISASSEMBLE_OPT);
     }
 
+    /**
+     * Is print opcodes option flag present?
+     *
+     * @return true id -o present in CLI args, else false
+     */
     private boolean isPrintOpCodes() {
         return commandLineArgs.hasOption(PRINT_OPCODES_OPT);
     }
 
+    /**
+     * Is interpret option flag present?
+     *
+     * @return true id -i present in CLI args, else false
+     */
     private boolean isInterpret() {
         return commandLineArgs.hasOption(INTERPRET_OPT);
     }
@@ -309,7 +358,8 @@ public final class App extends InvokableAdapter {
         getIoStreams().print(buffer.toString());
     }
 
-    private void interpretAssemblv(final String inFilename) throws IOException, AssemblerSyntaxException, ExecutionException {
+    private void interpretAssemblv(final String inFilename) throws IOException, AssemblerSyntaxException,
+            ExecutionException {
         executeByteCode(assembleFile(inFilename));
     }
 
