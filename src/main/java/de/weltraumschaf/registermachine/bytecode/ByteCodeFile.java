@@ -11,7 +11,7 @@
  */
 package de.weltraumschaf.registermachine.bytecode;
 
-import de.weltraumschaf.registermachine.convert.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class ByteCodeFile {
     }
 
     public short getVersion() {
-        return ByteInt.shortFromBytes(Arrays.copyOfRange(bytecode, VERSION_OFFSET, CODE_OFFSTET));
+        return ByteInteger.shortFromBytes(Arrays.copyOfRange(bytecode, VERSION_OFFSET, CODE_OFFSTET));
     }
 
     public byte[] getProgramm() {

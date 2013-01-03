@@ -15,7 +15,7 @@ package de.weltraumschaf.registermachine.asm;
 import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.convert.ByteArray;
-import de.weltraumschaf.registermachine.convert.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
@@ -58,7 +58,7 @@ public class Assembler {
         final List<Byte> bytecode = Lists.newArrayList();
         bytecode.add(Byte.valueOf(ByteCodeStream.BC_FST_HEADER_BYTE));
         bytecode.add(Byte.valueOf(ByteCodeStream.BC_SND_HEADER_BYTE));
-        final byte[] version = ByteInt.bytesFromInt(ByteCodeStream.BC_CURRENT_VERSION);
+        final byte[] version = ByteInteger.bytesFromInt(ByteCodeStream.BC_CURRENT_VERSION);
         bytecode.add(Byte.valueOf(version[0]));
         bytecode.add(Byte.valueOf(version[1]));
         return bytecode;
@@ -120,7 +120,7 @@ public class Assembler {
         }
 
         final Integer value = Integer.valueOf(arg);
-        final byte[] bytes = ByteInt.bytesFromInt(value);
+        final byte[] bytes = ByteInteger.bytesFromInt(value);
         return Arrays.asList(ByteArray.toObject(bytes));
     }
 

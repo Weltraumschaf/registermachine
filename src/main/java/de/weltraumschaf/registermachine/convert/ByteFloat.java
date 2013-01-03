@@ -27,7 +27,7 @@ public final class ByteFloat {
     }
 
     public static float floatFromBytes(final byte[] bytes) {
-        return floatFromBits(ByteInt.intFromBytes(bytes));
+        return floatFromBits(ByteInteger.intFromBytes(bytes));
     }
 
     static float floatFromBits(final int bits) {
@@ -39,7 +39,7 @@ public final class ByteFloat {
     }
 
     public static byte[] bytesFromFloat(final float f) {
-        return ByteInt.bytesFromInt(bitsFromFloat(f));
+        return ByteInteger.bytesFromInt(bitsFromFloat(f));
     }
 
 }

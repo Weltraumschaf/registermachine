@@ -12,7 +12,7 @@
 package de.weltraumschaf.registermachine.asm;
 
 import de.weltraumschaf.registermachine.App;
-import de.weltraumschaf.registermachine.convert.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
@@ -58,7 +58,7 @@ public class Disassembler {
 
                     if (shift % ByteCodeStream.ARG_BYTE_COUNT == ByteCodeStream.ARG_BYTE_COUNT - 1) {
                         buffer.append(' ');
-                        buffer.append(ByteInt.intFromBytes(bytes));
+                        buffer.append(ByteInteger.intFromBytes(bytes));
                     }
                     ++i;
                 }

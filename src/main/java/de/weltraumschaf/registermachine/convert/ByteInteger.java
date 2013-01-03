@@ -18,7 +18,7 @@ package de.weltraumschaf.registermachine.convert;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class ByteInt {
+public final class ByteInteger {
 
     /** How much bits to shift 2nd byte. */
     private static final int SECOND_BYTE_SHIFT = 8;
@@ -46,7 +46,7 @@ public final class ByteInt {
     /**
      * Hide constructor for pure static class.
      */
-    private ByteInt() {
+    private ByteInteger() {
         super();
     }
 
