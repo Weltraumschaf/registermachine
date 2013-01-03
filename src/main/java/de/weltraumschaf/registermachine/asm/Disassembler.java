@@ -12,7 +12,7 @@
 package de.weltraumschaf.registermachine.asm;
 
 import de.weltraumschaf.registermachine.App;
-import de.weltraumschaf.registermachine.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInt;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;

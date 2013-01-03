@@ -10,7 +10,7 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.convert;
 
 /**
  * Converts floats to byte arrays and vice versa.

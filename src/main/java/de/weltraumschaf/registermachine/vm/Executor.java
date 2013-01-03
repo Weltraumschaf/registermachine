@@ -13,7 +13,7 @@ package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Lists;
 import de.weltraumschaf.commons.IO;
-import de.weltraumschaf.registermachine.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInt;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;

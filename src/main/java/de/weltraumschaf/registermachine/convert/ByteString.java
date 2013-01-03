@@ -10,8 +10,9 @@
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.convert;
 
+import de.weltraumschaf.registermachine.App;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 

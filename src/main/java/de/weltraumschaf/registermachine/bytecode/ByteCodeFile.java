@@ -11,7 +11,7 @@
  */
 package de.weltraumschaf.registermachine.bytecode;
 
-import de.weltraumschaf.registermachine.ByteInt;
+import de.weltraumschaf.registermachine.convert.ByteInt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;

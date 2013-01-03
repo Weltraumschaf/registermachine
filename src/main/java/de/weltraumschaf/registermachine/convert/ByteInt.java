@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-package de.weltraumschaf.registermachine;
+package de.weltraumschaf.registermachine.convert;
 
 /**
  * Converts integers to array of bytes and vice versa.
