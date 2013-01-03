@@ -16,6 +16,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
+ * Used to tag system tests.
+ *
+ * Planned to run them separately, if they grow in time.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
