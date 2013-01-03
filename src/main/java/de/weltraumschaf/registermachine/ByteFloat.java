@@ -13,11 +13,15 @@
 package de.weltraumschaf.registermachine;
 
 /**
+ * Converts floats to byte arrays and vice versa.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class ByteFloat {
 
+    /**
+     * Hidden because pure static class.
+     */
     private ByteFloat() {
         super();
     }
@@ -30,7 +34,7 @@ public final class ByteFloat {
         return Float.intBitsToFloat(bits);
     }
 
-    public static int bitsFromFloat(final float f) {
+    static int bitsFromFloat(final float f) {
         return Float.floatToRawIntBits(f);
     }
 
