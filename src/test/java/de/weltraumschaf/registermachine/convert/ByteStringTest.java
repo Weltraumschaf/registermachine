@@ -13,9 +13,9 @@
 package de.weltraumschaf.registermachine.convert;
 
 import java.io.UnsupportedEncodingException;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *

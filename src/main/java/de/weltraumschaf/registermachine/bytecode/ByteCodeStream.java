@@ -21,6 +21,8 @@ public final class ByteCodeStream {
     public static final byte BC_SND_HEADER_BYTE = (byte) 0x7E;
     public static final short BC_CURRENT_VERSION = (short) 0x01;
     public static final int ARG_BYTE_COUNT = 4;
+
+    /** The whole bytes. */
     private final byte[] bytes;
     /**
      * Current character position.
@@ -28,7 +30,8 @@ public final class ByteCodeStream {
     private int index;
 
     public ByteCodeStream(final byte[] str) {
-        this.bytes = str;
+        bytes = new byte[str.length];
+        System.arraycopy(str, 0, bytes, 0, str.length);
     }
 
     public boolean isEmpty() {

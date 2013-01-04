@@ -58,6 +58,9 @@ public final class Value {
      * Boolean representation.
      */
     private final boolean booleanValue;
+    /**
+     * String representation.
+     */
     private final String stringValue;
 
     /**
@@ -95,7 +98,19 @@ public final class Value {
     }
 
     private Value(final String stringValue) {
-        this(Type.STRING, Integer.valueOf(stringValue), Float.valueOf(stringValue), Boolean.valueOf(stringValue), stringValue);
+        this(Type.STRING,
+                str2int(stringValue),
+                (float) str2int(stringValue),
+                str2int(stringValue)  == 0 ? false : true ,
+                stringValue);
+    }
+
+    private static int str2int(final String in) {
+        if (null == in) {
+            return 0;
+        }
+
+        return in.isEmpty() ? 0 : 1;
     }
 
     /**

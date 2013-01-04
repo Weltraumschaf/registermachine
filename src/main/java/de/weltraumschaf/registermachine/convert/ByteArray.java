@@ -11,23 +11,28 @@
  */
 package de.weltraumschaf.registermachine.convert;
 
+import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
+ * Helper to convert native byte arrays to boxed byte arrays and vice versa and also handles byte list.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class ByteArray {
 
+    /**
+     * Hidden because pure static class.
+     */
     private ByteArray() {
         super();
     }
 
     /**
-     * Not thread safe!
+     * Converts array of boxed bytes to unboxed native bytes.
      *
-     * @param in
-     * @return
+     * @param in boxed bytes
+     * @return unboxed bytes
      */
     public static byte[] toNative(final Byte[] in) {
         final byte[] out = new byte[in.length];
@@ -37,6 +42,12 @@ public final class ByteArray {
         return out;
     }
 
+    /**
+     * Converts array of unboxed bytes to boxed native bytes.
+     *
+     * @param in unboxed bytes
+     * @return boxed bytes
+     */
     public static Byte[] toObject(final byte[] in) {
         final Byte[] out = new Byte[in.length];
         for (int i = 0; i < in.length; ++i) {
@@ -45,7 +56,14 @@ public final class ByteArray {
         return out;
     }
 
-    public static byte[] convertToNativeArray(final List<Byte> bytecode) {
-        return ByteArray.toNative(bytecode.toArray(new Byte[bytecode.size()]));
+    /**
+     * Converts a list of boxed bytes to an array of native bytes.
+     *
+     * @param original list of boxed bytes
+     * @return array of native bytes
+     */
+    public static byte[] convertToNativeArray(final List<Byte> original) {
+        final List<Byte> in = Lists.newArrayList(original);
+        return ByteArray.toNative(in.toArray(new Byte[in.size()]));
     }
 }

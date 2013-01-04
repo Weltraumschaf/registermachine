@@ -14,24 +14,43 @@ package de.weltraumschaf.registermachine.convert;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 
 /**
+ * Converts {@link Value} to byte code compatible byte arrays and vice versa.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class ByteValue {
 
+    /** Type byte for NIL. */
     public static final byte NIL = 0x00;
+    /** Type byte for integers. */
     public static final byte INTEGER = 0x01;
+    /** Type byte for floats. */
     public static final byte FLOAT = 0x02;
+    /** Type byte for booleans. */
     public static final byte BOOLEAN = 0x03;
+    /** Type byte for strings. */
     public static final byte STRING = 0x04;
 
+    /**
+     * Hide constructor for pure static class.
+     */
     private ByteValue() {
         super();
     }
 
+    /**
+     * Extracts a {@link Value} from the current position of the {@link ByteCodeStream}.
+     *
+     * This method expects that the current byte of the stream is a valid type byte and will
+     * extract the type from that position. After calling this method the passed in streams
+     * internal index may have been advanced.
+     *
+     * @param bytes stream to extract from
+     * @return value object
+     * @throws UnsupportedEncodingException if, utf-8 errors occures with string
+     */
     public static Value valueFromBytes(final ByteCodeStream bytes) throws UnsupportedEncodingException {
         Value value;
         final byte type = bytes.getCurrentByte();
@@ -49,10 +68,10 @@ public final class ByteValue {
                 bytes.nextByte(); // consume value byte
                 break;
             case INTEGER:
-                value = Value.valueOf(ByteInteger.intFromBytes(bytes.getBytes(4)));
+                value = Value.valueOf(ByteInteger.intFromBytes(bytes.getBytes(ByteInteger.BYTES_PER_INT)));
                 break;
             case FLOAT:
-                value = Value.valueOf(ByteFloat.floatFromBytes(bytes.getBytes(4)));
+                value = Value.valueOf(ByteFloat.floatFromBytes(bytes.getBytes(ByteInteger.BYTES_PER_INT)));
                 break;
             case STRING:
                 final byte length = bytes.getCurrentByte();
@@ -66,6 +85,13 @@ public final class ByteValue {
         return value;
     }
 
+    /**
+     * Generates byte code value representation of given value.
+     *
+     * @param value to convert
+     * @return array of bytes with different length
+     * @throws UnsupportedEncodingException if, utf-8 errors occures with string
+     */
     public static byte[] bytesFromValue(final Value value) throws UnsupportedEncodingException {
         byte[] bytes;
         switch (value.getType()) {
