@@ -32,10 +32,10 @@ public final class ByteInteger {
     private static final int THREE_BYTE_MASK = 0xFFFFFF;
     private static final int FOUR_BYTE_MASK = 0xFFFFFFFF;
 
-    private static final int FIRST_BYTE = 0;
-    private static final int SECOND_BYTE = 1;
-    private static final int THIRD_BYTE = 2;
-    private static final int FOURTH_BYTE = 3;
+    static final int FIRST_BYTE = 0;
+    static final int SECOND_BYTE = 1;
+    static final int THIRD_BYTE = 2;
+    static final int FOURTH_BYTE = 3;
 
     private static final int BYTES_SHORT = 2;
     private static final int BYTES_INT = 4;

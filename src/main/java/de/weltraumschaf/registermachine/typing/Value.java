@@ -39,11 +39,9 @@ public final class Value {
     /**
      * Used as delta for float comparing.
      *
-     * Two floats are considered same, if the absolute value of their difference is
-     * less than the delta.
+     * Two floats are considered same, if the absolute value of their difference is less than the delta.
      */
     private static final double FLOAT_COMPARE_DELTA = 0.00001f;
-
     /**
      * Type of value.
      */
@@ -60,12 +58,13 @@ public final class Value {
      * Boolean representation.
      */
     private final boolean booleanValue;
+    private final String stringValue;
 
     /**
      * Default constructor for NIL types.
      */
     private Value() {
-        this(Type.NIL, 0, (float) 0.0, false);
+        this(Type.NIL, 0, (float) 0.0, false, "");
     }
 
     /**
@@ -74,7 +73,7 @@ public final class Value {
      * @param integerValue the value to represent
      */
     private Value(final int integerValue) {
-        this(Type.INTEGER, integerValue, integerToFloat(integerValue), integerToBoolean(integerValue));
+        this(Type.INTEGER, integerValue, integerToFloat(integerValue), integerToBoolean(integerValue), String.valueOf(integerValue));
     }
 
     /**
@@ -83,7 +82,7 @@ public final class Value {
      * @param floatValue the value to represent
      */
     private Value(final float floatValue) {
-        this(Type.FLOAT, floatToInteger(floatValue), floatValue, floatToBoolean(floatValue));
+        this(Type.FLOAT, floatToInteger(floatValue), floatValue, floatToBoolean(floatValue), String.valueOf(floatValue));
     }
 
     /**
@@ -92,7 +91,11 @@ public final class Value {
      * @param booleanValue the value to represent
      */
     private Value(final boolean booleanValue) {
-        this(Type.BOOLEAN, booleanToInteger(booleanValue), booleanTwoFloat(booleanValue), booleanValue);
+        this(Type.BOOLEAN, booleanToInteger(booleanValue), booleanTwoFloat(booleanValue), booleanValue, String.valueOf(booleanValue));
+    }
+
+    private Value(final String stringValue) {
+        this(Type.STRING, Integer.valueOf(stringValue), Float.valueOf(stringValue), Boolean.valueOf(stringValue), stringValue);
     }
 
     /**
@@ -103,12 +106,13 @@ public final class Value {
      * @param floatValue the boxed float representation of the value
      * @param booleanValue the boxed boolean representation of the value
      */
-    private Value(final Type type, final int integerValue, final float floatValue, final boolean booleanValue) {
+    private Value(final Type type, final int integerValue, final float floatValue, final boolean booleanValue, final String stringValue) {
         super();
-        this.type         = type;
+        this.type = type;
         this.integerValue = integerValue;
-        this.floatValue   = floatValue;
+        this.floatValue = floatValue;
         this.booleanValue = booleanValue;
+        this.stringValue = stringValue;
     }
 
     /**
@@ -147,6 +151,10 @@ public final class Value {
         return booleanValue;
     }
 
+    public String getStringValue() {
+        return stringValue;
+    }
+
     /**
      * Static factory to get a NIL value object.
      *
@@ -183,6 +191,8 @@ public final class Value {
                 return String.valueOf(getFloatValue());
             case BOOLEAN:
                 return String.valueOf(getBooleanValue());
+            case STRING:
+                return stringValue;
             case NIL:
                 return "NIL";
             default:
@@ -193,7 +203,7 @@ public final class Value {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(type, booleanValue, floatValue, integerValue);
+        return Objects.hashCode(type, booleanValue, floatValue, integerValue, stringValue);
     }
 
     @Override
@@ -206,7 +216,8 @@ public final class Value {
         return Objects.equal(type, other.type)
                 && Objects.equal(booleanValue, other.booleanValue)
                 && Objects.equal(floatValue, other.floatValue)
-                && Objects.equal(integerValue, other.integerValue);
+                && Objects.equal(integerValue, other.integerValue)
+                && Objects.equal(stringValue, other.stringValue);
     }
 
     /**
@@ -285,6 +296,10 @@ public final class Value {
         return new Value(value);
     }
 
+    public static Value valueOf(final String value) {
+        return new Value(value);
+    }
+
     /**
      * Cast a value to an other type.
      *
@@ -304,9 +319,11 @@ public final class Value {
             } else {
                 return FALSE;
             }
+        } else if (Type.NIL == t) {
+            return NIL;
         }
 
-        return new Value(t, integerValue, floatValue, booleanValue);
+        return new Value(t, integerValue, floatValue, booleanValue, stringValue);
     }
 
     /**
@@ -336,4 +353,7 @@ public final class Value {
         return castTo(Type.FLOAT);
     }
 
+    Value castToString() {
+        return castTo(Type.STRING);
+    }
 }

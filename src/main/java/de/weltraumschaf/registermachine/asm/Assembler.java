@@ -14,11 +14,11 @@ package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.App;
-import de.weltraumschaf.registermachine.convert.ByteArray;
-import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.convert.ByteArray;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;

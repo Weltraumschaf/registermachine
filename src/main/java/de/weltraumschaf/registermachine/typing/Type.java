@@ -12,6 +12,8 @@
 
 package de.weltraumschaf.registermachine.typing;
 
+import de.weltraumschaf.registermachine.convert.ByteValue;
+
 /**
  * Types the VM knows.
  *
@@ -22,23 +24,23 @@ public enum Type {
     /**
      * Nil.
      */
-    NIL((byte) 0x00),
+    NIL(ByteValue.NIL),
     /**
      * 32 bit integers.
      */
-    INTEGER((byte) 0x01),
+    INTEGER(ByteValue.INTEGER),
     /**
      * 32 bit float.
      */
-    FLOAT((byte) 0x02),
+    FLOAT(ByteValue.FLOAT),
     /**
      * Boolean.
      */
-    BOOLEAN((byte) 0x03),
+    BOOLEAN(ByteValue.BOOLEAN),
     /**
      * UTF-8 strings.
      */
-    STRING((byte) 0x04);
+    STRING(ByteValue.STRING);
 
     /**
      * byte representation of type.

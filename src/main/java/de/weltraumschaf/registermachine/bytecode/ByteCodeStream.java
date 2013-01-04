@@ -31,7 +31,7 @@ public final class ByteCodeStream {
         this.bytes = str;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return bytes.length == 0;
     }
 
@@ -39,26 +39,26 @@ public final class ByteCodeStream {
      *
      * @return @throws IndexOutOfBoundsException
      */
-    byte getCurrentByte() {
+    public byte getCurrentByte() {
         return bytes[index];
     }
 
-    void nextByte() {
+    public void nextByte() {
         if (hasNextByte()) {
             ++index;
         }
     }
 
-    byte[] nextBytes(final int n) {
+    public byte[] getBytes(final int n) {
         final byte[] result = new byte[n];
         for (int i = 0; i < n; ++i) {
-            nextByte();
             result[i] = getCurrentByte();
+            nextByte();
         }
         return result;
     }
 
-    boolean hasNextByte() {
+    public boolean hasNextByte() {
         if (isEmpty()) {
             return false;
         }
@@ -69,4 +69,5 @@ public final class ByteCodeStream {
     int getIndex() {
         return index;
     }
+
 }
