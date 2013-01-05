@@ -13,6 +13,9 @@ package de.weltraumschaf.registermachine.typing;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Bytes;
+import de.weltraumschaf.registermachine.convert.ByteValue;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class Function {
     /**
      * Contains function code.
      */
-    private final List<Code> code = Lists.newArrayList();
+    private final List<Code> functionCode = Lists.newArrayList();
     /**
      * Contains local variables.
      */
@@ -73,16 +76,16 @@ public class Function {
                 .add("numparams", numparams)
                 .add("isVararg", isVararg)
                 .add("maxStackSize", maxStackSize)
-                .add("code", code)
+                .add("code", functionCode)
                 .toString();
     }
 
     public List<Code> getCode() {
-        return code;
+        return functionCode;
     }
 
     public void addCode(final Code c) {
-        code.add(c);
+        functionCode.add(c);
     }
 
     public int getNups() {
@@ -117,26 +120,26 @@ public class Function {
         return constants.get(index);
     }
 
-    public List<Byte> asByteList() {
+    public List<Byte> asByteList() throws UnsupportedEncodingException {
         final List<Byte> bytes = Lists.newArrayList();
         bytes.add(Byte.valueOf(nups));
         bytes.add(Byte.valueOf(numparams));
         bytes.add(Byte.valueOf(isVararg));
         bytes.add(Byte.valueOf(maxStackSize));
 
-        bytes.add((byte) code.size()); // XXX Use 32 bit int
-        for (final Code c : code) {
-            bytes.addAll(c.asByteList());
+        bytes.add((byte) functionCode.size()); // XXX Use 32 bit int
+        for (final Code instruction : functionCode) {
+            bytes.addAll(instruction.asByteList());
         }
 
         bytes.add((byte) constants.size()); // XXX Use 32 bit int
-        if (!constants.isEmpty()) {
-            // TODO Implement code generation
+        for (final Value constant : constants) {
+            bytes.addAll(Bytes.asList(ByteValue.bytesFromValue(constant)));
         }
 
         bytes.add((byte) variables.size()); // XXX Use 32 bit int
-        if (!variables.isEmpty()) {
-            // TODO Implement code generation
+        for (final Value variable : variables) {
+            bytes.addAll(Bytes.asList(ByteValue.bytesFromValue(variable)));
         }
 
         bytes.add((byte) functions.size()); // XXX Use 32 bit int

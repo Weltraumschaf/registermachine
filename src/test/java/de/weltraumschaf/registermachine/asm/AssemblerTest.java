@@ -95,7 +95,7 @@ public class AssemblerTest {
     @Test
     public void assamble_mainFunctionWithVariables() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_variables.ctasm").toArray();
-        assertThat(bytecode.length, is(50));
+        assertThat(bytecode.length, is(65));
         assertThat(bytecode, is(new byte[]{
                     (byte) 0xca, 0x7e, // singature
                     0x02, 0x00, // version
@@ -113,6 +113,9 @@ public class AssemblerTest {
                     0x00, // sizeCode
                     0x00, // sizeConstants
                     0x03, // sizeVariables
+                    0x04, 0x03, 0x66, 0x6f, 0x6f, // String "foo"
+                    0x01, 0x2a, 0x00, 0x00, 0x00, // Integer 42
+                    0x02, 0x33, 0x33, 0x13, 0x40, // Float 2.3
                     0x00, // sizeFunctions
                 }));
     }
