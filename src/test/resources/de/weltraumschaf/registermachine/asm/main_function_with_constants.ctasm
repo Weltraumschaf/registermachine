@@ -1,4 +1,7 @@
 ; function [0] definition (level 0)
 ; nups: 1, numparams: 2, isVararg: 3; maxStackSize: 4
 .function 1 2 3 4
+.const "foo" ; 0
+.const 42    ; 1
+.const 2.3   ; 2
 ; end of function
