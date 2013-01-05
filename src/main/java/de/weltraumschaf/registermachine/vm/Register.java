@@ -48,7 +48,9 @@ class Register {
      *
      * @param r register index
      * @return always a value, may be {@link Value#NIL} if register was not set
+     * CHECKSTYLE:OFF
      * @throws IllegalArgumentException if, r is less than 0
+     * CHECKSTYLE:ON
      */
     Value get(final int r) {
         if (r < 0) {

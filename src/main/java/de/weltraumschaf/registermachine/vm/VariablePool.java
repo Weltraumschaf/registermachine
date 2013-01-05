@@ -17,30 +17,51 @@ import de.weltraumschaf.registermachine.typing.Value;
 import java.util.List;
 
 /**
+ * Pool to store variable values.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 class VariablePool implements Pool {
-    private static final int DEFAULT_CAPACITY = 0;
 
+    /**
+     * Initial pool capacity.
+     */
+    private static final int DEFAULT_CAPACITY = 8;
+    /**
+     * Stores the values.
+     */
     private final List<Value> values;
 
+    /**
+     * Initialize pool with a default capacity.
+     */
     public VariablePool() {
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param size initial capacity
+     */
     public VariablePool(final int size) {
         super();
         values = Lists.newArrayListWithCapacity(size);
     }
 
     @Override
-    public void assign(final Value v) {
-        values.add(v);
+    public void assign(final Value value) {
+        values.add(value);
     }
 
-    public boolean lookup(final Value v) {
-        return values.contains(v);
+    /**
+     * Lookup if the given value already stored.
+     *
+     * @param value to lookup
+     * @return true if value already assigned, else false
+     */
+    boolean lookup(final Value value) {
+        return values.contains(value);
     }
 
     @Override

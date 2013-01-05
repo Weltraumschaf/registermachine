@@ -64,5 +64,5 @@ public enum Type {
     public byte asByte() {
         return typeByte;
     }
-    
+
 }

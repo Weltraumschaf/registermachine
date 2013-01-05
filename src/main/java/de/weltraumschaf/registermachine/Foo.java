@@ -15,13 +15,27 @@ package de.weltraumschaf.registermachine;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 
 /**
+ * Helper class.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
+ * @deprecated Will be removed.
  */
-public class Foo {
+@Deprecated
+public final class Foo {
 
-    public static final String hex(int ... args) {
-        StringBuilder b = new StringBuilder();
+    /** Hidden. */
+    private Foo() {
+        super();
+    }
+
+    /**
+     * Takes integers and converts them to a string with hex bytes.
+     *
+     * @param args integer input
+     * @return hex output
+     */
+    public static String hex(final int ... args) {
+        final StringBuilder b = new StringBuilder();
         int i = 0;
         for (int arg : args) {
             if (i > 0) {
@@ -33,4 +47,5 @@ public class Foo {
         }
         return b.toString();
     }
+
 }

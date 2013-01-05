@@ -18,8 +18,6 @@ import com.google.common.base.Objects;
  *
  * Holds a boxed representation of all native types.
  *
- * TODO Add String
- *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public final class Value {
@@ -76,7 +74,11 @@ public final class Value {
      * @param integerValue the value to represent
      */
     private Value(final int integerValue) {
-        this(Type.INTEGER, integerValue, integerToFloat(integerValue), integerToBoolean(integerValue), String.valueOf(integerValue));
+        this(Type.INTEGER,
+                integerValue,
+                integerToFloat(integerValue),
+                integerToBoolean(integerValue),
+                String.valueOf(integerValue));
     }
 
     /**
@@ -85,7 +87,11 @@ public final class Value {
      * @param floatValue the value to represent
      */
     private Value(final float floatValue) {
-        this(Type.FLOAT, floatToInteger(floatValue), floatValue, floatToBoolean(floatValue), String.valueOf(floatValue));
+        this(Type.FLOAT,
+                floatToInteger(floatValue),
+                floatValue,
+                floatToBoolean(floatValue),
+                String.valueOf(floatValue));
     }
 
     /**
@@ -94,23 +100,19 @@ public final class Value {
      * @param booleanValue the value to represent
      */
     private Value(final boolean booleanValue) {
-        this(Type.BOOLEAN, booleanToInteger(booleanValue), booleanTwoFloat(booleanValue), booleanValue, String.valueOf(booleanValue));
+        this(Type.BOOLEAN,
+                booleanToInteger(booleanValue),
+                booleanTwoFloat(booleanValue),
+                booleanValue,
+                String.valueOf(booleanValue));
     }
 
     private Value(final String stringValue) {
         this(Type.STRING,
                 str2int(stringValue),
                 (float) str2int(stringValue),
-                str2int(stringValue)  == 0 ? false : true ,
+                str2int(stringValue) == 0 ? false : true,
                 stringValue);
-    }
-
-    private static int str2int(final String in) {
-        if (null == in) {
-            return 0;
-        }
-
-        return in.isEmpty() ? 0 : 1;
     }
 
     /**
@@ -120,14 +122,30 @@ public final class Value {
      * @param integerValue the boxed integer representation of the value
      * @param floatValue the boxed float representation of the value
      * @param booleanValue the boxed boolean representation of the value
+     * @param stringValue  the boxed string representation of the value
      */
-    private Value(final Type type, final int integerValue, final float floatValue, final boolean booleanValue, final String stringValue) {
+    private Value(final Type type, final int integerValue, final float floatValue, final boolean booleanValue,
+            final String stringValue) {
         super();
         this.type = type;
         this.integerValue = integerValue;
         this.floatValue = floatValue;
         this.booleanValue = booleanValue;
         this.stringValue = stringValue;
+    }
+
+    /**
+     * Converts a string to an integer.
+     *
+     * @param in string to convert
+     * @return 0 if the string is null or empty, 1 else
+     */
+    private static int str2int(final String in) {
+        if (null == in) {
+            return 0;
+        }
+
+        return in.isEmpty() ? 0 : 1;
     }
 
     /**

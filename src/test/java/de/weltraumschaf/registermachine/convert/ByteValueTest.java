@@ -15,10 +15,9 @@ import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
 import de.weltraumschaf.registermachine.typing.Type;
 import de.weltraumschaf.registermachine.typing.Value;
 import java.io.UnsupportedEncodingException;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import org.junit.Ignore;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -55,21 +54,24 @@ public class ByteValueTest {
 
     @Test
     public void valueFromBytes_Integer() throws UnsupportedEncodingException {
-        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x01, (byte) 0x2a, (byte) 0x00, (byte) 0x00, (byte) 0x00));
+        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x01, (byte) 0x2a, (byte) 0x00, (byte) 0x00,
+                                                                  (byte) 0x00));
         assertThat(value.getType(), is(Type.INTEGER));
         assertThat(value.getIntegerValue(), is(42));
     }
 
     @Test
     public void valueFromBytes_Float() throws UnsupportedEncodingException {
-        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x02, (byte) 0x56, (byte) 0x0e, (byte) 0x49, (byte) 0x40));
+        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x02, (byte) 0x56, (byte) 0x0e, (byte) 0x49,
+                                                                  (byte) 0x40));
         assertThat(value.getType(), is(Type.FLOAT));
         assertThat(value.getFloatValue(), is(3.1415f));
     }
 
     @Test
     public void valueFromBytes_String() throws UnsupportedEncodingException {
-        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x04, (byte) 0x06, (byte) 0x66, (byte) 0x6f, (byte) 0x6f, (byte) 0x62, (byte) 0x61, (byte) 0x72));
+        final Value value = ByteValue.valueFromBytes(createStream((byte) 0x04, (byte) 0x06, (byte) 0x66, (byte) 0x6f,
+                                                                  (byte) 0x6f, (byte) 0x62, (byte) 0x61, (byte) 0x72));
         assertThat(value.getType(), is(Type.STRING));
         assertThat(value.getStringValue(), is("foobar"));
     }
@@ -77,31 +79,31 @@ public class ByteValueTest {
     @Test
     public void bytesFromValue_Nil() throws UnsupportedEncodingException {
         final byte[] bytes = ByteValue.bytesFromValue(Value.getNil());
-        assertThat(bytes, is(new byte[]{0x00,}));
+        assertThat(bytes, is(new byte[]{0x00, }));
     }
 
     @Test
     public void bytesFromValue_False() throws UnsupportedEncodingException {
         final byte[] bytes = ByteValue.bytesFromValue(Value.getFalse());
-        assertThat(bytes, is(new byte[]{0x03, 0x00,}));
+        assertThat(bytes, is(new byte[]{0x03, 0x00, }));
     }
 
     @Test
     public void bytesFromValue_True() throws UnsupportedEncodingException {
         final byte[] bytes = ByteValue.bytesFromValue(Value.getTrue());
-        assertThat(bytes, is(new byte[]{0x03, 0x01,}));
+        assertThat(bytes, is(new byte[]{0x03, 0x01, }));
     }
 
     @Test
     public void bytesFromValue_Integer() throws UnsupportedEncodingException {
         final byte[] bytes = ByteValue.bytesFromValue(Value.valueOf(42));
-        assertThat(bytes, is(new byte[]{0x01, 0x2a, 0x00, 0x00, 0x00,}));
+        assertThat(bytes, is(new byte[]{0x01, 0x2a, 0x00, 0x00, 0x00, }));
     }
 
     @Test
     public void bytesFromValue_Float() throws UnsupportedEncodingException {
         final byte[] bytes = ByteValue.bytesFromValue(Value.valueOf(3.1415f));
-        assertThat(bytes, is(new byte[]{0x02, 0x56, 0x0e, 0x49, 0x40,}));
+        assertThat(bytes, is(new byte[]{0x02, 0x56, 0x0e, 0x49, 0x40, }));
     }
 
     @Test

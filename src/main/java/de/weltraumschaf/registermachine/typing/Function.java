@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Bytes;
 import de.weltraumschaf.registermachine.convert.ByteValue;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.List;
 
 /**

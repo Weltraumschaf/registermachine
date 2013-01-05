@@ -63,21 +63,21 @@ public class ByteIntegerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shortFromBytes_throwsExceptionOnTooShortByte() {
-        ByteInteger.shortFromBytes(new byte[]{0x00,});
+        ByteInteger.shortFromBytes(new byte[]{0x00, });
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shortFromBytes_throwsExceptionOnTooLongByte() {
-        ByteInteger.shortFromBytes(new byte[]{0x00, 0x00, 0x00,});
+        ByteInteger.shortFromBytes(new byte[]{0x00, 0x00, 0x00, });
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void integerFromBytes_throwsExceptionOnTooShortByte() {
-        ByteInteger.intFromBytes(new byte[]{0x00, 0x00, 0x00,});
+        ByteInteger.intFromBytes(new byte[]{0x00, 0x00, 0x00, });
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void integerFromBytes_throwsExceptionOnTooLongByte() {
-        ByteInteger.intFromBytes(new byte[]{0x00, 0x00, 0x00, 0x00, 0x00,});
+        ByteInteger.intFromBytes(new byte[]{0x00, 0x00, 0x00, 0x00, 0x00, });
     }
 }

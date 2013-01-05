@@ -23,13 +23,28 @@ import org.apache.commons.lang.StringUtils;
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 public class RegisterMachine {
+
+    /** Pad size for debug output. */
     private static final int DEBUG_PAD = 26;
-
+    /**
+     * Holds variables and functions in scopes.
+     */
     private final RuntimeConfiguration config;
+    /**
+     * If true, debug output will be print.
+     */
     private final boolean debug;
+    /**
+     * If true, executed instructions will be print.
+     */
     private final boolean printProgramm;
+    /**
+     * Used for terminal I/O.
+     */
     private final IO io;
-
+    /**
+     * The program to execute.
+     */
     private List<Instruction> program;
 
     public  RegisterMachine(final IO io) {

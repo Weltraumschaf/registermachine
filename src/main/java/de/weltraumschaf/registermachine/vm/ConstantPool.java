@@ -15,18 +15,28 @@ package de.weltraumschaf.registermachine.vm;
 import de.weltraumschaf.registermachine.typing.Value;
 
 /**
+ * Pool to store distinct constants values.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class ConstantPool extends VariablePool {
 
+    /**
+     * Assign a value to the current index.
+     *
+     * @param value value to assign
+     * CHECKSTYLE:OFF
+     * @throws IllegalArgumentException if, value was already assigned
+     * CHECKSTYLE:ON
+     */
     @Override
-    public final void assign(final Value v) {
-        if (lookup(v)) {
-            throw new IllegalArgumentException(String.format("Value %s already defined as constant!", v.toString()));
+    public final void assign(final Value value) {
+        if (lookup(value)) {
+            throw new IllegalArgumentException(String.format("Value %s already defined as constant!",
+                                                             value.toString()));
         }
 
-        super.assign(v);
+        super.assign(value);
     }
 
 }

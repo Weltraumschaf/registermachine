@@ -15,13 +15,33 @@ package de.weltraumschaf.registermachine.vm;
 import de.weltraumschaf.registermachine.typing.Value;
 
 /**
+ * Pool to store values by indexes.
+ *
+ * Indexes are automatically associated to the value at assignment starting by 0.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public interface Pool {
 
-    void assign(Value v);
+    /**
+     * Assign a value to the current index.
+     *
+     * @param value value to assign
+     */
+    void assign(Value value);
+    /**
+     * Checks if value was assigned at given index.
+     *
+     * @param index must be greater equal 0
+     * @return true if value was assigned, else false
+     */
     boolean lookup(int index);
+    /**
+     * Retrieve value from given index.
+     *
+     * @param index must be greater equal 0
+     * @return stored value
+     */
     Value retrieve(int index);
 
 }

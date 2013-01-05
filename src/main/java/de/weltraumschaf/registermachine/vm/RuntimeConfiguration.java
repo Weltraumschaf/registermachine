@@ -23,9 +23,18 @@ import java.util.Stack;
  */
 public class RuntimeConfiguration {
 
+    /**
+     * Stack of scopes with the current scope at the top.
+     */
     private final Stack<Scope> scopes = new Stack<Scope>();
+    /**
+     * Program counter.
+     */
     private int programCounter;
 
+    /**
+     * Pushes initial scope onto scopes stack.
+     */
     public RuntimeConfiguration() {
         super();
         scopes.push(new Scope());

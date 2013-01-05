@@ -13,20 +13,35 @@
 package de.weltraumschaf.registermachine.vm;
 
 /**
+ * Factory to create pool implementations.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 final class Pools {
 
+    /**
+     * Hide constructor for pure static class.
+     */
     private Pools() {
         super();
     }
 
+    /**
+     * Creates variable pool which allow multiple assignments of same value.
+     *
+     * @return new instance
+     */
     static Pool newVariablePool() {
         return new VariablePool();
     }
 
+    /**
+     * Creates constant pool which does not allow multiple assignments of same value.
+     *
+     * @return new instance
+     */
     static Pool newConstantPool() {
         return new ConstantPool();
     }
+
 }

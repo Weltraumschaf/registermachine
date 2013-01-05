@@ -9,7 +9,6 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.asm;
 
 import com.google.common.collect.Lists;
@@ -17,7 +16,6 @@ import com.google.common.primitives.Bytes;
 import de.weltraumschaf.registermachine.App;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
-import de.weltraumschaf.registermachine.convert.ByteArray;
 import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.convert.ByteString;
 import de.weltraumschaf.registermachine.typing.Function;
@@ -35,7 +33,8 @@ public class Assembler {
 
     private final LineParser parser = new LineParser();
 
-    public ByteCodeFile assamble(final InputStream input, final String sourceFileName) throws IOException, AssemblerSyntaxException {
+    public ByteCodeFile assamble(final InputStream input, final String sourceFileName)
+        throws IOException, AssemblerSyntaxException {
         final List<String> lines = IOUtils.readLines(input, App.ENCODING);
         IOUtils.closeQuietly(input);
         final List<Byte> bytecode = createByteCodeWithHeader(sourceFileName);
@@ -56,5 +55,4 @@ public class Assembler {
         bytecode.addAll(Bytes.asList(filename));
         return bytecode;
     }
-
 }
