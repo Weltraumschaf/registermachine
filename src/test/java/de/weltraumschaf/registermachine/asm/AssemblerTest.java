@@ -2,15 +2,16 @@
  *  LICENSE
  *
  * "THE BEER-WARE LICENSE" (Revision 43):
- * "Sven Strittmatter" <weltraumschaf@googlemail.com> wrote this file.
+ * "Sven Strittmatter" weltraumschaf@googlemail.com wrote this file.
  * As long as you retain this notice you can do whatever you want with
  * this stuff. If we meet some day, and you think this stuff is worth it,
  * you can buy me a non alcohol-free beer in return.
  *
- * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
+ * Copyright (C) 2012 "Sven Strittmatter" weltraumschaf@googlemail.com
  */
 package de.weltraumschaf.registermachine.asm;
 
+import de.weltraumschaf.registermachine.Foo;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +22,7 @@ import org.junit.Ignore;
 
 /**
  *
- * @author Sven Strittmatter <weltraumschaf@googlemail.com>
+ * @author Sven Strittmatter weltraumschaf@googlemail.com
  */
 public class AssemblerTest {
 
@@ -91,15 +92,29 @@ public class AssemblerTest {
                 }));
     }
 
-    @Test @Ignore
+    @Test
     public void assamble_mainFunctionWithVariables() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_variables.ctasm").toArray();
-        assertThat(bytecode.length, is(95));
+        assertThat(bytecode.length, is(50));
         assertThat(bytecode, is(new byte[]{
                     (byte) 0xca, 0x7e, // singature
                     0x02, 0x00, // version
-                    0x1d, 0x00, 0x00, 0x00, // source name length
-                    }));
+                    0x22, 0x00, 0x00, 0x00, // source name length
+                    0x6d, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x75, 0x6e, // source name
+                    0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x77, 0x69, // source name
+                    0x74, 0x68, 0x5f, 0x76, 0x61, 0x72, 0x69, 0x61, // source name
+                    0x62, 0x6c, 0x65, 0x73, 0x2e, 0x63, 0x74, 0x61, // source name
+                    0x73, 0x6d, // source name
+                    // function [0] definition (level 0)
+                    0x01, // nups
+                    0x02, // numparams
+                    0x03, // isVararg
+                    0x04, // maxStackSize
+                    0x00, // sizeCode
+                    0x00, // sizeConstants
+                    0x03, // sizeVariables
+                    0x00, // sizeFunctions
+                }));
     }
 
     @Test @Ignore

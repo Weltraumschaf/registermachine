@@ -134,7 +134,7 @@ class LineParser {
         }
 
         final Token token = tokens.get(0);
-        final Value value = deterineValue(token);
+        final Value value = determineValue(token);
         functions.peek().addConstant(value);
     }
 
@@ -146,7 +146,7 @@ class LineParser {
         }
 
         final Token token = tokens.get(0);
-        final Value value = deterineValue(token);
+        final Value value = determineValue(token);
         functions.peek().addVariable(value);
     }
 
@@ -180,7 +180,7 @@ class LineParser {
         functions.peek().addCode(new Code(op, typedArgs));
     }
 
-    private Value deterineValue(final Token token) throws AssemblerSyntaxException {
+    private Value determineValue(final Token token) throws AssemblerSyntaxException {
         Value value;
         switch (token.getType()) {
             case INTEGER:
@@ -202,7 +202,8 @@ class LineParser {
                 }
                 break;
             case STRING:
-                throw new UnsupportedOperationException("Not yet implemented");
+                value = Value.valueOf(token.getValue());
+                break;
             default:
                 throw new AssemblerSyntaxException(String.format("Unsupported constant type %s!", token.getType()),
                                                    getCurrentLine());
