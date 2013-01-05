@@ -9,11 +9,11 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.typing;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,23 +42,23 @@ public class Function {
     /**
      * Number of up values.
      */
-    private final int nups;
+    private final byte nups;
     /**
      * Number of parameters.
      */
-    private final int numparams;
+    private final byte numparams;
     /**
      * Var arg description.
      *
      * TODO Remove this.
      */
-    private final int isVararg;
+    private final byte isVararg;
     /**
      * Max stack size.
      */
-    private final int maxStackSize;
+    private final byte maxStackSize;
 
-    public Function(int nups, int numparams, int isVararg, int maxstacksize) {
+    public Function(byte nups, byte numparams, byte isVararg, byte maxstacksize) {
         super();
         this.nups = nups;
         this.numparams = numparams;
@@ -69,12 +69,12 @@ public class Function {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                      .add("nups", nups)
-                      .add("numparams", numparams)
-                      .add("isVararg", isVararg)
-                      .add("maxStackSize", maxStackSize)
-                      .add("code", code)
-                      .toString();
+                .add("nups", nups)
+                .add("numparams", numparams)
+                .add("isVararg", isVararg)
+                .add("maxStackSize", maxStackSize)
+                .add("code", code)
+                .toString();
     }
 
     public List<Code> getCode() {
@@ -117,6 +117,33 @@ public class Function {
         return constants.get(index);
     }
 
+    public List<Byte> asByteList() {
+        final List<Byte> bytes = Lists.newArrayList();
+        bytes.add(Byte.valueOf(nups));
+        bytes.add(Byte.valueOf(numparams));
+        bytes.add(Byte.valueOf(isVararg));
+        bytes.add(Byte.valueOf(maxStackSize));
 
+        bytes.add((byte) code.size()); // XXX Use 32 bit int
+        for (final Code c : code) {
+            bytes.addAll(c.asByteList());
+        }
 
+        bytes.add((byte) constants.size()); // XXX Use 32 bit int
+        if (!constants.isEmpty()) {
+            // TODO Implement code generation
+        }
+
+        bytes.add((byte) variables.size()); // XXX Use 32 bit int
+        if (!variables.isEmpty()) {
+            // TODO Implement code generation
+        }
+
+        bytes.add((byte) functions.size()); // XXX Use 32 bit int
+        if (!functions.isEmpty()) {
+            // TODO Implement code generation
+        }
+
+        return bytes;
+    }
 }

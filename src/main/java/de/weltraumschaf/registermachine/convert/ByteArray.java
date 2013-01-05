@@ -13,6 +13,7 @@ package de.weltraumschaf.registermachine.convert;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * Helper to convert native byte arrays to boxed byte arrays and vice versa and also handles byte list.
@@ -33,13 +34,10 @@ public final class ByteArray {
      *
      * @param in boxed bytes
      * @return unboxed bytes
+     * @deprecated Use ArrayUtils.toPrimitive().
      */
-    public static byte[] toNative(final Byte[] in) {
-        final byte[] out = new byte[in.length];
-        for (int i = 0; i < in.length; ++i) {
-            out[i] = in[i];
-        }
-        return out;
+    @Deprecated public static byte[] toNative(final Byte[] in) {
+        return ArrayUtils.toPrimitive(in);
     }
 
     /**
@@ -47,13 +45,10 @@ public final class ByteArray {
      *
      * @param in unboxed bytes
      * @return boxed bytes
+     * @deprecated Use ArrayUtils.toObject().
      */
-    public static Byte[] toObject(final byte[] in) {
-        final Byte[] out = new Byte[in.length];
-        for (int i = 0; i < in.length; ++i) {
-            out[i] = in[i];
-        }
-        return out;
+    @Deprecated public static Byte[] toObject(final byte[] in) {
+        return ArrayUtils.toObject(in);
     }
 
     /**

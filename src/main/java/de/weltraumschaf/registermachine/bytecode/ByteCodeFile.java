@@ -11,10 +11,12 @@
  */
 package de.weltraumschaf.registermachine.bytecode;
 
+import de.weltraumschaf.registermachine.convert.ByteArray;
 import de.weltraumschaf.registermachine.convert.ByteInteger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents a byte code file.
@@ -52,6 +54,10 @@ public class ByteCodeFile {
         super();
         this.bytecode = bytecode.read();
         bytecode.close();
+    }
+
+    public ByteCodeFile(final List<Byte> bytecode) {
+        this(ByteArray.convertToNativeArray(bytecode));
     }
 
     public ByteCodeFile(final byte[] bytecode) {

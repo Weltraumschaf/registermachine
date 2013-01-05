@@ -12,7 +12,10 @@
 package de.weltraumschaf.registermachine.typing;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Bytes;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,6 +75,15 @@ public class Code {
         final Code other = (Code) obj;
 
         return Objects.equal(op, other.op) && Objects.equal(args, other.args);
+    }
+
+    List<Byte> asByteList() {
+        final List<Byte> bytes = Lists.newArrayList();
+        bytes.add(op.getCode());
+        for (final Integer arg : args) {
+            bytes.addAll(Bytes.asList(ByteInteger.bytesFromInt(arg)));
+        }
+        return bytes;
     }
 
 }

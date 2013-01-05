@@ -19,7 +19,7 @@ public final class ByteCodeStream {
 
     public static final byte BC_FST_HEADER_BYTE = (byte) 0xCA;
     public static final byte BC_SND_HEADER_BYTE = (byte) 0x7E;
-    public static final short BC_CURRENT_VERSION = (short) 0x01;
+    public static final short BC_CURRENT_VERSION = (short) 0x02;
     public static final int ARG_BYTE_COUNT = 4;
 
     /** The whole bytes. */

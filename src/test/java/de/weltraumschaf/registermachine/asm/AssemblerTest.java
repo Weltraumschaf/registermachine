@@ -17,6 +17,7 @@ import java.io.InputStream;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -27,74 +28,112 @@ public class AssemblerTest {
     private static final String PACKAGE_PREFIX = "/de/weltraumschaf/registermachine/asm";
     private final Assembler sut = new Assembler();
 
-    @Test
-    public void assamble() throws IOException, AssemblerSyntaxException {
-        final InputStream input = getClass().getResourceAsStream(PACKAGE_PREFIX + "/all_instructions.ctasm");
-        final ByteCodeFile bytecode = sut.assamble(input);
+    private ByteCodeFile createAndVerifyByteCodeFile(final String filename) throws IOException, AssemblerSyntaxException {
+        final InputStream input = getClass().getResourceAsStream(PACKAGE_PREFIX + "/" + filename);
+        final ByteCodeFile byteCodeFile = sut.assamble(input, filename);
         input.close();
-        assertThat(bytecode.isValid(), is(true));
-        assertThat(bytecode.getVersion(), is((short) 0x01));
-        final byte[] program = bytecode.getProgramm();
-        assertThat(program.length, is(45));
-        assertThat(program[0], is((byte) 0x01)); // move
-
-        assertThat(program[1], is((byte) 0x01)); // arg 1
-        assertThat(program[2], is((byte) 0x00)); // arg 1
-        assertThat(program[3], is((byte) 0x00)); // arg 1
-        assertThat(program[4], is((byte) 0x00)); // arg 1
-
-        assertThat(program[5], is((byte) 0x02)); // arg 2
-        assertThat(program[6], is((byte) 0x00)); // arg 2
-        assertThat(program[7], is((byte) 0x00)); // arg 2
-        assertThat(program[8], is((byte) 0x00)); // arg 2
-
-        assertThat(program[9], is((byte) 0x03)); // add
-
-        assertThat(program[10], is((byte) 0x02)); // arg 1
-        assertThat(program[11], is((byte) 0x00)); // arg 1
-        assertThat(program[12], is((byte) 0x00)); // arg 1
-        assertThat(program[13], is((byte) 0x00)); // arg 1
-
-        assertThat(program[14], is((byte) 0x03)); // arg 2
-        assertThat(program[15], is((byte) 0x00)); // arg 2
-        assertThat(program[16], is((byte) 0x00)); // arg 2
-        assertThat(program[17], is((byte) 0x00)); // arg 2
-
-        assertThat(program[18], is((byte) 0x04)); // sub
-
-        assertThat(program[19], is((byte) 0x02)); // arg 1
-        assertThat(program[20], is((byte) 0x00)); // arg 1
-        assertThat(program[21], is((byte) 0x00)); // arg 1
-        assertThat(program[22], is((byte) 0x00)); // arg 1
-
-        assertThat(program[23], is((byte) 0x03)); // arg 2
-        assertThat(program[24], is((byte) 0x00)); // arg 2
-        assertThat(program[25], is((byte) 0x00)); // arg 2
-        assertThat(program[26], is((byte) 0x00)); // arg 2
-
-        assertThat(program[27], is((byte) 0x05)); // mul
-
-        assertThat(program[28], is((byte) 0x02)); // arg 1
-        assertThat(program[29], is((byte) 0x00)); // arg 1
-        assertThat(program[30], is((byte) 0x00)); // arg 1
-        assertThat(program[31], is((byte) 0x00)); // arg 1
-
-        assertThat(program[32], is((byte) 0x03)); // arg 2
-        assertThat(program[33], is((byte) 0x00)); // arg 2
-        assertThat(program[34], is((byte) 0x00)); // arg 2
-        assertThat(program[35], is((byte) 0x00)); // arg 2
-
-        assertThat(program[36], is((byte) 0x06)); // div
-
-        assertThat(program[37], is((byte) 0x02)); // arg 1
-        assertThat(program[38], is((byte) 0x00)); // arg 1
-        assertThat(program[39], is((byte) 0x00)); // arg 1
-        assertThat(program[40], is((byte) 0x00)); // arg 1
-
-        assertThat(program[41], is((byte) 0x03)); // arg 2
-        assertThat(program[42], is((byte) 0x00)); // arg 2
-        assertThat(program[43], is((byte) 0x00)); // arg 2
-        assertThat(program[44], is((byte) 0x00)); // arg 2
+        assertThat(byteCodeFile.isValid(), is(true));
+        assertThat(byteCodeFile.getVersion(), is((short) 0x02));
+        return byteCodeFile;
     }
+
+    @Test
+    public void assamble_emptyMainFunction() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("empty_main_function.ctasm").toArray();
+        assertThat(bytecode.length, is(41));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x19, 0x00, 0x00, 0x00, // source name length
+                    0x65, 0x6d, 0x70, 0x74, 0x79, 0x5f, 0x6d, 0x61, // source name
+                    0x69, 0x6e, 0x5f, 0x66, 0x75, 0x6e, 0x63, 0x74, // source name
+                    0x69, 0x6f, 0x6e, 0x2e, 0x63, 0x74, 0x61, 0x73, // source name
+                    0x6d, // source name
+                    // function [0] definition (level 0)
+                    0x00, // nups
+                    0x00, // numparams
+                    0x04, // isVararg
+                    0x02, // maxStackSize
+                    0x00, // sizeCode
+                    0x00, // sizeConstants
+                    0x00, // sizeVariables
+                    0x00, // sizeFunctions
+                }));
+    }
+
+    @Test
+    public void assamble_mainFunctionWithCode() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_code.ctasm").toArray();
+        assertThat(bytecode.length, is(95));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x1d, 0x00, 0x00, 0x00, // source name length
+                    0x6d, 0x61, 0x69, 0x6e, 0x5f, 0x66, 0x75, 0x6e, // source name
+                    0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x77, 0x69, // source name
+                    0x74, 0x68, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x2e, // source name
+                    0x63, 0x74, 0x61, 0x73, 0x6d, // source name
+                    // function [0] definition (level 0)
+                    0x01, // nups
+                    0x02, // numparams
+                    0x03, // isVararg
+                    0x04, // maxStackSize
+                    0x06, // sizeCode
+                    0x02, 0x04, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // loadc 4 4
+                    0x11, 0x01, 0x00, 0x00, 0x00, // println 1
+                    0x03, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, // add 1 2
+                    0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, // move 0 1
+                    0x0d, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, // lt 1 3
+                    0x0f, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // test 0 4
+                    0x00, // sizeConstants
+                    0x00, // sizeVariables
+                    0x00, // sizeFunctions
+                }));
+    }
+
+    @Test @Ignore
+    public void assamble_mainFunctionWithVariables() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_variables.ctasm").toArray();
+        assertThat(bytecode.length, is(95));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x1d, 0x00, 0x00, 0x00, // source name length
+                    }));
+    }
+
+    @Test @Ignore
+    public void assamble_mainFunctionWithConstants() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_constants.ctasm").toArray();
+        assertThat(bytecode.length, is(95));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x1d, 0x00, 0x00, 0x00, // source name length
+                    }));
+    }
+
+    @Test @Ignore
+    public void assamble_mainFunctionWithFunctions() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_functions.ctasm").toArray();
+        assertThat(bytecode.length, is(95));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x1d, 0x00, 0x00, 0x00, // source name length
+                    }));
+    }
+
+    @Test @Ignore
+    public void assamble_mainFunctionWithCodeVariablesConstantsAndFunctions() throws IOException, AssemblerSyntaxException {
+        final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_code_vars_constants_and_functions.ctasm").toArray();
+        assertThat(bytecode.length, is(95));
+        assertThat(bytecode, is(new byte[]{
+                    (byte) 0xca, 0x7e, // singature
+                    0x02, 0x00, // version
+                    0x1d, 0x00, 0x00, 0x00, // source name length
+                    }));
+    }
+
 
 }

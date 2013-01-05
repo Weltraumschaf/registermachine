@@ -1,0 +1,4 @@
+; function [0] definition (level 0)
+; nups: 0, numparams: 0, isVararg: 4; maxStackSize: 2
+.function 0 0 4 2
+; end of function

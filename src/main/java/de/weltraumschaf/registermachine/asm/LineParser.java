@@ -113,17 +113,17 @@ class LineParser {
             }
         }
 
-        functions.push(new Function(parseToInt(tokens.get(FIRST_ARG)),
-                                    parseToInt(tokens.get(SECOND_ARG)),
-                                    parseToInt(tokens.get(THIRD_ARG)),
-                                    parseToInt(tokens.get(FOURTH_ARG))));
+        functions.push(new Function(parseToByte(tokens.get(FIRST_ARG)),
+                                    parseToByte(tokens.get(SECOND_ARG)),
+                                    parseToByte(tokens.get(THIRD_ARG)),
+                                    parseToByte(tokens.get(FOURTH_ARG))));
     }
 
     private static float parseToFloat(final Token t) {
         return Float.parseFloat(t.getValue());
     }
-    private static int parseToInt(final Token t) {
-        return Integer.parseInt(t.getValue());
+    private static byte parseToByte(final Token t) {
+        return Byte.parseByte(t.getValue());
     }
 
     private void parseConstantMetaCode(final List<Token> tokens) throws AssemblerSyntaxException {
@@ -175,7 +175,7 @@ class LineParser {
                         String.format("All arguments of opcode %s must be integers!", op.toString()),
                         getCurrentLine());
             }
-            typedArgs.add(parseToInt(arg));
+            typedArgs.add(Integer.parseInt(arg.getValue()));
         }
         functions.peek().addCode(new Code(op, typedArgs));
     }
@@ -184,7 +184,7 @@ class LineParser {
         Value value;
         switch (token.getType()) {
             case INTEGER:
-                value = Value.valueOf(parseToInt(token));
+                value = Value.valueOf(parseToByte(token));
                 break;
             case FLOAT:
                 value = Value.valueOf(parseToFloat(token));

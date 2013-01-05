@@ -376,6 +376,6 @@ public final class App extends InvokableAdapter {
 
     private ByteCodeFile assembleFile(final String inFilename) throws AssemblerSyntaxException, IOException {
         final Assembler asm = new Assembler();
-        return asm.assamble(FileIo.newInputStream(inFilename));
+        return asm.assamble(FileIo.newInputStream(inFilename), inFilename);
     }
 }
