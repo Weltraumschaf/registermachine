@@ -144,7 +144,7 @@ public enum OpCode {
     /**
      * Return from function.
      */
-    RETURN(0x14, ArgCount.TWO),
+    RETURN(0x14, ArgCount.NONE),
     /**
      * Unknown opcode will stop execution.
      */

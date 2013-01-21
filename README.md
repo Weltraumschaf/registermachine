@@ -136,5 +136,5 @@ Example:
     test        A B     0x11    Boolean test, with conditional jump.
     print       A       0x12    Prints content of register.
     println     A       0x13    Prints content of register and a new line.
-    return      A B     0x14    Return from function.
+    return              0x14    Return from function.
     unkwonn             0xff    Unknown opcode will stop execution.
