@@ -30,6 +30,10 @@ import java.util.Map;
 public enum OpCode {
 
     /**
+     * No operation.
+     */
+    NOP(0x00),
+    /**
      * Copy a value between registers.
      *
      * <pre>
@@ -38,13 +42,21 @@ public enum OpCode {
      */
     MOVE(0x01, ArgCount.TWO),
     /**
+     * Load variable from slot A into register B.
+     */
+    LOAD(0x02, ArgCount.TWO),
+    /**
+     * Store variable from register A into slot B.
+     */
+    STORE(0x03, ArgCount.TWO),
+    /**
      * Load a constant into a register.
      *
      * <pre>
      * loadc DST_REG VALUE ; load integer value into register DST_REG
      * </pre>
      */
-    LOADC(0x02, ArgCount.TWO),
+    LOADC(0x04, ArgCount.TWO),
     /**
      * Addition operator.
      *
@@ -52,7 +64,7 @@ public enum OpCode {
      * add OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
-    ADD(0x03, ArgCount.TWO),
+    ADD(0x05, ArgCount.THREE),
     /**
      * Subtraction operator.
      *
@@ -60,7 +72,7 @@ public enum OpCode {
      * sub OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
-    SUB(0x04, ArgCount.TWO),
+    SUB(0x06, ArgCount.THREE),
     /**
      * Multiplication operator.
      *
@@ -68,7 +80,7 @@ public enum OpCode {
      * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
-    MUL(0x05, ArgCount.TWO),
+    MUL(0x07, ArgCount.THREE),
     /**
      * Division operator.
      *
@@ -76,7 +88,7 @@ public enum OpCode {
      * div OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
-    DIV(0x06, ArgCount.TWO),
+    DIV(0x08, ArgCount.THREE),
     /**
      * Modulus (remainder) operator.
      *
@@ -84,7 +96,7 @@ public enum OpCode {
      * mod OP1_REG OP2_REG ; reminder divide value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
-    MOD(0x07, ArgCount.TWO),
+    MOD(0x09, ArgCount.THREE),
     /**
      * Exponentiation operator.
      *
@@ -92,44 +104,47 @@ public enum OpCode {
      * pow OP1_REG OP2_REG ; powers value from OP1_REG and OP2_REG and stores result in register 0
      * </pre>
      */
-    POW(0x08, ArgCount.TWO),
+    POW(0x0a, ArgCount.THREE),
     /**
      * Unary minus operator.
      */
-    UNM(0x09, ArgCount.ONE),
+    UNM(0x0b, ArgCount.TWO),
     /**
-     * Logical NOT operator.
+     * Logical not operator.
      */
-    NOT(0x0a, ArgCount.ONE),
+    NOT(0x0c, ArgCount.TWO),
     /**
      * Unconditional jump.
      */
-    JMP(0x0b, ArgCount.ONE),
+    JMP(0x0d, ArgCount.ONE),
     /**
      * Equality test.
      */
-    EQ(0x0c, ArgCount.TWO),
+    EQ(0x0e, ArgCount.THREE),
     /**
      * Less than test Less than or equal to test.
      */
-    LT(0x0d, ArgCount.TWO),
+    LT(0x0f, ArgCount.THREE),
     /**
      * Less than or equals test Less than or equal to test.
      */
-    LE(0x0e, ArgCount.TWO),
+    LE(0x10, ArgCount.THREE),
     /**
      *Boolean test, with conditional jump.
      */
-    TEST(0x0f, ArgCount.TWO),
+    TEST(0x11, ArgCount.TWO),
     /**
-     *
+     * Prints content of register.
      */
-    PRINT(0x10, ArgCount.ONE),
+    PRINT(0x12, ArgCount.ONE),
     /**
-     *
+     * Prints content of register and a new line.
      */
-    PRINTLN(0x11, ArgCount.ONE),
-    RETURN(0x12, ArgCount.TWO),
+    PRINTLN(0x13, ArgCount.ONE),
+    /**
+     * Return from function.
+     */
+    RETURN(0x14, ArgCount.TWO),
     /**
      * Unknown opcode will stop execution.
      */

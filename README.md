@@ -126,23 +126,29 @@ Example:
 
 ## Opcodes
 
-    mnemonic args   byte
-    --------------------
-    move     A B    0x01
-    loadc    A B    0x02
-    add      A B    0x03
-    sub      A B    0x04
-    mul      A B    0x05
-    div      A B    0x06
-    mod      A B    0x07
-    pow      A B    0x08
-    unm      A      0x09
-    not      A      0x0a
-    jmp      A      0x0b
-    eq       A B    0x0c
-    lt       A B    0x0d
-    le       A B    0x0e
-    test     A B    0x0f
-    print    A      0x10
-    println  A      0x11
-    unkwonn         0xff
+    mnemonic    args    opcode  description
+    -----------------------------------------------------------------------------------------------------------
+    nop                 0x00    No operation.
+    move        A B     0x01    Moves the value from register A to register B.
+    load        A B     0x02    Load variable from slot A into register B.
+    store       A B     0x03    Store variable from register A into slot B.
+    loadc       A B     0x04    Load constant from slot A into register B.
+    add         A B C   0x05    Add values from registers B and C and store result into register A.
+    sub         A B C   0x06    Subtract values from registers B and C and store result into register A.
+    mul         A B C   0x07    Multiply values from registers B and C and store result into register A.
+    div         A B C   0x08    Divide values from registers B and C and store result into register A.
+    mod         A B C   0x09    Modulus values from registers B and C and store result into register A.
+    pow         A B C   0x0a    Powers values from registers B and C and store result into register A.
+    unm         A B     0x0b    Unary minus operator.
+    not         A B     0x0c    Logical not operator.
+    jmp         A       0x0d    Unconditional jump.
+    eq          A B C   0x0e    Compare if value in register B and C are equal and store result in register A.
+    lt          A B C   0x0f    Compare if value in register B is less than the value in register C and store
+                                result in register A.
+    le          A B C   0x10    Compare if value in register B is less than or equal the value in register C
+                                and store result in register A.
+    test        A B     0x11    Boolean test, with conditional jump.
+    print       A       0x12    Prints content of register.
+    println     A       0x13    Prints content of register and a new line.
+    return      A B     0x14    Return from function.
+    unkwonn             0xff    Unknown opcode will stop execution.
