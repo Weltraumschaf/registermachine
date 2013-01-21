@@ -23,7 +23,7 @@ public class ByteCodeTest {
 
     @Test
     public void testToString() {
-        assertThat(OpCode.ADD.toString(), is("ADD[0x03]"));
+        assertThat(OpCode.ADD.toString(), is("ADD[0x05]"));
     }
 
     @Test

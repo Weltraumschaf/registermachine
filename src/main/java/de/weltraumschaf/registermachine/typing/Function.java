@@ -14,9 +14,11 @@ package de.weltraumschaf.registermachine.typing;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Bytes;
+import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.convert.ByteValue;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * Describes a function.
@@ -119,6 +121,7 @@ public class Function {
         return constants.get(index);
     }
 
+
     public List<Byte> asByteList() throws UnsupportedEncodingException {
         final List<Byte> bytes = Lists.newArrayList();
         bytes.add(Byte.valueOf(nups));
@@ -126,26 +129,32 @@ public class Function {
         bytes.add(Byte.valueOf(isVararg));
         bytes.add(Byte.valueOf(maxStackSize));
 
-        bytes.add((byte) functionCode.size()); // XXX Use 32 bit int
+        addSize(bytes, functionCode.size());
         for (final Code instruction : functionCode) {
             bytes.addAll(instruction.asByteList());
         }
 
-        bytes.add((byte) constants.size()); // XXX Use 32 bit int
+        addSize(bytes, constants.size());
         for (final Value constant : constants) {
             bytes.addAll(Bytes.asList(ByteValue.bytesFromValue(constant)));
         }
 
-        bytes.add((byte) variables.size()); // XXX Use 32 bit int
+        addSize(bytes, variables.size());
         for (final Value variable : variables) {
             bytes.addAll(Bytes.asList(ByteValue.bytesFromValue(variable)));
         }
 
-        bytes.add((byte) functions.size()); // XXX Use 32 bit int
+        addSize(bytes, functions.size());
         if (!functions.isEmpty()) {
             // TODO Implement code generation
         }
 
         return bytes;
+    }
+
+    private void addSize(final List<Byte> bytes, final int size) {
+        for (byte b : ByteInteger.bytesFromInt(size)) {
+            bytes.add(b);
+        }
     }
 }

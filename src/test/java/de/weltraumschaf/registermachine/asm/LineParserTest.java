@@ -113,8 +113,8 @@ public class LineParserTest {
     public void parse_mainWithCode() throws AssemblerSyntaxException {
         final List<String> src = Lists.newArrayList(".function 0 1 2 3",
                 "loadc 0 1",
-                "add 1 2",
-                "return 0 1");
+                "add 1 2 3",
+                "return");
         final Function main = sut.parseLines(src);
         assertThat(main.getNups(), is(0));
         assertThat(main.getNumparams(), is(1));
@@ -124,8 +124,8 @@ public class LineParserTest {
         final List<Code> code = main.getCode();
         assertThat(code.size(), is(3));
         assertThat(code.get(0), is(new Code(OpCode.LOADC, createArgsList(0, 1))));
-        assertThat(code.get(1), is(new Code(OpCode.ADD, createArgsList(1, 2))));
-        assertThat(code.get(2), is(new Code(OpCode.RETURN, createArgsList(0, 1))));
+        assertThat(code.get(1), is(new Code(OpCode.ADD, createArgsList(1, 2, 3))));
+        assertThat(code.get(2), is(new Code(OpCode.RETURN)));
 
     }
 }

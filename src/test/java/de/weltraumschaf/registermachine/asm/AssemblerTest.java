@@ -14,6 +14,7 @@ package de.weltraumschaf.registermachine.asm;
 import de.weltraumschaf.registermachine.bytecode.ByteCodeFile;
 import java.io.IOException;
 import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
@@ -32,7 +33,7 @@ public class AssemblerTest {
         throws IOException, AssemblerSyntaxException {
         final InputStream input = getClass().getResourceAsStream(PACKAGE_PREFIX + "/" + filename);
         final ByteCodeFile byteCodeFile = sut.assamble(input, filename);
-        input.close();
+        IOUtils.closeQuietly(input);
         assertThat(byteCodeFile.isValid(), is(true));
         assertThat(byteCodeFile.getVersion(), is((short) 0x02));
         return byteCodeFile;
@@ -41,7 +42,7 @@ public class AssemblerTest {
     @Test
     public void assamble_emptyMainFunction() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("empty_main_function.ctasm").toArray();
-        assertThat(bytecode.length, is(41));
+        assertThat(bytecode.length, is(53));
         assertThat(bytecode, is(new byte[]{
             (byte) 0xca, 0x7e, // singature
             0x02, 0x00, // version
@@ -55,17 +56,17 @@ public class AssemblerTest {
             0x00, // numparams
             0x04, // isVararg
             0x02, // maxStackSize
-            0x00, // sizeCode
-            0x00, // sizeConstants
-            0x00, // sizeVariables
-            0x00, // sizeFunctions
+            0x00, 0x00, 0x00, 0x00, // sizeCode
+            0x00, 0x00, 0x00, 0x00, // sizeConstants
+            0x00, 0x00, 0x00, 0x00, // sizeVariables
+            0x00, 0x00, 0x00, 0x00, // sizeFunctions
         }));
     }
 
     @Test
     public void assamble_mainFunctionWithCode() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_code.ctasm").toArray();
-        assertThat(bytecode.length, is(95));
+        assertThat(bytecode.length, is(115));
         assertThat(bytecode, is(new byte[]{
             (byte) 0xca, 0x7e, // singature
             0x02, 0x00, // version
@@ -79,23 +80,23 @@ public class AssemblerTest {
             0x02, // numparams
             0x03, // isVararg
             0x04, // maxStackSize
-            0x06, // sizeCode
-            0x02, 0x04, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // loadc 4 4
-            0x11, 0x01, 0x00, 0x00, 0x00, // println 1
-            0x03, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, // add 1 2
+            0x06, 0x00, 0x00, 0x00, // sizeCode
+            0x04, 0x04, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // loadc 4 4
+            0x13, 0x01, 0x00, 0x00, 0x00, // println 1
+            0x05, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, // add 1 2 3
             0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, // move 0 1
-            0x0d, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, // lt 1 3
-            0x0f, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // test 0 4
-            0x00, // sizeConstants
-            0x00, // sizeVariables
-            0x00, // sizeFunctions
+            0x0f, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, // lt 1 2 3
+            0x11, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // test 0 4
+            0x00, 0x00, 0x00, 0x00, // sizeConstants
+            0x00, 0x00, 0x00, 0x00, // sizeVariables
+            0x00, 0x00, 0x00, 0x00, // sizeFunctions
         }));
     }
 
     @Test
     public void assamble_mainFunctionWithVariables() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_variables.ctasm").toArray();
-        assertThat(bytecode.length, is(65));
+        assertThat(bytecode.length, is(77));
         assertThat(bytecode, is(new byte[]{
             (byte) 0xca, 0x7e, // singature
             0x02, 0x00, // version
@@ -110,20 +111,20 @@ public class AssemblerTest {
             0x02, // numparams
             0x03, // isVararg
             0x04, // maxStackSize
-            0x00, // sizeCode
-            0x00, // sizeConstants
-            0x03, // sizeVariables
+            0x00, 0x00, 0x00, 0x00, // sizeCode
+            0x00, 0x00, 0x00, 0x00, // sizeConstants
+            0x03, 0x00, 0x00, 0x00, // sizeVariables
             0x04, 0x03, 0x66, 0x6f, 0x6f, // String "foo"
             0x01, 0x2a, 0x00, 0x00, 0x00, // Integer 42
             0x02, 0x33, 0x33, 0x13, 0x40, // Float 2.3
-            0x00, // sizeFunctions
+            0x00, 0x00, 0x00, 0x00, // sizeFunctions
         }));
     }
 
     @Test
     public void assamble_mainFunctionWithConstants() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode = createAndVerifyByteCodeFile("main_function_with_constants.ctasm").toArray();
-        assertThat(bytecode.length, is(65));
+        assertThat(bytecode.length, is(77));
         assertThat(bytecode, is(new byte[]{
             (byte) 0xca, 0x7e, // singature
             0x02, 0x00, // version
@@ -138,13 +139,13 @@ public class AssemblerTest {
             0x02, // numparams
             0x03, // isVararg
             0x04, // maxStackSize
-            0x00, // sizeCode
-            0x03, // sizeConstants
+            0x00, 0x00, 0x00, 0x00, // sizeCode
+            0x03, 0x00, 0x00, 0x00, // sizeConstants
             0x04, 0x03, 0x66, 0x6f, 0x6f, // String "foo"
             0x01, 0x2a, 0x00, 0x00, 0x00, // Integer 42
             0x02, 0x33, 0x33, 0x13, 0x40, // Float 2.3
-            0x00, // sizeVariables
-            0x00, // sizeFunctions
+            0x00, 0x00, 0x00, 0x00, // sizeVariables
+            0x00, 0x00, 0x00, 0x00, // sizeFunctions
         }));
     }
 
@@ -152,7 +153,7 @@ public class AssemblerTest {
     public void assamble_mainFunctionWithCodeVariablesAndConstants() throws IOException, AssemblerSyntaxException {
         final byte[] bytecode =
                 createAndVerifyByteCodeFile("main_function_with_code_vars_and_constants.ctasm").toArray();
-        assertThat(bytecode.length, is(102));
+        assertThat(bytecode.length, is(118));
         assertThat(bytecode, is(new byte[]{
             (byte) 0xca, 0x7e, // singature
             0x02, 0x00, // version
@@ -168,16 +169,16 @@ public class AssemblerTest {
             0x02, // numparams
             0x03, // isVararg
             0x04, // maxStackSize
-            0x03, // sizeCode
-            0x02, 0x04, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // loadc 4 4
-            0x11, 0x01, 0x00, 0x00, 0x00, // println 1
-            0x03, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, // add 1 2
-            0x02, // sizeConstants
+            0x03, 0x00, 0x00, 0x00, // sizeCode
+            0x04, 0x04, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, // loadc 4 4
+            0x13, 0x01, 0x00, 0x00, 0x00, // println 1
+            0x05, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, // add 1 2 3
+            0x02, 0x00, 0x00, 0x00, // sizeConstants
             0x04, 0x03, 0x66, 0x6f, 0x6f, // String "foo"
             0x01, 0x2a, 0x00, 0x00, 0x00, // Integer 42
-            0x01, // sizeVariables
+            0x01, 0x00, 0x00, 0x00, // sizeVariables
             0x02, 0x33, 0x33, 0x13, 0x40, // Float 2.3
-            0x00, // sizeFunctions
+            0x00, 0x00, 0x00, 0x00, // sizeFunctions
         }));
     }
 

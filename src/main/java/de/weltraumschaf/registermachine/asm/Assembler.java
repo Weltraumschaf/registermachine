@@ -26,13 +26,26 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Assembles byte code from assembly input stream.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class Assembler {
 
+    /**
+     * Used to parse assembly lines.
+     */
     private final LineParser parser = new LineParser();
 
+    /**
+     * Assembles a whole input stream in one call to byte code file representation.
+     *
+     * @param input input stream with assembly string
+     * @param sourceFileName file name used in the byte code header
+     * @return a byte code file representation
+     * @throws IOException if, I/O errors on the input stream occurs
+     * @throws AssemblerSyntaxException if, syntax errors in the assembly occurs
+     */
     public ByteCodeFile assamble(final InputStream input, final String sourceFileName)
         throws IOException, AssemblerSyntaxException {
         final List<String> lines = IOUtils.readLines(input, App.ENCODING);
@@ -43,6 +56,12 @@ public class Assembler {
         return new ByteCodeFile(bytecode);
     }
 
+    /**
+     *
+     * @param sourceFileName
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     private List<Byte> createByteCodeWithHeader(final String sourceFileName) throws UnsupportedEncodingException {
         final List<Byte> bytecode = Lists.newArrayList();
         bytecode.add(Byte.valueOf(ByteCodeStream.BC_FST_HEADER_BYTE));
@@ -55,4 +74,5 @@ public class Assembler {
         bytecode.addAll(Bytes.asList(filename));
         return bytecode;
     }
+
 }
