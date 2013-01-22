@@ -31,6 +31,10 @@ public enum OpCode {
 
     /**
      * No operation.
+     *
+     * <pre>
+     * nop ; does nothing
+     * </pre>
      */
     NOP(0x00),
     /**
@@ -42,18 +46,26 @@ public enum OpCode {
      */
     MOVE(0x01, ArgCount.TWO),
     /**
-     * Load variable from slot A into register B.
+     * Load variable into a register.
+     *
+     * <pre>
+     * load DST_REG SLOT ; load variable from SLOT into register DST_REG
+     * </pre>
      */
     LOAD(0x02, ArgCount.TWO),
     /**
      * Store variable from register A into slot B.
+     *
+     * <pre>
+     * store DST_REG SLOT ; store value from register DST_REG into variable in SLOT
+     * </pre>
      */
     STORE(0x03, ArgCount.TWO),
     /**
      * Load a constant into a register.
      *
      * <pre>
-     * loadc DST_REG VALUE ; load integer value into register DST_REG
+     * loadc DST_REG SLOT ; load constant from SLOT into register DST_REG
      * </pre>
      */
     LOADC(0x04, ArgCount.TWO),
@@ -61,7 +73,7 @@ public enum OpCode {
      * Addition operator.
      *
      * <pre>
-     * add OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in register 0
+     * add RES_REG OP1_REG OP2_REG ; add value from OP1_REG and OP2_REG and stores result in register RES_REG
      * </pre>
      */
     ADD(0x05, ArgCount.THREE),
@@ -69,7 +81,7 @@ public enum OpCode {
      * Subtraction operator.
      *
      * <pre>
-     * sub OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in register 0
+     * sub RES_REG OP1_REG OP2_REG ; subtract value from OP1_REG and OP2_REG and stores result in register RES_REG
      * </pre>
      */
     SUB(0x06, ArgCount.THREE),
@@ -77,7 +89,7 @@ public enum OpCode {
      * Multiplication operator.
      *
      * <pre>
-     * mul RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
+     * mul RES_REG RES_REG OP1_REG OP2_REG ; multiply value from OP1_REG and OP2_REG and stores result in RES_REG
      * </pre>
      */
     MUL(0x07, ArgCount.THREE),
@@ -85,7 +97,7 @@ public enum OpCode {
      * Division operator.
      *
      * <pre>
-     * div OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in register 0
+     * div RES_REG OP1_REG OP2_REG ; divide value from OP1_REG and OP2_REG and stores result in register RES_REG
      * </pre>
      */
     DIV(0x08, ArgCount.THREE),
@@ -93,7 +105,8 @@ public enum OpCode {
      * Modulus (remainder) operator.
      *
      * <pre>
-     * mod OP1_REG OP2_REG ; reminder divide value from OP1_REG and OP2_REG and stores result in register 0
+     * mod RES_REG OP1_REG OP2_REG ; reminder divide value from OP1_REG and OP2_REG and stores result
+     *                             ; into register RES_REG
      * </pre>
      */
     MOD(0x09, ArgCount.THREE),
@@ -101,60 +114,108 @@ public enum OpCode {
      * Exponentiation operator.
      *
      * <pre>
-     * pow OP1_REG OP2_REG ; powers value from OP1_REG and OP2_REG and stores result in register 0
+     * pow RES_REG OP1_REG OP2_REG ; powers value from OP1_REG and OP2_REG and stores result in register RES_REG
      * </pre>
      */
     POW(0x0a, ArgCount.THREE),
     /**
      * Unary minus operator.
+     *
+     * <pre>
+     * unm RES_REG SRC_REG ; negates value in register SRC_REG and stores result into register RES_REG
+     * </pre>
      */
     UNM(0x0b, ArgCount.TWO),
     /**
      * Logical not operator.
+     *
+     * <pre>
+     * not RES_REG SRC_REG ; negates boolean value in register SRC_REG and stores result into register RES_REG
+     * </pre>
      */
     NOT(0x0c, ArgCount.TWO),
     /**
      * Unconditional jump.
+     *
+     * <pre>
+     * jmp DST_ADDR ; jumps to opcode at position DST_ADDR
+     * </pre>
      */
     JMP(0x0d, ArgCount.ONE),
     /**
      * Equality test.
+     *
+     * <pre>
+     * eq RES_REG OP1_REG OP2_REG ; compares values from register OP!_REG and OP2_REG and store result in RES_REG
+     * </pre>
      */
     EQ(0x0e, ArgCount.THREE),
     /**
      * Less than test Less than or equal to test.
+     *
+     * <pre>
+     * lt RES_REG OP1_REG OP2_REG ; compares values from register OP!_REG and OP2_REG and store result in RES_REG
+     * </pre>
      */
     LT(0x0f, ArgCount.THREE),
     /**
      * Less than or equals test Less than or equal to test.
+     *
+     * <pre>
+     * le RES_REG OP1_REG OP2_REG ; compares values from register OP!_REG and OP2_REG and store result in RES_REG
+     * </pre>
      */
     LE(0x10, ArgCount.THREE),
     /**
-     *Boolean test, with conditional jump.
+     * Boolean test, with conditional jump.
+     *
+     * <pre>
+     * test TEST_REG DST_ADDR ; if value in TEST_REG is true jumps to opcode at position DST_ADDR
+     * </pre>
      */
     TEST(0x11, ArgCount.TWO),
     /**
      * Prints content of register.
+     *
+     * <pre>
+     * print SRC_REG ; prints value from register SRC_REG
+     * </pre>
      */
     PRINT(0x12, ArgCount.ONE),
     /**
      * Prints content of register and a new line.
+     *
+     * <pre>
+     * println SRC_REG ; prints value from register SRC_REG
+     * </pre>
      */
     PRINTLN(0x13, ArgCount.ONE),
     /**
      * Return from function.
+     *
+     * <pre>
+     * return ; return from function
+     * </pre>
      */
     RETURN(0x14, ArgCount.NONE),
     /**
      * Unknown opcode will stop execution.
+     *
+     * This opcode should never occur in the byte code.
      */
     UNKWONN(0xff);
-
-    /** Lookup table opcodes by mnemonic. */
+    /**
+     * Lookup table opcodes by mnemonic.
+     */
     private static final Map<String, OpCode> MNEMONIC_LOOKUP = Maps.newHashMap();
-    /** Lookup table opcodes by opcode byte. */
+    /**
+     * Lookup table opcodes by opcode byte.
+     */
     private static final Map<Byte, OpCode> OPCODE_LOOKUP = Maps.newHashMap();
-    private static final int HEX_MASK = 0xFF;
+    /**
+     * Used as mask for hex string representation.
+     */
+    private static final int HEX_MASK = 0xff;
 
     static {
         // Initialize lookups.
@@ -163,20 +224,40 @@ public enum OpCode {
             OPCODE_LOOKUP.put(Byte.valueOf(code.getCode()), code);
         }
     }
-
-    /** Opcode byte. */
+    /**
+     * Opcode byte.
+     */
     private final byte code;
-    /** Describes how much arguments an opcode has. */
+    /**
+     * Describes how much arguments an opcode has.
+     */
     private final ArgCount argCount;
 
+    /**
+     * Initialize opcode with zero arguments.
+     *
+     * @param code opcode number
+     */
     OpCode(final int code) {
         this(code, ArgCount.NONE);
     }
 
+    /**
+     * Initialize opcode with code and arguments.
+     *
+     * @param code opcode number
+     * @param argCount number of arguments
+     */
     OpCode(final int code, final ArgCount argCount) {
         this((byte) code, argCount);
     }
 
+    /**
+     * Dedicated constructor.
+     *
+     * @param code opcode number
+     * @param argCount number of arguments
+     */
     OpCode(final byte code, final ArgCount argCount) {
         this.code = code;
         this.argCount = argCount;
@@ -185,7 +266,7 @@ public enum OpCode {
     /**
      * Get opcode byte.
      *
-     * @return
+     * @return opcode number
      */
     public byte getCode() {
         return code;
@@ -194,7 +275,7 @@ public enum OpCode {
     /**
      * Get arg count description.
      *
-     * @return descriptiive enum
+     * @return description enum
      */
     public ArgCount getArgCount() {
         return argCount;
@@ -263,11 +344,33 @@ public enum OpCode {
      * Describes the count of arguments an opcode has.
      */
     public enum ArgCount {
-        NONE(0), ONE(1), TWO(2), THREE(3);
 
-        /** Number of arguments. */
+        /**
+         * No arguments.
+         */
+        NONE(0),
+        /**
+         * One argument.
+         */
+        ONE(1),
+        /**
+         * Two arguments.
+         */
+        TWO(2),
+        /**
+         * Three arguments.
+         */
+        THREE(3);
+        /**
+         * Number of arguments.
+         */
         private final int count;
 
+        /**
+         * Dedicated constructor.
+         *
+         * @param count number of arguments.
+         */
         ArgCount(final int count) {
             this.count = count;
         }
@@ -280,7 +383,5 @@ public enum OpCode {
         public int getCount() {
             return count;
         }
-
     }
-
 }
