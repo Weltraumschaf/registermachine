@@ -86,7 +86,7 @@ public class ByteCodeFile {
     }
 
     public byte[] toArray() {
-        byte[] copy = new byte[bytecode.length];
+        final byte[] copy = new byte[bytecode.length];
         System.arraycopy(bytecode, 0, copy, 0, bytecode.length);
         return copy;
     }

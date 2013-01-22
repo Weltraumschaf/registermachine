@@ -9,4 +9,8 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
+
+/**
+ * Java type to byte converting.
+ */
 package de.weltraumschaf.registermachine.convert;
