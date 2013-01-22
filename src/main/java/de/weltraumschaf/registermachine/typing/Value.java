@@ -342,7 +342,7 @@ public final class Value {
      * @return same value with a different type, different reference
      */
     Value castTo(final Type t) {
-        if (t == type) {
+        if (t == type) { // NOPMD
             return this;
         }
 

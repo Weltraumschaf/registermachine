@@ -59,19 +59,15 @@ public final class ByteInteger {
     /**
      * Mask for lowest one byte.
      */
-    private static final int ONE_BYTE_MASK = 0xFF;
+    private static final int ONE_BYTE_MASK = 0xff;
     /**
      * Mask for lowest two byte.
      */
-    private static final int TWO_BYTE_MASK = 0xFFFF;
+    private static final int TWO_BYTE_MASK = 0xffff;
     /**
      * Mask for lowest three byte.
      */
-    private static final int THREE_BYTE_MASK = 0xFFFFFF;
-    /**
-     * Mask for lowest four byte.
-     */
-    private static final int FOUR_BYTE_MASK = 0xFFFFFFFF;
+    private static final int THREE_BYTE_MASK = 0xffffff;
     /**
      * Error message for wrong byte count.
      */
@@ -148,7 +144,7 @@ public final class ByteInteger {
         int value = bytes[FIRST_BYTE] & ONE_BYTE_MASK;
         value |= (bytes[SECOND_BYTE] << SECOND_BYTE_SHIFT) & TWO_BYTE_MASK;
         value |= (bytes[THIRD_BYTE] << THIRD_BYTE_SHIFT) & THREE_BYTE_MASK;
-        value |= (bytes[FOURTH_BYTE] << FOURTH_BYTE_SHIFT) & FOUR_BYTE_MASK;
+        value |= (bytes[FOURTH_BYTE] << FOURTH_BYTE_SHIFT);
         return value;
     }
 

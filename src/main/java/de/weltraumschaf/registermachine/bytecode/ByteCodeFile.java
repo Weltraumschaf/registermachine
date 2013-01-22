@@ -62,7 +62,8 @@ public class ByteCodeFile {
 
     public ByteCodeFile(final byte[] bytecode) {
         super();
-        this.bytecode = bytecode;
+        this.bytecode = new byte[bytecode.length];
+        System.arraycopy(bytecode, 0, this.bytecode, 0, bytecode.length);
     }
 
     public boolean isValid() {
@@ -85,7 +86,9 @@ public class ByteCodeFile {
     }
 
     public byte[] toArray() {
-        return bytecode;
+        byte[] copy = new byte[bytecode.length];
+        System.arraycopy(bytecode, 0, copy, 0, bytecode.length);
+        return copy;
     }
 
 }

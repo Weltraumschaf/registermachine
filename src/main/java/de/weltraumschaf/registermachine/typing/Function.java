@@ -18,7 +18,7 @@ import de.weltraumschaf.registermachine.convert.ByteInteger;
 import de.weltraumschaf.registermachine.convert.ByteValue;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import org.apache.commons.lang.ArrayUtils;
+
 
 /**
  * Describes a function.
@@ -145,7 +145,7 @@ public class Function {
         }
 
         addSize(bytes, functions.size());
-        if (!functions.isEmpty()) {
+        if (!functions.isEmpty()) { // NOPMD
             // TODO Implement code generation
         }
 

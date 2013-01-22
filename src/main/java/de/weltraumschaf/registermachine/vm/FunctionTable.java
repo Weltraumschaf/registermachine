@@ -22,6 +22,6 @@ import java.util.List;
  */
 class FunctionTable {
 
-    private final List<Function> functions = Lists.newArrayList();
+    private final List<Function> functions = Lists.newArrayList(); // NOPMD
 
 }

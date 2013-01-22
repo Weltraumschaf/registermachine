@@ -33,7 +33,7 @@ class Scope {
     /**
      * Functions defined in this scope.
      */
-    private final FunctionTable functions;
+    private final FunctionTable functions; // NOPMD
     /**
      * Parent scope.
      *
