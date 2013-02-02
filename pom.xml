@@ -77,7 +77,7 @@
 
     <ciManagement>
         <system>jenkins</system>
-        <url>http://www.weltraumschaf.de:8080/job/Commons/</url>
+        <url>http://www.weltraumschaf.de:8080/job/registermachine/</url>
     </ciManagement>
 
     <properties>
