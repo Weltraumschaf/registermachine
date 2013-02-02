@@ -38,39 +38,39 @@ public class KeywordTest {
         assertFalse(Keyword.isKeyword("foobar"));
     }
 
-    @Test @Ignore
+    @Test
     public void forValue() {
-        assertThat(Keyword.valueOf("var"), is(Keyword.VAR));
-        assertThat(Keyword.valueOf("const"), is(Keyword.CONST));
-        assertThat(Keyword.valueOf("function"), is(Keyword.FUNCTION));
-        assertThat(Keyword.valueOf("return"), is(Keyword.RETURN));
-        assertThat(Keyword.valueOf("for"), is(Keyword.FOR));
-        assertThat(Keyword.valueOf("if"), is(Keyword.IF));
-        assertThat(Keyword.valueOf("else"), is(Keyword.ELSE));
-        assertThat(Keyword.valueOf("switch"), is(Keyword.SWITCH));
-        assertThat(Keyword.valueOf("case"), is(Keyword.CASE));
-        assertThat(Keyword.valueOf("break"), is(Keyword.BREAK));
-        assertThat(Keyword.valueOf("continue"), is(Keyword.CONTINUE));
+        assertThat(Keyword.forValue("var"), is(Keyword.VAR));
+        assertThat(Keyword.forValue("const"), is(Keyword.CONST));
+        assertThat(Keyword.forValue("function"), is(Keyword.FUNCTION));
+        assertThat(Keyword.forValue("return"), is(Keyword.RETURN));
+        assertThat(Keyword.forValue("for"), is(Keyword.FOR));
+        assertThat(Keyword.forValue("if"), is(Keyword.IF));
+        assertThat(Keyword.forValue("else"), is(Keyword.ELSE));
+        assertThat(Keyword.forValue("switch"), is(Keyword.SWITCH));
+        assertThat(Keyword.forValue("case"), is(Keyword.CASE));
+        assertThat(Keyword.forValue("break"), is(Keyword.BREAK));
+        assertThat(Keyword.forValue("continue"), is(Keyword.CONTINUE));
     }
 
-    @Test @Ignore
+    @Test
     public void forValue_throwsExceptionOnEmptyInput() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Literal string '' is not a keyword!");
-        Keyword.valueOf("");
+        Keyword.forValue("");
     }
 
-    @Test @Ignore
+    @Test
     public void forValue_throwsExceptionOnSpacesAsInput() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Literal string '   ' is not a keyword!");
-        Keyword.valueOf("   ");
+        Keyword.forValue("   ");
     }
 
-    @Test @Ignore
+    @Test 
     public void forValue_throwsExceptionOnArbitraryStringInput() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Literal string 'foobar' is not a keyword!");
-        Keyword.valueOf("foobar");
+        Keyword.forValue("foobar");
     }
  }
