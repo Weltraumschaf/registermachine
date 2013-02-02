@@ -10,10 +10,36 @@
  */
 package de.weltraumschaf.registermachine.front;
 
+import de.weltraumschaf.commons.characters.CharacterStream;
+import de.weltraumschaf.commons.token.Token;
+
 /**
  *
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-public class Scanner {
+class Scanner {
+
+    private final CharacterStream input;
+
+    private Scanner(final CharacterStream input) {
+        super();
+        this.input = input;
+    }
+
+    void next() {
+
+    }
+
+    boolean hasNext() {
+        return false;
+    }
+
+    Token getCurrentToken() {
+        return Token.newEndOfFileToken();
+    }
+
+    static Scanner forString(final String string) {
+        return new Scanner(new CharacterStream(string));
+    }
 
 }

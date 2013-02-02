@@ -10,13 +10,67 @@
  */
 package de.weltraumschaf.registermachine.front;
 
-import org.junit.Test;
+import de.weltraumschaf.commons.Null;
+import de.weltraumschaf.commons.token.Token;
+import de.weltraumschaf.commons.token.TokenType;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  *
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 public class ScannerTest {
+
+    @Test
+    public void scanEmpty() {
+        final Scanner sut = Scanner.forString("");
+        sut.next();
+
+        final Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void scanWhitespaces() {
+        final Scanner sut = Scanner.forString("  \t   \n    ");
+        sut.next();
+
+        final Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test @Ignore
+    public void scanSingleLineComment() {
+        final Scanner sut = Scanner.forString("   // this is a comment");
+        sut.next();
+
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.COMMENT));
+        assertThat(((Token<String>)token).getValue(), is("// this is a comment"));
+        assertThat(sut.hasNext(), is(false));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test @Ignore
+    public void scanMultiLineComment() {
+
+    }
+
+    @Test @Ignore
+    public void scanKwyword() {
+
+    }
 
 }
