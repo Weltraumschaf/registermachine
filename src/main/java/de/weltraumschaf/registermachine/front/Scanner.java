@@ -30,12 +30,11 @@ class Scanner {
         this.input = input;
     }
 
-
     static Scanner forString(final String string) {
         return new Scanner(new CharacterStream(string));
     }
 
-    Token getCurrentToken() {
+    Token<?> getCurrentToken() {
         if (null == currentToken) {
             next();
         }
@@ -121,15 +120,23 @@ class Scanner {
 
         while (input.hasNext()) {
             final char currentCharacter = input.next();
-            if ('*' == currentCharacter && '/' == input.peek()) {
-                input.next(); // consume star
-                input.next(); // consume slash
-                break;
+
+            if ('*' == currentCharacter) {
+                buffer.append(currentCharacter);
+
+                if (input.hasNext()) {
+                    buffer.append(input.next());
+                    currentToken = Token.newCommentToken(buffer.toString());
+                    break;
+                }
+
+                throw new SyntaxException("Unterminated multiline comment!");
             }
+
             buffer.append(currentCharacter);
         }
 
-        currentToken = Token.newCommentToken(buffer.toString());
+        throw new SyntaxException("Unterminated multiline comment!");
     }
 
     private void scanOperator() {
