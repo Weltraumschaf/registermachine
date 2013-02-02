@@ -11,6 +11,8 @@
  */
 
 /**
- * Instruction package.
+ * Front end package.
+ *
+ * Contains all input parsing stuff.
  */
-package de.weltraumschaf.registermachine.instr;
+package de.weltraumschaf.registermachine.front;
