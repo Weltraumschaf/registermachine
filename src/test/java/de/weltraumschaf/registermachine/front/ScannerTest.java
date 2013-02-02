@@ -25,6 +25,15 @@ import org.junit.Test;
 public class ScannerTest {
 
     @Test
+    public void invokeNextIfCurrentTokenIsNull() {
+        final Scanner sut = Scanner.forString("");
+        final Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
     public void scanEmpty() {
         final Scanner sut = Scanner.forString("");
         sut.next();
@@ -35,7 +44,7 @@ public class ScannerTest {
         assertThat(sut.hasNext(), is(false));
     }
 
-    @Test
+    @Test 
     public void scanWhitespaces() {
         final Scanner sut = Scanner.forString("  \t   \n    ");
         sut.next();
@@ -54,7 +63,7 @@ public class ScannerTest {
         Token token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.COMMENT));
         assertThat(((Token<String>)token).getValue(), is("// this is a comment"));
-        assertThat(sut.hasNext(), is(false));
+        assertThat(sut.hasNext(), is(true));
 
         sut.next();
         token = sut.getCurrentToken();
@@ -65,7 +74,19 @@ public class ScannerTest {
 
     @Test @Ignore
     public void scanMultiLineComment() {
+        final Scanner sut = Scanner.forString("   /* this is a comment\nand one more line\n\nlast line */");
+        sut.next();
 
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.COMMENT));
+        assertThat(((Token<String>)token).getValue(), is("/* this is a comment\nand one more line\n\nlast line */"));
+        assertThat(sut.hasNext(), is(true));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
     }
 
     @Test @Ignore
