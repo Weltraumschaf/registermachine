@@ -118,11 +118,10 @@ public enum Keyword {
      * CHECKSTYLE:ON
      */
     public static Keyword forValue(final String str) {
-        if (!isKeyword(str)) {
-            throw new IllegalArgumentException(String.format("Literal string '%s' is not a keyword!", str));
+        if (isKeyword(str)) {
+            return LOOKUP.get(str);
         }
-
-        return LOOKUP.get(str);
+        throw new IllegalArgumentException(String.format("Literal string '%s' is not a keyword!", str));
     }
 
 }
