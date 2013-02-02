@@ -124,10 +124,13 @@ class Scanner {
             if ('*' == currentCharacter) {
                 buffer.append(currentCharacter);
 
-                if (input.hasNext()) {
-                    buffer.append(input.next());
+                if (input.hasNext() && '/' == input.next()) {
+                    buffer.append(input.current());
+                    if (input.hasNext()) {
+                        input.next(); // consume slash
+                    }
                     currentToken = Token.newCommentToken(buffer.toString());
-                    break;
+                    return;
                 }
 
                 throw new SyntaxException("Unterminated multiline comment!");
