@@ -1,0 +1,128 @@
+
+// Comments
+///////////
+
+// single line comment
+
+/*
+ * multi line comment
+ */
+
+// Variables & Constants
+////////////////////////
+
+// single variable w/o intialization
+var i
+// single variable w/ intialization
+var j = 0
+// multiple variables
+var {
+	k = 1
+	l = 2
+	m
+	n
+}
+
+// single constant w/ intialization
+const x = 1
+// multiple constants
+const {
+	y = 2
+	z = 3
+}
+
+// Functions
+////////////
+
+// a function w/o parameters and return NIL
+function aFunction() {
+	
+}
+
+// calling the function
+var a = aFunction() // a == NIL
+
+// a function w/ parameter which it returns
+fucntion bFunction(a) {
+	return a	
+}
+
+// calling the function
+var b = bFunction(a: 5) // b == 5
+
+// a function w/ parameters which it returns
+function cFunction(a, b, c) {
+	return a, b, c
+}
+
+// calling the function
+var c, d, e = cFunction(a: 1, b: 2, c: 3) // c == 1. d == 2, e = 3
+
+// Control Structures
+/////////////////////
+
+// single if statement
+if a != b {
+	
+}
+
+// if else statement
+if a > b {
+	
+} else {
+	
+}
+
+// if else if statement
+if a < b {
+	
+} else if a > b {
+	
+} else {
+	
+}
+
+// traditional for loop
+var sum = 0
+for var i = 0; i < 10; i++ {
+	sum += i
+}
+
+// like a while loop
+for a < b {
+	// ..
+	
+	if a == b {
+		continue
+	}
+
+	// ..
+}
+
+// endles loop
+for {
+	if a < b {
+		break
+	}
+}
+
+// switch with single matches, no fallthrough
+switch a {
+	case 1:
+		// ...
+	case 2:
+		// ...
+	default:
+}
+
+// multiple matches
+switch a {
+	case 1, 2, 3:
+		// ...
+	case 4, 5, 6:
+		// ...
+	default:
+}
+
+// Operators
+////////////
