@@ -44,7 +44,7 @@ public class ScannerTest {
         assertThat(sut.hasNext(), is(false));
     }
 
-    @Test 
+    @Test
     public void scanWhitespaces() {
         final Scanner sut = Scanner.forString("  \t   \n    ");
         sut.next();
@@ -55,9 +55,43 @@ public class ScannerTest {
         assertThat(sut.hasNext(), is(false));
     }
 
-    @Test @Ignore
-    public void scanSingleLineComment() {
+    @Test
+    public void scanSingleLineComment_withoutNewline() {
         final Scanner sut = Scanner.forString("   // this is a comment");
+        sut.next();
+
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.COMMENT));
+        assertThat(((Token<String>)token).getValue(), is("// this is a comment"));
+        assertThat(sut.hasNext(), is(false));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void scanSingleLineComment_withNewline() {
+        final Scanner sut = Scanner.forString("   // this is a comment\n");
+        sut.next();
+
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.COMMENT));
+        assertThat(((Token<String>)token).getValue(), is("// this is a comment"));
+        assertThat(sut.hasNext(), is(false));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>)token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void scanSingleLineComment_withTwoNewlines() {
+        final Scanner sut = Scanner.forString("   // this is a comment\n\n");
         sut.next();
 
         Token token = sut.getCurrentToken();

@@ -15,15 +15,13 @@ import de.weltraumschaf.commons.characters.CharacterStream;
 import de.weltraumschaf.commons.token.Token;
 
 /**
+ * Scans the source code and produce tokens.
  *
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
 class Scanner {
 
     private final CharacterStream input;
-
-    private int column;
-    private int line;
     private Token<?> currentToken = null;
 
 
@@ -54,29 +52,33 @@ class Scanner {
             final char currentCharacter = input.current();
 
             if (CharacterHelper.isWhiteSpace(currentCharacter)) {
+                input.next(); // consume whitespace
                 continue;
             }
 
             if (CharacterHelper.isAlpha(currentCharacter)) {
                 scanKeywordOrIdentifier();
+                return;
             }
 
             if (CharacterHelper.isNum(currentCharacter)) {
                 scanNumber();
+                return;
             }
 
             if (CharacterHelper.isDoubleQuote(currentCharacter)) {
                 scanString();
+                return;
             }
 
             if ('/' == currentCharacter) {
                 scanCommentOrOperator();
-                continue;
+                return;
             }
 
             if (CharacterHelper.isOperator(currentCharacter)) {
                 scanOperator();
-                continue;
+                return;
             }
         }
         currentToken = Token.newEndOfFileToken();
@@ -103,7 +105,6 @@ class Scanner {
         while (input.hasNext()) {
             final char currentCharacter = input.next();
             if ('\n' == currentCharacter) {
-                input.next(); // consume new line
                 break;
             }
             buffer.append(currentCharacter);
