@@ -15,7 +15,6 @@ import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
