@@ -17,7 +17,7 @@ package de.weltraumschaf.registermachine.inter;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class VarNode extends AbstractNode {
+public final class VarNode extends AbstractNode {
 
     /**
      * Name of the variable.

@@ -29,8 +29,22 @@ public class ParserTest {
         assertThat(tree.getType(), is(AstNode.Type.NOP));
     }
 
+    @Test
+    public void parseSingleVaribaleWithoutAssignemtn() {
+        final Parser sut = Parser.forString("var foo");
+        sut.parse();
+
+        final AstNode tree = sut.getAbstractSyntaxtTree();
+        assertThat(tree, instanceOf(VarNode.class));
+        assertThat(tree.getType(), is(AstNode.Type.VAR));
+
+        final VarNode var = (VarNode) tree;
+        assertThat(var.getName(), is("foo"));
+        assertThat(var.getValue(), is(Value.getNil()));
+    }
+
     @Test @Ignore
-    public void parseSingleVaribale() {
+    public void parseSingleVaribaleWithAssignemtn() {
         final Parser sut = Parser.forString("var foo = 3.14");
         sut.parse();
 

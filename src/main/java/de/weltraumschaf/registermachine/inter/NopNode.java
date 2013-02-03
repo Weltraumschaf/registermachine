@@ -16,11 +16,14 @@ package de.weltraumschaf.registermachine.inter;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class NopNode implements AstNode {
+public final class NopNode extends AbstractNode {
 
-    @Override
-    public Type getType() {
-        return AstNode.Type.NOP;
+    private NopNode() {
+        super(AstNode.Type.NOP);
+    }
+
+    public static AstNode newNopNode() {
+        return new NopNode();
     }
 
 }
