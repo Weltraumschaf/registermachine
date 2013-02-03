@@ -256,6 +256,12 @@ final class Scanner {
     private void determineKeywordOrLiteralToken(final String literal) {
         if (Keyword.isKeyword(literal)) {
             currentToken = Token.newKeywordToken(literal);
+        } else if ("true".equals(literal)) {
+            currentToken = Token.newBooleanToken(Boolean.TRUE);
+        } else if ("false".equals(literal)) {
+            currentToken = Token.newBooleanToken(Boolean.FALSE);
+        } else if ("nil".equals(literal)) {
+            currentToken = Token.newNullToken();
         } else {
             currentToken = Token.newLiteralToken(literal);
         }

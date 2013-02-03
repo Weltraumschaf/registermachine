@@ -92,7 +92,7 @@ final class Parser {
             final Token valueToken = scanner.getCurrentToken();
 
             switch (valueToken.getType()) {
-                case NIL:
+                case NULL:
                     value = Value.getNil();
                     break;
                 case BOOLEAN:

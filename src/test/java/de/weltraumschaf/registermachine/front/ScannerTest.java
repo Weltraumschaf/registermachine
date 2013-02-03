@@ -473,19 +473,42 @@ public class ScannerTest {
         sut.getCurrentToken();
     }
 
-    @Test @Ignore
-    public void scanLiteral_booleanTrue() {
+    @Test
+    public void scanLiteral_boolean() {
+        final Scanner sut = Scanner.forString("  true  false  ");
+        Token token = sut.getCurrentToken();
 
+        assertThat(token.getType(), is(TokenType.BOOLEAN));
+        assertThat(((Token<Boolean>) token).getValue(), is(true));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.BOOLEAN));
+        assertThat(((Token<Boolean>) token).getValue(), is(false));
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
     }
 
-    @Test @Ignore
-    public void scanLiteral_booleanFalse() {
-
-    }
-
-    @Test @Ignore
+    @Test
     public void scanLiteral_nil() {
+        final Scanner sut = Scanner.forString("  nil  ");
+        Token token = sut.getCurrentToken();
 
+        assertThat(token.getType(), is(TokenType.NULL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
     }
 
 }
