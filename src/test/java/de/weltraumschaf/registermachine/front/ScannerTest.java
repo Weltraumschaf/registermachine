@@ -394,6 +394,13 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.INTEGER));
         assertThat(((Token<Integer>) token).getValue(), is(23));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
     }
 
     @Test
@@ -410,6 +417,59 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.FLOAT));
         assertThat(((Token<Float>) token).getValue(), is(2.272727f));
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
     }
 
+    @Test
+    public void scanString() {
+        final Scanner sut = Scanner.forString(" \" this is a\nstring  \" ");
+        Token token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.STRING));
+        assertThat(((Token<String>) token).getValue(), is(" this is a\nstring  "));
+
+        assertThat(sut.hasNext(), is(false));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+    }
+
+    @Test
+    public void scanString_empty() {
+        final Scanner sut = Scanner.forString(" \"\" ");
+        Token token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.STRING));
+        assertThat(((Token<String>) token).getValue(), is(""));
+
+        assertThat(sut.hasNext(), is(false));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+    }
+
+    @Test
+    public void scanString_throwExceptionIfUnterminated() {
+        thrown.expect(SyntaxException.class);
+        thrown.expectMessage("Unterminated string!");
+        final Scanner sut = Scanner.forString(" \" this is");
+        sut.getCurrentToken();
+    }
+
+    @Test
+    public void scanString_throwExceptionIfEmpty() {
+        thrown.expect(SyntaxException.class);
+        thrown.expectMessage("Unterminated string!");
+        final Scanner sut = Scanner.forString(" \"");
+        sut.getCurrentToken();
+    }
 }

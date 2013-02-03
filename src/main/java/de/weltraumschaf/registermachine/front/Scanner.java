@@ -19,21 +19,45 @@ import de.weltraumschaf.commons.token.Token;
  *
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-class Scanner {
+final class Scanner {
 
+    /**
+     * Source input.
+     */
     private final CharacterStream input;
+    /**
+     * Current recognized token.
+     */
     private Token<?> currentToken = null;
 
-
+    /**
+     * Hidden to enforce creation by {@link #forString(java.lang.String) factory method}.
+     *
+     * @param input source input
+     */
     private Scanner(final CharacterStream input) {
         super();
         this.input = input;
     }
 
+    /**
+     * Factory method to create scanner from source string.
+     *
+     * @param string source input
+     * @return a newly created scanner
+     */
     static Scanner forString(final String string) {
         return new Scanner(new CharacterStream(string));
     }
 
+    /**
+     * Return the current recognized token.
+     *
+     * If never {@link #next()} was invoked this method will invoke it. If the source is empty or at the end
+     * an EOF token is returned.
+     *
+     * @return current scanned token
+     */
     Token<?> getCurrentToken() {
         if (null == currentToken) {
             next();
@@ -42,10 +66,18 @@ class Scanner {
         return currentToken;
     }
 
+    /**
+     * Tests if there are more tokens.
+     *
+     * @return {@code true} if there are more tokens, else {@code false}
+     */
     boolean hasNext() {
         return input.hasNext();
     }
 
+    /**
+     * Scans the next token.
+     */
     void next() {
         while (input.hasNext()) {
             final char currentCharacter = input.current();
@@ -83,6 +115,9 @@ class Scanner {
         currentToken = Token.newEndOfFileToken();
     }
 
+    /**
+     * Scans comments or operator starting with '/'.
+     */
     private void scanCommentOrOperator() {
         final char peekedCharacter = input.peek();
 
@@ -95,6 +130,9 @@ class Scanner {
         }
     }
 
+    /**
+     * Scan single line comments beginning with "//".
+     */
     private void scanSingleLineComment() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(input.current()); // consume first slash
@@ -112,6 +150,9 @@ class Scanner {
         currentToken = Token.newCommentToken(buffer.toString());
     }
 
+    /**
+     * Scan multi line comment starting with "/*" and ending star slash.
+     */
     private void scanMultiLineComment() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(input.current()); // consume slash
@@ -142,6 +183,9 @@ class Scanner {
         throw new SyntaxException("Unterminated multiline comment!");
     }
 
+    /**
+     * Scan operators.
+     */
     private void scanOperator() {
         final StringBuilder buffer = new StringBuilder();
         final char currentChar = input.current();
@@ -185,6 +229,9 @@ class Scanner {
         currentToken = Token.newOperatorToken(buffer.toString());
     }
 
+    /**
+     * Scan keywords or literals.
+     */
     private void scanKeywordOrLiteral() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(input.current());
@@ -201,6 +248,11 @@ class Scanner {
         determineKeywordOrLiteralToken(buffer.toString());
     }
 
+    /**
+     * Determines if a literal is a keyword or not.
+     *
+     * @param literal literal to examine
+     */
     private void determineKeywordOrLiteralToken(final String literal) {
         if (Keyword.isKeyword(literal)) {
             currentToken = Token.newKeywordToken(literal);
@@ -209,10 +261,31 @@ class Scanner {
         }
     }
 
+    /**
+     * Scan string.
+     */
     private void scanString() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final StringBuilder buffer = new StringBuilder();
+//        input.next(); // consume "
+
+        while (input.hasNext()) {
+            if ('"' == input.next()) {
+                if (input.hasNext()) {
+                    input.next(); // consume "
+                }
+                currentToken = Token.newStringToken(buffer.toString());
+                return;
+            } else {
+                buffer.append(input.current());
+            }
+        }
+
+        throw new SyntaxException("Unterminated string!");
     }
 
+    /**
+     * Scan float or integer numbers.
+     */
     private void scanNumber() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(input.current());
