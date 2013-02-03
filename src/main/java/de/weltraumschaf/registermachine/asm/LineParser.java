@@ -15,7 +15,7 @@ import com.google.common.collect.Lists;
 import de.weltraumschaf.registermachine.bytecode.OpCode;
 import de.weltraumschaf.registermachine.typing.Code;
 import de.weltraumschaf.registermachine.typing.Function;
-import de.weltraumschaf.registermachine.typing.Value;
+import de.weltraumschaf.registermachine.inter.Value;
 import java.util.List;
 import java.util.Stack;
 import org.apache.commons.lang.StringUtils;

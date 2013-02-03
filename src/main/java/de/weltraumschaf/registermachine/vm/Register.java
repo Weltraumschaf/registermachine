@@ -13,7 +13,7 @@
 package de.weltraumschaf.registermachine.vm;
 
 import com.google.common.collect.Maps;
-import de.weltraumschaf.registermachine.typing.Value;
+import de.weltraumschaf.registermachine.inter.Value;
 import java.util.Map;
 
 /**

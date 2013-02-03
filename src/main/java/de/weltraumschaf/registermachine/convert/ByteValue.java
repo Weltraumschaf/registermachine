@@ -12,7 +12,7 @@
 package de.weltraumschaf.registermachine.convert;
 
 import de.weltraumschaf.registermachine.bytecode.ByteCodeStream;
-import de.weltraumschaf.registermachine.typing.Value;
+import de.weltraumschaf.registermachine.inter.Value;
 import java.io.UnsupportedEncodingException;
 
 /**

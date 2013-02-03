@@ -11,6 +11,7 @@
  */
 package de.weltraumschaf.registermachine.typing;
 
+import de.weltraumschaf.registermachine.inter.Value;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Bytes;

@@ -11,7 +11,7 @@
  */
 package de.weltraumschaf.registermachine.instr;
 
-import de.weltraumschaf.registermachine.typing.Value;
+import de.weltraumschaf.registermachine.inter.Value;
 import de.weltraumschaf.registermachine.vm.RuntimeConfiguration;
 
 /**

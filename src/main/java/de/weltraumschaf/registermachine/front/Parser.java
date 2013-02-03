@@ -10,10 +10,32 @@
  */
 package de.weltraumschaf.registermachine.front;
 
+import de.weltraumschaf.registermachine.inter.AstNode;
+import de.weltraumschaf.registermachine.inter.NopNode;
+
 /**
  *
  * @author "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-public class Parser {
+final class Parser {
+
+    private final Scanner scanner;
+
+    private Parser(final Scanner scanner) {
+        super();
+        this.scanner = scanner;
+    }
+
+    static Parser forString(final String string) {
+        return new Parser(Scanner.forString(string));
+    }
+
+    void parse() {
+
+    }
+
+    AstNode getAbstractSyntaxtTree() {
+        return new NopNode();
+    }
 
 }

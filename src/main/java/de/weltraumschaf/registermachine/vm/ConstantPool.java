@@ -12,7 +12,7 @@
 
 package de.weltraumschaf.registermachine.vm;
 
-import de.weltraumschaf.registermachine.typing.Value;
+import de.weltraumschaf.registermachine.inter.Value;
 
 /**
  * Pool to store distinct constants values.
