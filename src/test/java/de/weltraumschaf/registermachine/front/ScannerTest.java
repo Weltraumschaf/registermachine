@@ -168,7 +168,7 @@ public class ScannerTest {
     }
 
     @Test
-    public void scanKwywords() {
+    public void scanKeywords() {
         final Scanner sut = Scanner.forString(" var  const  "
                 + "function  return  "
                 + "for  "
@@ -472,4 +472,20 @@ public class ScannerTest {
         final Scanner sut = Scanner.forString(" \"");
         sut.getCurrentToken();
     }
+
+    @Test @Ignore
+    public void scanLiteral_booleanTrue() {
+
+    }
+
+    @Test @Ignore
+    public void scanLiteral_booleanFalse() {
+
+    }
+
+    @Test @Ignore
+    public void scanLiteral_nil() {
+
+    }
+
 }

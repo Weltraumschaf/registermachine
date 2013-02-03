@@ -38,7 +38,7 @@ final class Parser {
         return new Parser(Scanner.forString(string));
     }
 
-    AstNode getAbstractSyntaxtTree() {
+    FunctionNode getAbstractSyntaxtTree() {
         return mainFunction;
     }
 
@@ -72,14 +72,59 @@ final class Parser {
 
         scanner.next(); // consume var keyword
 
-        final Token name = scanner.getCurrentToken();
+        final Token nameToken = scanner.getCurrentToken();
 
-        if (name.getType() != TokenType.LITERAL) {
+        if (nameToken.getType() != TokenType.LITERAL) {
             throw new SyntaxException("Identifier expected!");
         }
 
+        final String variableName = ((Token<String>) nameToken).getValue();
         scanner.next(); // consume name
-        mainFunction.addVariable(nodeFactory.newVarNode(((Token<String>) name).getValue(), Value.getNil()));
+
+        final Token maybeAssign = scanner.getCurrentToken();
+        Value value;
+        if (isOperator(maybeAssign, "=")) {
+            if (!scanner.hasNext()) {
+                throw new SyntaxException("Unexpected end of source!");
+            }
+
+            scanner.next(); // consume =
+            final Token valueToken = scanner.getCurrentToken();
+
+            switch (valueToken.getType()) {
+                case NIL:
+                    value = Value.getNil();
+                    break;
+                case BOOLEAN:
+                    if (((Token<Boolean>) valueToken).getValue()) {
+                        value = Value.getTrue();
+                    } else {
+                        value = Value.getFalse();
+                    }
+                    break;
+                case FLOAT:
+                    value = Value.valueOf(((Token<Float>) valueToken).getValue());
+                    break;
+                case INTEGER:
+                    value = Value.valueOf(((Token<Integer>) valueToken).getValue());
+                    break;
+                case STRING:
+                    value = Value.valueOf(((Token<String>) valueToken).getValue());
+                    break;
+                default:
+                    throw new SyntaxException(String.format("Bad value '%s' assigned to varibale '%s'!",
+                                                            valueToken.getValue(), variableName));
+            }
+        } else {
+            value = Value.getNil();
+        }
+
+
+        mainFunction.addVariable(nodeFactory.newVarNode(variableName, value));
+    }
+
+    private boolean isOperator(final Token token, final String literal) {
+        return token.getType() == TokenType.OPERATOR && ((Token<String>) token).getValue().equals(literal);
     }
 
 }

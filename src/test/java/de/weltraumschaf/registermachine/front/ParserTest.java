@@ -6,7 +6,7 @@ package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.registermachine.inter.AstNode;
 import de.weltraumschaf.registermachine.inter.FunctionNode;
-import de.weltraumschaf.registermachine.inter.NopNode;
+import de.weltraumschaf.registermachine.inter.Type;
 import de.weltraumschaf.registermachine.inter.Value;
 import de.weltraumschaf.registermachine.inter.VarNode;
 import static org.hamcrest.CoreMatchers.*;
@@ -25,38 +25,40 @@ public class ParserTest {
         final Parser sut = Parser.forString("");
         sut.parse();
 
-        final AstNode tree = sut.getAbstractSyntaxtTree();
-        assertThat(tree, instanceOf(FunctionNode.class));
-        assertThat(tree.getType(), is(AstNode.Type.FUNCTION));
-        assertThat(((FunctionNode) tree).getVariables().size(), is(0));
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(0));
     }
 
-    @Test @Ignore
+    @Test
     public void parseSingleVaribaleWithoutAssignemtn() {
         final Parser sut = Parser.forString("var foo");
         sut.parse();
 
-        final AstNode tree = sut.getAbstractSyntaxtTree();
-        assertThat(tree, instanceOf(VarNode.class));
-        assertThat(tree.getType(), is(AstNode.Type.VAR));
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(1));
 
-        final VarNode var = (VarNode) tree;
-        assertThat(var.getName(), is("foo"));
-        assertThat(var.getValue(), is(Value.getNil()));
+        final VarNode foo = main.getVariables().get(0);
+        assertThat(foo.getType(), is(AstNode.Type.VAR));
+        assertThat(foo.getName(), is("foo"));
+        assertThat(foo.getValue(), is(Value.getNil()));
     }
 
-    @Test @Ignore
+    @Test
     public void parseSingleVaribaleWithAssignemtn() {
         final Parser sut = Parser.forString("var   foo   =   3.14");
         sut.parse();
 
-        final AstNode tree = sut.getAbstractSyntaxtTree();
-        assertThat(tree, instanceOf(VarNode.class));
-        assertThat(tree.getType(), is(AstNode.Type.VAR));
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(1));
 
-        final VarNode var = (VarNode) tree;
-        assertThat(var.getName(), is("foo"));
-        assertThat(var.getValue(), is(Value.valueOf(3.14f)));
+        final VarNode foo = main.getVariables().get(0);
+        assertThat(foo.getType(), is(AstNode.Type.VAR));
+        assertThat(foo.getName(), is("foo"));
+        assertThat(foo.getValue(), is(Value.valueOf(3.14f)));
+        assertThat(foo.getValue().getType(), is(Type.FLOAT));
     }
 
     @Test @Ignore
