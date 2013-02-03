@@ -147,7 +147,27 @@ class Scanner {
     }
 
     private void scanKeywordOrIdentifier() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(input.current());
+
+        while (input.hasNext()) {
+            final char currentChar = input.next();
+
+            if (!CharacterHelper.isAlphaNum(currentChar)) {
+                break;
+            }
+            buffer.append(currentChar);
+        }
+
+        determineKeywordOrLiteralToken(buffer.toString());
+    }
+
+    private void determineKeywordOrLiteralToken(final String literal) {
+        if (Keyword.isKeyword(literal)) {
+            currentToken = Token.newKeywordToken(literal);
+        } else {
+            currentToken = Token.newLiteralToken(literal);
+        }
     }
 
     private void scanString() {

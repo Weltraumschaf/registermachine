@@ -167,9 +167,88 @@ public class ScannerTest {
         sut.next();
     }
 
-    @Test @Ignore
+    @Test
     public void scanKwyword() {
+        final Scanner sut = Scanner.forString(" var  const  "
+                + "function  return  "
+                + "for  "
+                + "if  else  "
+                + "switch  case  "
+                + "break  continue  ");
+        Token token = sut.getCurrentToken();
 
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("var"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("const"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("function"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("return"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("for"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("if"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("else"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("switch"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("case"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("break"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("continue"));
     }
 
 }
