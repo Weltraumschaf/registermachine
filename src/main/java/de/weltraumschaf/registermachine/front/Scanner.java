@@ -266,7 +266,6 @@ final class Scanner {
      */
     private void scanString() {
         final StringBuilder buffer = new StringBuilder();
-//        input.next(); // consume "
 
         while (input.hasNext()) {
             if ('"' == input.next()) {

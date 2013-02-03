@@ -465,7 +465,7 @@ public class ScannerTest {
         sut.getCurrentToken();
     }
 
-    @Test
+    @Test @Ignore
     public void scanString_throwExceptionIfEmpty() {
         thrown.expect(SyntaxException.class);
         thrown.expectMessage("Unterminated string!");
