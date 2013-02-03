@@ -143,7 +143,46 @@ class Scanner {
     }
 
     private void scanOperator() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final StringBuilder buffer = new StringBuilder();
+        final char currentChar = input.current();
+        buffer.append(currentChar);
+        input.next(); // consume operator character
+
+        switch (currentChar) {
+            case '!':
+                if (input.hasNext() && input.current() == '=') {
+                    buffer.append(input.current());
+                    input.next(); // consume =
+                }
+                break;
+            case '&':
+                if (input.hasNext() && input.current() == '&') {
+                    buffer.append(input.current());
+                    input.next(); // consume &
+                }
+                break;
+            case '|':
+                if (input.hasNext() && input.current() == '|') {
+                    buffer.append(input.current());
+                    input.next(); // consume |
+                }
+                break;
+            case '=':
+                if (input.hasNext() && (input.current() == '=' || input.current() == '>')) {
+                    buffer.append(input.current());
+                    input.next(); // consume = or >
+                }
+                break;
+            case '<':
+                if (input.hasNext() && input.current() == '=') {
+                    buffer.append(input.current());
+                    input.next(); // consume <
+                }
+                break;
+
+        }
+
+        currentToken = Token.newOperatorToken(buffer.toString());
     }
 
     private void scanKeywordOrLiteral() {
