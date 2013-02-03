@@ -12,35 +12,31 @@
 
 package de.weltraumschaf.registermachine.inter;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+
 /**
- * Nodes of the abstract syntax tree.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface AstNode {
+public final class FunctionNode extends AbstractNode {
 
-    /**
-     * Type of a node.
-     */
-    public enum Type {
-        /**
-         * Empty node.
-         *
-         * Mostly used if empty source was parsed.
-         */
-        NOP,
-        /**
-         * Variable node.
-         */
-        VAR,
-        FUNCTION;
+    private final List<VarNode> variables = Lists.newArrayList();
+
+    private FunctionNode() {
+        super(AstNode.Type.FUNCTION);
     }
 
-    /**
-     * Get the node type.
-     *
-     * @return the type of the node
-     */
-    Type getType();
+    public static FunctionNode newFunctionNode() {
+        return new FunctionNode();
+    }
+
+    public void addVariable(final VarNode var) {
+        variables.add(var);
+    }
+
+    public List<VarNode> getVariables() {
+        return Lists.newArrayList(variables);
+    }
 
 }

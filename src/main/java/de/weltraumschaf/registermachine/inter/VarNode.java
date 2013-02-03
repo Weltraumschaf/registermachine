@@ -34,7 +34,7 @@ public final class VarNode extends AbstractNode {
         this.value = value;
     }
 
-    public static AstNode newVarNode(final String name, final Value value) {
+    public static VarNode newVarNode(final String name, final Value value) {
         return new VarNode(name, value);
     }
 

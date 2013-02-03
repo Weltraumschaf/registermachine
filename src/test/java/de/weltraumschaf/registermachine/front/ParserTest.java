@@ -5,6 +5,7 @@
 package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.registermachine.inter.AstNode;
+import de.weltraumschaf.registermachine.inter.FunctionNode;
 import de.weltraumschaf.registermachine.inter.NopNode;
 import de.weltraumschaf.registermachine.inter.Value;
 import de.weltraumschaf.registermachine.inter.VarNode;
@@ -25,11 +26,12 @@ public class ParserTest {
         sut.parse();
 
         final AstNode tree = sut.getAbstractSyntaxtTree();
-        assertThat(tree, instanceOf(NopNode.class));
-        assertThat(tree.getType(), is(AstNode.Type.NOP));
+        assertThat(tree, instanceOf(FunctionNode.class));
+        assertThat(tree.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(((FunctionNode) tree).getVariables().size(), is(0));
     }
 
-    @Test
+    @Test @Ignore
     public void parseSingleVaribaleWithoutAssignemtn() {
         final Parser sut = Parser.forString("var foo");
         sut.parse();
@@ -45,7 +47,7 @@ public class ParserTest {
 
     @Test @Ignore
     public void parseSingleVaribaleWithAssignemtn() {
-        final Parser sut = Parser.forString("var foo = 3.14");
+        final Parser sut = Parser.forString("var   foo   =   3.14");
         sut.parse();
 
         final AstNode tree = sut.getAbstractSyntaxtTree();
@@ -58,7 +60,17 @@ public class ParserTest {
     }
 
     @Test @Ignore
-    public void parseMultiVaribale() {
+    public void parseMultiVaribaleWithoutAssignemtn() {
+        final Parser sut = Parser.forString("var { foo bar baz }");
+    }
+
+    @Test @Ignore
+    public void parseMultiVaribaleWithAssignemtn() {
+        final Parser sut = Parser.forString("var { foo = 3.14 bar = 42 baz = false }");
+    }
+
+    @Test @Ignore
+    public void parseMultiVaribaleWithAndWithoutAssignemtn() {
         final Parser sut = Parser.forString("");
     }
 

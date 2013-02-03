@@ -13,34 +13,25 @@
 package de.weltraumschaf.registermachine.inter;
 
 /**
- * Nodes of the abstract syntax tree.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface AstNode {
+public final class Nodes {
 
-    /**
-     * Type of a node.
-     */
-    public enum Type {
-        /**
-         * Empty node.
-         *
-         * Mostly used if empty source was parsed.
-         */
-        NOP,
-        /**
-         * Variable node.
-         */
-        VAR,
-        FUNCTION;
+    public Nodes() {
+        super();
     }
 
-    /**
-     * Get the node type.
-     *
-     * @return the type of the node
-     */
-    Type getType();
+    public NopNode newNopNode() {
+        return NopNode.newNopNode();
+    }
+
+    public VarNode newVarNode(final String name, final Value value) {
+        return VarNode.newVarNode(name, value);
+    }
+
+    public FunctionNode newFunctionNode() {
+        return FunctionNode.newFunctionNode();
+    }
 
 }

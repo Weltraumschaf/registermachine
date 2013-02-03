@@ -22,7 +22,7 @@ public final class NopNode extends AbstractNode {
         super(AstNode.Type.NOP);
     }
 
-    public static AstNode newNopNode() {
+    public static NopNode newNopNode() {
         return new NopNode();
     }
 

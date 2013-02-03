@@ -13,9 +13,9 @@ package de.weltraumschaf.registermachine.front;
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
 import de.weltraumschaf.registermachine.inter.AstNode;
-import de.weltraumschaf.registermachine.inter.NopNode;
+import de.weltraumschaf.registermachine.inter.FunctionNode;
+import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
-import de.weltraumschaf.registermachine.inter.VarNode;
 
 /**
  * Parse source and generates an AST.
@@ -24,13 +24,14 @@ import de.weltraumschaf.registermachine.inter.VarNode;
  */
 final class Parser {
 
+    private final Nodes nodeFactory = new Nodes();
     private final Scanner scanner;
-    private AstNode ast;
+    private FunctionNode mainFunction;
 
     private Parser(final Scanner scanner) {
         super();
         this.scanner = scanner;
-        this.ast = NopNode.newNopNode();
+        this.mainFunction = nodeFactory.newFunctionNode();
     }
 
     static Parser forString(final String string) {
@@ -38,7 +39,7 @@ final class Parser {
     }
 
     AstNode getAbstractSyntaxtTree() {
-        return ast;
+        return mainFunction;
     }
 
     void parse() {
@@ -78,7 +79,7 @@ final class Parser {
         }
 
         scanner.next(); // consume name
-        ast = VarNode.newVarNode(((Token<String>) name).getValue(), Value.getNil());
+        mainFunction.addVariable(nodeFactory.newVarNode(((Token<String>) name).getValue(), Value.getNil()));
     }
 
 }
