@@ -64,6 +64,29 @@ public class ParserTest {
     @Test @Ignore
     public void parseMultiVaribaleWithoutAssignemtn() {
         final Parser sut = Parser.forString("var { foo bar baz }");
+        sut.parse();
+
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(3));
+
+        final VarNode foo = main.getVariables().get(0);
+        assertThat(foo.getType(), is(AstNode.Type.VAR));
+        assertThat(foo.getName(), is("foo"));
+        assertThat(foo.getValue(), is(Value.getNil()));
+        assertThat(foo.getValue().getType(), is(Type.NIL));
+
+        final VarNode bar = main.getVariables().get(1);
+        assertThat(bar.getType(), is(AstNode.Type.VAR));
+        assertThat(bar.getName(), is("bar"));
+        assertThat(bar.getValue(), is(Value.getNil()));
+        assertThat(bar.getValue().getType(), is(Type.NIL));
+
+        final VarNode baz = main.getVariables().get(2);
+        assertThat(baz.getType(), is(AstNode.Type.VAR));
+        assertThat(baz.getName(), is("baz"));
+        assertThat(baz.getValue(), is(Value.getNil()));
+        assertThat(baz.getValue().getType(), is(Type.NIL));
     }
 
     @Test @Ignore

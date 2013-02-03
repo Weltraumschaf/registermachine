@@ -12,7 +12,6 @@ package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
-import de.weltraumschaf.registermachine.inter.AstNode;
 import de.weltraumschaf.registermachine.inter.FunctionNode;
 import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
@@ -24,9 +23,18 @@ import de.weltraumschaf.registermachine.inter.Value;
  */
 final class Parser {
 
+    /**
+     * Factory to create AST nodes.
+     */
     private final Nodes nodeFactory = new Nodes();
+    /**
+     * Does lexical analysis of input source.
+     */
     private final Scanner scanner;
-    private FunctionNode mainFunction;
+    /**
+     * Root of the AST.
+     */
+    private final FunctionNode mainFunction;
 
     private Parser(final Scanner scanner) {
         super();
@@ -58,20 +66,32 @@ final class Parser {
 
         switch (keyword) {
             case VAR:
-                parseVariable();
+                parseVariables();
                 break;
             default:
                 throw new SyntaxException(String.format("Unknown keyword '%s'!", keyword.getLiteral()));
         }
     }
 
-    private void parseVariable() {
+    private void parseVariables() {
         if (!scanner.hasNext()) {
             throw new SyntaxException("Unexpected end of source!");
         }
 
         scanner.next(); // consume var keyword
 
+        if (isOperator(scanner.getCurrentToken(), "{")) {
+            parseVariableList();
+        } else {
+            parseVariable();
+        }
+    }
+
+    private void parseVariableList() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
+    private void parseVariable() {
         final Token nameToken = scanner.getCurrentToken();
 
         if (nameToken.getType() != TokenType.LITERAL) {
