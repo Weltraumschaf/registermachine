@@ -168,7 +168,7 @@ public class ScannerTest {
     }
 
     @Test
-    public void scanKwyword() {
+    public void scanKwywords() {
         final Scanner sut = Scanner.forString(" var  const  "
                 + "function  return  "
                 + "for  "
@@ -249,6 +249,51 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.KEYWORD));
         assertThat(((Token<String>) token).getValue(), is("continue"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test @Ignore
+    public void scanOperators() {
+
+    }
+
+    @Test
+    public void scanIntegers() {
+        final Scanner sut = Scanner.forString(" 42   23  ");
+        Token token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.INTEGER));
+        assertThat(((Token<Integer>) token).getValue(), is(42));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.INTEGER));
+        assertThat(((Token<Integer>) token).getValue(), is(23));
+    }
+
+    @Test
+    public void scanFloats() {
+        final Scanner sut = Scanner.forString(" 3.14   2.272727  ");
+        Token token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.FLOAT));
+        assertThat(((Token<Float>) token).getValue(), is(3.14f));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.FLOAT));
+        assertThat(((Token<Float>) token).getValue(), is(2.272727f));
     }
 
 }

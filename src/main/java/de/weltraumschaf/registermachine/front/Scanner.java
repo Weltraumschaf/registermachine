@@ -56,7 +56,7 @@ class Scanner {
             }
 
             if (CharacterHelper.isAlpha(currentCharacter)) {
-                scanKeywordOrIdentifier();
+                scanKeywordOrLiteral();
                 return;
             }
 
@@ -146,7 +146,7 @@ class Scanner {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void scanKeywordOrIdentifier() {
+    private void scanKeywordOrLiteral() {
         final StringBuilder buffer = new StringBuilder();
         buffer.append(input.current());
 
@@ -175,7 +175,30 @@ class Scanner {
     }
 
     private void scanNumber() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(input.current());
+        boolean isFloat = false;
+
+        while (input.hasNext()) {
+            final char currentChar = input.next();
+
+            if ('.' == currentChar) {
+                isFloat = true;
+                buffer.append(currentChar);
+                continue;
+            }
+
+            if (!CharacterHelper.isNum(currentChar)) {
+                break;
+            }
+            buffer.append(currentChar);
+        }
+
+        if (isFloat) {
+            currentToken = Token.newFloatToken(Float.valueOf(buffer.toString()));
+        } else {
+            currentToken = Token.newIntegerToken(Integer.valueOf(buffer.toString()));
+        }
     }
 
 
