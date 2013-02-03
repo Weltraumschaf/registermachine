@@ -88,9 +88,19 @@ final class Parser {
     }
 
     private void parseVariableList() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        scanner.next(); // consume {
+
+        while (scanner.hasNext()) {
+            if (isOperator(scanner.getCurrentToken(), "}")) {
+                if (scanner.hasNext()) {
+                    scanner.next(); // consume }
+                }
+                break;
+            }
+            parseVariable();
+        }
     }
-    
+
     private void parseVariable() {
         final Token nameToken = scanner.getCurrentToken();
 
