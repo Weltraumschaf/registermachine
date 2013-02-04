@@ -55,7 +55,47 @@ public class ScannerTest {
         final Scanner sut = Scanner.forString("  \t   \n    ");
         sut.next();
 
-        final Token token = sut.getCurrentToken();
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(true));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void scanEndofLine() {
+        final Scanner sut = Scanner.forString("\n");
+        sut.next();
+
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void scanWhitespacesWithEndofLine() {
+        final Scanner sut = Scanner.forString("  \t   \n    ");
+        sut.next();
+
+        Token token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(true));
+
+        sut.next();
+        token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
         assertThat(sut.hasNext(), is(false));
@@ -107,6 +147,12 @@ public class ScannerTest {
 
         sut.next();
         token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
+
+        sut.next();
+        token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
         assertThat(sut.hasNext(), is(false));
@@ -151,6 +197,12 @@ public class ScannerTest {
         assertThat(token.getType(), is(TokenType.COMMENT));
         assertThat(((Token<String>) token).getValue(), is("/* this is a comment\nand one more line\n\nlast line */"));
         assertThat(sut.hasNext(), is(true));
+
+        sut.next();
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+        assertThat(sut.hasNext(), is(false));
 
         sut.next();
         token = sut.getCurrentToken();

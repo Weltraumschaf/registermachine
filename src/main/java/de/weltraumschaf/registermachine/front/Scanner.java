@@ -28,7 +28,7 @@ final class Scanner {
     /**
      * Current recognized token.
      */
-    private Token<?> currentToken = null;
+    private Token<?> currentToken;
 
     /**
      * Hidden to enforce creation by {@link #forString(java.lang.String) factory method}.
@@ -82,8 +82,19 @@ final class Scanner {
         while (input.hasNext()) {
             final char currentCharacter = input.current();
 
+            // Must be befor whitespace check, because \n is also whitespace
+            if ('\n' == currentCharacter) {
+                if (input.hasNext()) {
+                    input.next(); // consume new line
+                }
+                currentToken = Token.newEndOfLineToken();
+                return;
+            }
+
             if (CharacterHelper.isWhiteSpace(currentCharacter)) {
-                input.next(); // consume whitespace
+                if (input.hasNext()) {
+                    input.next(); // consume whitespace
+                }
                 continue;
             }
 
