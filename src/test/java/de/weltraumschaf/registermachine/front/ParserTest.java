@@ -96,7 +96,6 @@ public class ParserTest {
                 + "  bar\n"
                 + "  baz\n "
                 + "}");
-
         sut.parse();
 
         final FunctionNode main = sut.getAbstractSyntaxtTree();
@@ -123,8 +122,63 @@ public class ParserTest {
     }
 
     @Test @Ignore
-    public void parseMultiVaribaleWithAssignemtn() {
-        final Parser sut = Parser.forString("var { foo = 3.14 bar = 42 baz = false }");
+    public void parseMultiVaribaleWithAssignemtnWithoutNewlines() {
+        final Parser sut = Parser.forString("var { foo = 3.14 bar = \"snafu\" baz = false }");
+        sut.parse();
+
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(3));
+
+        final VarNode foo = main.getVariables().get(0);
+        assertThat(foo.getType(), is(AstNode.Type.VAR));
+        assertThat(foo.getName(), is("foo"));
+        assertThat(foo.getValue(), is(Value.valueOf(3.14f)));
+        assertThat(foo.getValue().getType(), is(Type.FLOAT));
+
+        final VarNode bar = main.getVariables().get(1);
+        assertThat(bar.getType(), is(AstNode.Type.VAR));
+        assertThat(bar.getName(), is("bar"));
+        assertThat(bar.getValue(), is(Value.valueOf("snafu")));
+        assertThat(bar.getValue().getType(), is(Type.STRING));
+
+        final VarNode baz = main.getVariables().get(2);
+        assertThat(baz.getType(), is(AstNode.Type.VAR));
+        assertThat(baz.getName(), is("baz"));
+        assertThat(baz.getValue(), is(Value.getFalse()));
+        assertThat(baz.getValue().getType(), is(Type.BOOLEAN));
+    }
+
+    @Test @Ignore
+    public void parseMultiVaribaleWithAssignemtnWithNewlines() {
+        final Parser sut = Parser.forString("var {\n"
+                + "  foo = 3.14\n"
+                + "  bar = \"snafu\"\n"
+                + "  baz = false\n"
+                + "}");
+        sut.parse();
+
+        final FunctionNode main = sut.getAbstractSyntaxtTree();
+        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+        assertThat(main.getVariables().size(), is(3));
+
+        final VarNode foo = main.getVariables().get(0);
+        assertThat(foo.getType(), is(AstNode.Type.VAR));
+        assertThat(foo.getName(), is("foo"));
+        assertThat(foo.getValue(), is(Value.valueOf(3.14f)));
+        assertThat(foo.getValue().getType(), is(Type.FLOAT));
+
+        final VarNode bar = main.getVariables().get(1);
+        assertThat(bar.getType(), is(AstNode.Type.VAR));
+        assertThat(bar.getName(), is("bar"));
+        assertThat(bar.getValue(), is(Value.valueOf("snafu")));
+        assertThat(bar.getValue().getType(), is(Type.STRING));
+
+        final VarNode baz = main.getVariables().get(2);
+        assertThat(baz.getType(), is(AstNode.Type.VAR));
+        assertThat(baz.getName(), is("baz"));
+        assertThat(baz.getValue(), is(Value.getFalse()));
+        assertThat(baz.getValue().getType(), is(Type.BOOLEAN));
     }
 
     @Test @Ignore
