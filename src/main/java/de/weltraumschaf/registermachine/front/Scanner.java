@@ -79,6 +79,9 @@ final class Scanner {
      * @return {@code true} if there are more tokens, else {@code false}
      */
     boolean hasNext() {
+        if (null == currentToken) {
+            return true;
+        }
         return TokenType.EOF != currentToken.getType();
     }
 
@@ -202,40 +205,35 @@ final class Scanner {
         final StringBuilder buffer = new StringBuilder();
         final char currentChar = input.current();
         buffer.append(currentChar);
-        input.next(); // consume operator character
 
         switch (currentChar) {
             case '!':
-                if (input.hasNext() && input.current() == '=') {
-                    buffer.append(input.current());
-                    input.next(); // consume =
+                if (input.hasNext() && input.peek()== '=') {
+                    buffer.append(input.next());
                 }
                 break;
             case '&':
-                if (input.hasNext() && input.current() == '&') {
-                    buffer.append(input.current());
-                    input.next(); // consume &
+                if (input.hasNext() && input.peek()== '&') {
+                    buffer.append(input.next());
                 }
                 break;
             case '|':
-                if (input.hasNext() && input.current() == '|') {
-                    buffer.append(input.current());
-                    input.next(); // consume |
+                if (input.hasNext() && input.peek()== '|') {
+                    buffer.append(input.next());
                 }
                 break;
             case '=':
-                if (input.hasNext() && (input.current() == '=' || input.current() == '>')) {
-                    buffer.append(input.current());
-                    input.next(); // consume = or >
+                if (input.hasNext() && (input.peek()== '=' || input.peek()== '>')) {
+                    buffer.append(input.next());
                 }
                 break;
             case '<':
-                if (input.hasNext() && input.current() == '=') {
-                    buffer.append(input.current());
-                    input.next(); // consume <
+                if (input.hasNext() && input.peek()== '=') {
+                    buffer.append(input.next());
                 }
                 break;
-
+            default:
+                // nothing to do
         }
 
         currentToken = Token.newOperatorToken(buffer.toString());
@@ -308,6 +306,10 @@ final class Scanner {
         boolean isFloat = false;
 
         while (input.hasNext()) {
+            if (!CharacterHelper.isNum(input.peek()) && '.' != input.peek()) {
+                break;
+            }
+
             final char currentChar = input.next();
 
             if ('.' == currentChar) {
@@ -316,9 +318,6 @@ final class Scanner {
                 continue;
             }
 
-            if (!CharacterHelper.isNum(currentChar)) {
-                break;
-            }
             buffer.append(currentChar);
         }
 

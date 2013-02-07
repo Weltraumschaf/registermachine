@@ -90,6 +90,11 @@ final class Parser {
     private void parseVariableList() {
         scanner.next(); // consume {
 
+        if (TokenType.EOL != scanner.getCurrentToken().getType()) {
+            throw new SyntaxException("Missing new line after {!");
+        }
+        scanner.next(); // consume new line
+
         while (scanner.hasNext()) {
             if (isOperator(scanner.getCurrentToken(), "}")) {
                 if (scanner.hasNext()) {
@@ -110,47 +115,49 @@ final class Parser {
 
         final String variableName = ((Token<String>) nameToken).getValue();
         scanner.next(); // consume name
-
         final Token maybeAssign = scanner.getCurrentToken();
         Value value;
+        
         if (isOperator(maybeAssign, "=")) {
             if (!scanner.hasNext()) {
                 throw new SyntaxException("Unexpected end of source!");
             }
 
             scanner.next(); // consume =
-            final Token valueToken = scanner.getCurrentToken();
-
-            switch (valueToken.getType()) {
-                case NULL:
-                    value = Value.getNil();
-                    break;
-                case BOOLEAN:
-                    if (((Token<Boolean>) valueToken).getValue()) {
-                        value = Value.getTrue();
-                    } else {
-                        value = Value.getFalse();
-                    }
-                    break;
-                case FLOAT:
-                    value = Value.valueOf(((Token<Float>) valueToken).getValue());
-                    break;
-                case INTEGER:
-                    value = Value.valueOf(((Token<Integer>) valueToken).getValue());
-                    break;
-                case STRING:
-                    value = Value.valueOf(((Token<String>) valueToken).getValue());
-                    break;
-                default:
-                    throw new SyntaxException(String.format("Bad value '%s' assigned to varibale '%s'!",
-                                                            valueToken.getValue(), variableName));
-            }
+            value = determineValue(scanner.getCurrentToken(), variableName);
+            scanner.next(); // consume value
         } else {
             value = Value.getNil();
         }
 
+        if (TokenType.EOL != scanner.getCurrentToken().getType()) {
+            throw new SyntaxException("Missing new line after var declaration!");
+        }
 
+        scanner.next(); // consume new line
         mainFunction.addVariable(nodeFactory.newVarNode(variableName, value));
+    }
+
+    private Value determineValue(final Token valueToken, final String variableName) {
+        switch (valueToken.getType()) {
+            case NULL:
+                return Value.getNil();
+            case BOOLEAN:
+                if (((Token<Boolean>) valueToken).getValue()) {
+                    return Value.getTrue();
+                } else {
+                    return Value.getFalse();
+                }
+            case FLOAT:
+                return Value.valueOf(((Token<Float>) valueToken).getValue());
+            case INTEGER:
+                return Value.valueOf(((Token<Integer>) valueToken).getValue());
+            case STRING:
+                return Value.valueOf(((Token<String>) valueToken).getValue());
+            default:
+                throw new SyntaxException(String.format("Bad value '%s' assigned to varibale '%s'!",
+                                                        valueToken.getValue(), variableName));
+        }
     }
 
     private boolean isOperator(final Token token, final String literal) {
