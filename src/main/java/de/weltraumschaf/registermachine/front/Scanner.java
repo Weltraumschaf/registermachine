@@ -10,9 +10,11 @@
  */
 package de.weltraumschaf.registermachine.front;
 
+import com.google.common.base.Objects;
 import de.weltraumschaf.commons.characters.CharacterHelper;
 import de.weltraumschaf.commons.characters.CharacterStream;
 import de.weltraumschaf.commons.token.Token;
+import de.weltraumschaf.commons.token.TokenType;
 
 /**
  * Scans the source code and produce tokens.
@@ -50,6 +52,11 @@ final class Scanner {
         return new Scanner(new CharacterStream(string));
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this).add("currentToken", currentToken).toString();
+    }
+
     /**
      * Return the current recognized token.
      *
@@ -72,7 +79,7 @@ final class Scanner {
      * @return {@code true} if there are more tokens, else {@code false}
      */
     boolean hasNext() {
-        return input.hasNext();
+        return TokenType.EOF != currentToken.getType();
     }
 
     /**
@@ -80,22 +87,16 @@ final class Scanner {
      */
     void next() {
         while (input.hasNext()) {
-            final char currentCharacter = input.current();
+            final char currentCharacter = input.next();
 
             // Must be befor whitespace check, because \n is also whitespace
             if ('\n' == currentCharacter) {
-                if (input.hasNext()) {
-                    input.next(); // consume new line
-                }
                 currentToken = Token.newEndOfLineToken();
                 return;
             }
 
             if (CharacterHelper.isWhiteSpace(currentCharacter)) {
-                if (input.hasNext()) {
-                    input.next(); // consume whitespace
-                }
-                continue;
+                continue; // ignore white spaces
             }
 
             if (CharacterHelper.isAlpha(currentCharacter)) {
@@ -248,12 +249,11 @@ final class Scanner {
         buffer.append(input.current());
 
         while (input.hasNext()) {
-            final char currentChar = input.next();
-
-            if (!CharacterHelper.isAlphaNum(currentChar)) {
+            if (!CharacterHelper.isAlphaNum(input.peek())) {
                 break;
             }
-            buffer.append(currentChar);
+
+            buffer.append(input.next());
         }
 
         determineKeywordOrLiteralToken(buffer.toString());
