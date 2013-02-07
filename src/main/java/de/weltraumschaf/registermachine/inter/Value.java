@@ -217,21 +217,29 @@ public final class Value {
 
     @Override
     public String toString() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(type).append(": ");
         switch (type) {
             case INTEGER:
-                return String.valueOf(getIntegerValue());
+                buffer.append(String.valueOf(getIntegerValue()));
+                break;
             case FLOAT:
-                return String.valueOf(getFloatValue());
+                buffer.append(String.valueOf(getFloatValue()));
+                break;
             case BOOLEAN:
-                return String.valueOf(getBooleanValue());
+                buffer.append(String.valueOf(getBooleanValue()));
+                break;
             case STRING:
-                return stringValue;
+                buffer.append(stringValue);
+                break;
             case NIL:
-                return "NIL";
+                buffer.append("NIL");
+                break;
             default:
-                return "UNKNOWN";
-
+                buffer.append("UNKNOWN");
+                break;
         }
+        return buffer.toString();
     }
 
     @Override
