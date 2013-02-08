@@ -1,0 +1,27 @@
+(* Basic terminals *)
+EOL     = '\n' .
+CHAR    = 'a' .. 'b' | 'A' .. 'Z' .
+DIGIT   = '0' .. '9' .
+
+(* built in value terminals *)
+NIL     = 'nil' .
+TRUE    = 'true' . 
+FALSE   = 'false' .
+
+(* keywords *)
+var-keyword         = 'var' .
+const-keyword       = 'const' .
+function-keyword    = 'function' .
+
+identifier      = CHAR { CHAR | DIGIT } .
+boolean-value   = TRUE | FALSE .
+integer-value   = DIGIT { DIGIT } .
+float-value     = DIGIT '.' DIGIT { DIGIT } .
+string-value    = '"' ANY_CHARACTER '"' .
+value           = NIL | boolean-value | integer-value | float-value | string-value . 
+declaration     = identifier '=' value .
+
+var-declaration      = var-keyword '{' EOL [ identifier | declaration { identifier | declaration } ] EOL '}' .
+const-declaration    = const-keyword '{' EOL [ identifier | declaration { identifier | declaration } ] EOL '}' .
+function-declaration = function-keyword '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body EOL '}' .
+function-body        = [ var-declaration | const-declaration { var-declaration | const-declaration } ] .
