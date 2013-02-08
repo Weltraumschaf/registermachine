@@ -710,7 +710,135 @@ public class ScannerTest {
 
         assertThat(sut.hasNext(), is(true));
         sut.next();
-        
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(false));
+    }
+
+    @Test
+    public void parseMultiVaribaleWithAssignemtnWithNewlines() {
+        final Scanner sut = Scanner.forString("var {\n"
+                + "  foo = 3.14\n"
+                + "  bar = \"snafu\"\n"
+                + "  baz = false\n"
+                + "}");
+
+        Token token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("var"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.OPERATOR));
+        assertThat(((Token<String>) token).getValue(), is("{"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.LITERAL));
+        assertThat(((Token<String>) token).getValue(), is("foo"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.OPERATOR));
+        assertThat(((Token<String>) token).getValue(), is("="));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.FLOAT));
+        assertThat(((Token<Float>) token).getValue(), is(3.14f));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.LITERAL));
+        assertThat(((Token<String>) token).getValue(), is("bar"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.OPERATOR));
+        assertThat(((Token<String>) token).getValue(), is("="));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.STRING));
+        assertThat(((Token<String>) token).getValue(), is("snafu"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.LITERAL));
+        assertThat(((Token<String>) token).getValue(), is("baz"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.OPERATOR));
+        assertThat(((Token<String>) token).getValue(), is("="));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.BOOLEAN));
+        assertThat(((Token<Boolean>) token).getValue(), is(false));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.OPERATOR));
+        assertThat(((Token<String>) token).getValue(), is("}"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));

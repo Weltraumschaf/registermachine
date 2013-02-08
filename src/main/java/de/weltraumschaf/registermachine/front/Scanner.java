@@ -284,9 +284,9 @@ final class Scanner {
 
         while (input.hasNext()) {
             if ('"' == input.next()) {
-                if (input.hasNext()) {
-                    input.next(); // consume "
-                }
+//                if (input.hasNext()) {
+//                    input.next(); // consume "
+//                }
                 currentToken = Token.newStringToken(buffer.toString());
                 return;
             } else {

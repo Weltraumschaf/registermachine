@@ -105,7 +105,7 @@ public class ParserTest {
         assertThat(baz.getValue().getType(), is(Type.NIL));
     }
 
-    @Test @Ignore
+    @Test
     public void parseMultiVaribaleWithAssignemtnWithNewlines() {
         final Parser sut = Parser.forString("var {\n"
                 + "  foo = 3.14\n"
