@@ -23,7 +23,9 @@ import org.junit.rules.ExpectedException;
  */
 public class ParserTest {
 
+    // CHECKSTYLE:OFF
     @Rule public ExpectedException thrown = ExpectedException.none();
+    // CHECKSTYLE:ON
 
     @Test
     public void parseEmptySource() {

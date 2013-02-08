@@ -6,7 +6,6 @@ package de.weltraumschaf.registermachine.front;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -17,7 +16,9 @@ import org.junit.rules.ExpectedException;
  */
 public class KeywordTest {
 
-    @Rule public ExpectedException thrown= ExpectedException.none();
+    // CHECKSTYLE:OFF
+    @Rule public ExpectedException thrown = ExpectedException.none();
+    // CHECKSTYLE:ON
 
     @Test
     public void isKeyword() {
@@ -67,10 +68,11 @@ public class KeywordTest {
         Keyword.forValue("   ");
     }
 
-    @Test 
+    @Test
     public void forValue_throwsExceptionOnArbitraryStringInput() {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Literal string 'foobar' is not a keyword!");
         Keyword.forValue("foobar");
     }
- }
+
+}

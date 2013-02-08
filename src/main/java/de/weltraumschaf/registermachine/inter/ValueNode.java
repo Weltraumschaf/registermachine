@@ -13,7 +13,7 @@
 package de.weltraumschaf.registermachine.inter;
 
 /**
- * Super type for {@link ConstNode} and {@link VarNode}
+ * Super type for {@link ConstNode} and {@link VarNode}.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */

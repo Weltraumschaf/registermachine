@@ -28,7 +28,7 @@ public final class NopNode extends AbstractNode {
 
     /**
      * Factory method.
-     * 
+     *
      * @return new instance
      */
     public static NopNode newNopNode() {

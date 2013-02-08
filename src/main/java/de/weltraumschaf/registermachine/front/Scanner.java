@@ -208,27 +208,27 @@ final class Scanner {
 
         switch (currentChar) {
             case '!':
-                if (input.hasNext() && input.peek()== '=') {
+                if (input.hasNext() && input.peek() == '=') {
                     buffer.append(input.next());
                 }
                 break;
             case '&':
-                if (input.hasNext() && input.peek()== '&') {
+                if (input.hasNext() && input.peek() == '&') {
                     buffer.append(input.next());
                 }
                 break;
             case '|':
-                if (input.hasNext() && input.peek()== '|') {
+                if (input.hasNext() && input.peek() == '|') {
                     buffer.append(input.next());
                 }
                 break;
             case '=':
-                if (input.hasNext() && (input.peek()== '=' || input.peek()== '>')) {
+                if (input.hasNext() && (input.peek() == '=' || input.peek() == '>')) {
                     buffer.append(input.next());
                 }
                 break;
             case '<':
-                if (input.hasNext() && input.peek()== '=') {
+                if (input.hasNext() && input.peek() == '=') {
                     buffer.append(input.next());
                 }
                 break;

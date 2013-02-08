@@ -52,7 +52,7 @@ final class Parser {
     }
 
     void parse() {
-        while(scanner.hasNext()) {
+        while (scanner.hasNext()) {
             final Token token = scanner.getCurrentToken();
 
             if (token.getType() == TokenType.KEYWORD) {
@@ -156,7 +156,7 @@ final class Parser {
     }
 
     private Value determineTypedValue(final Token valueToken, final String variableName) {
-        switch (valueToken.getType()) {
+        switch (valueToken.getType()) { // NOPMD
             case NULL:
                 return Value.getNil();
             case BOOLEAN:
