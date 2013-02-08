@@ -95,18 +95,23 @@ public final class Value {
     }
 
     /**
-     * Default constructor for boolean types.
+     * Default constructor for boolean type.
      *
      * @param booleanValue the value to represent
      */
     private Value(final boolean booleanValue) {
         this(Type.BOOLEAN,
                 booleanToInteger(booleanValue),
-                booleanTwoFloat(booleanValue),
+                booleanToFloat(booleanValue),
                 booleanValue,
                 String.valueOf(booleanValue));
     }
 
+    /**
+     * Default constructor for string types.
+     *
+     * @param stringValue the value to represent
+     */
     private Value(final String stringValue) {
         this(Type.STRING,
                 str2int(stringValue),
@@ -184,6 +189,11 @@ public final class Value {
         return booleanValue;
     }
 
+    /**
+     * Get the string representation of the value.
+     *
+     * @return the value casted to string
+     */
     public String getStringValue() {
         return stringValue;
     }
@@ -291,16 +301,40 @@ public final class Value {
         return (int) in;
     }
 
+    /**
+     * Converts a float to a boolean.
+     *
+     * Everything else than 0.0f compared to {@value #FLOAT_COMPARE_DELTA} convert to true.
+     *
+     * @param in float to convert
+     * @return boolean value
+     */
     static boolean floatToBoolean(final float in) {
         return Math.abs(in - 0.0f) > FLOAT_COMPARE_DELTA;
     }
 
+    /**
+     * Converts a boolean to an integer.
+     *
+     * {@code true} converts to 1; {@code false} converts to 0.
+     *
+     * @param in boolean to convert
+     * @return integer value
+     */
     static int booleanToInteger(final boolean in) {
         return in ? 1 : 0;
     }
 
-    static float booleanTwoFloat(final boolean in) {
-        return in ? (float) 1.0 : (float) 0.0;
+    /**
+     * Converts a boolean to a float.
+     *
+     * {@code true} converts to 1.0; {@code false} converts to 0.0.
+     *
+     * @param in boolean to convert
+     * @return float value
+     */
+    static float booleanToFloat(final boolean in) {
+        return in ? 1.0f : 0.0f;
     }
 
     /**
@@ -337,6 +371,12 @@ public final class Value {
         return new Value(value);
     }
 
+    /**
+     * Factory to create boxed string values.
+     *
+     * @param value input value
+     * @return new instance
+     */
     public static Value valueOf(final String value) {
         return new Value(value);
     }
@@ -354,6 +394,7 @@ public final class Value {
             return this;
         }
 
+        // Reuse object for boolean and nil
         if (Type.BOOLEAN == t) {
             if (booleanValue) {
                 return TRUE;
@@ -364,6 +405,7 @@ public final class Value {
             return NIL;
         }
 
+        // create new object for all other types
         return new Value(t, integerValue, floatValue, booleanValue, stringValue);
     }
 
@@ -394,6 +436,11 @@ public final class Value {
         return castTo(Type.FLOAT);
     }
 
+    /**
+     * Cast to string.
+     *
+     * @return new string value, if different type
+     */
     Value castToString() {
         return castTo(Type.STRING);
     }

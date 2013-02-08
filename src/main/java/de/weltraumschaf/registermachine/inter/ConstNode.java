@@ -13,26 +13,32 @@
 package de.weltraumschaf.registermachine.inter;
 
 /**
- * Represents a no operation.
+ * Represents a parsed constant.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class NopNode extends AbstractNode {
+public final class ConstNode extends ValueNode {
 
     /**
-     * Hidden to enforce usage of {@link #newNopNode() factory method}.
+     * Hidden to enforce usage of {@link #newConstNode(java.lang.String, de.weltraumschaf.registermachine.inter.Value)
+     * factory method}.
+     *
+     * @param name name of value.
+     * @param value typed value.
      */
-    private NopNode() {
-        super(AstNode.Type.NOP);
+    private ConstNode(final String name, final Value value) {
+        super(name, value, Type.CONST);
     }
 
     /**
      * Factory method.
-     * 
+     *
+     * @param name name of value.
+     * @param value typed value.
      * @return new instance
      */
-    public static NopNode newNopNode() {
-        return new NopNode();
+    static ConstNode newConstNode(final String name, final Value value) {
+        return new ConstNode(name, value);
     }
 
 }

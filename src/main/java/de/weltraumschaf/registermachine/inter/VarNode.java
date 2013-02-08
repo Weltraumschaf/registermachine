@@ -17,33 +17,28 @@ package de.weltraumschaf.registermachine.inter;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public final class VarNode extends AbstractNode {
+public final class VarNode extends ValueNode {
 
     /**
-     * Name of the variable.
+     * Hidden to enforce usage of {@link #newVarNode(java.lang.String, de.weltraumschaf.registermachine.inter.Value)
+     * factory method}.
+     *
+     * @param name name of value.
+     * @param value typed value.
      */
-    private final String name;
-    /**
-     * Value of the variable.
-     */
-    private final Value value;
-
     private VarNode(final String name, final Value value) {
-        super(AstNode.Type.VAR);
-        this.name = name;
-        this.value = value;
+        super(name, value, Type.VAR);
     }
 
-    public static VarNode newVarNode(final String name, final Value value) {
+    /**
+     * Factory method.
+     *
+     * @param name name of value.
+     * @param value typed value.
+     * @return new instance
+     */
+    static VarNode newVarNode(final String name, final Value value) {
         return new VarNode(name, value);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Value getValue() {
-        return value;
     }
 
 }

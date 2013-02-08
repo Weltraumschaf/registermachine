@@ -33,6 +33,13 @@ public interface AstNode {
          * Variable node.
          */
         VAR,
+        /**
+         * Constant node.
+         */
+        CONST,
+        /**
+         * Function node.
+         */
         FUNCTION;
     }
 

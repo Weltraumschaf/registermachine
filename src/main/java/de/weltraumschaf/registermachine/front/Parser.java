@@ -12,6 +12,7 @@ package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
+import static de.weltraumschaf.registermachine.front.Keyword.CONST;
 import de.weltraumschaf.registermachine.inter.FunctionNode;
 import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
@@ -68,26 +69,37 @@ final class Parser {
             case VAR:
                 parseVariables();
                 break;
+            case CONST:
+                parseConstants();
+                break;
             default:
                 throw new SyntaxException(String.format("Unknown keyword '%s'!", keyword.getLiteral()));
         }
     }
 
     private void parseVariables() {
+        parseValues(false);
+    }
+
+    private void parseConstants() {
+        parseValues(true);
+    }
+
+    private void parseValues(final boolean isConstant) {
         if (!scanner.hasNext()) {
             throw new SyntaxException("Unexpected end of source!");
         }
 
-        scanner.next(); // consume var keyword
+        scanner.next(); // consume var/const keyword
 
         if (isOperator(scanner.getCurrentToken(), "{")) {
-            parseVariableList();
+            parseValuesList(isConstant);
         } else {
-            parseVariable();
+            parseValue(isConstant);
         }
     }
 
-    private void parseVariableList() {
+    private void parseValuesList(final boolean isConstant) {
         scanner.next(); // consume {
 
         if (TokenType.EOL != scanner.getCurrentToken().getType()) {
@@ -102,29 +114,29 @@ final class Parser {
                 }
                 break;
             }
-            parseVariable();
+            parseValue(isConstant);
         }
     }
 
-    private void parseVariable() {
+    private void parseValue(final boolean isConstant) {
         final Token nameToken = scanner.getCurrentToken();
 
         if (nameToken.getType() != TokenType.LITERAL) {
             throw new SyntaxException("Identifier expected!");
         }
 
-        final String variableName = ((Token<String>) nameToken).getValue();
+        final String name = ((Token<String>) nameToken).getValue();
         scanner.next(); // consume name
         final Token maybeAssign = scanner.getCurrentToken();
         Value value;
-        
+
         if (isOperator(maybeAssign, "=")) {
             if (!scanner.hasNext()) {
                 throw new SyntaxException("Unexpected end of source!");
             }
 
             scanner.next(); // consume =
-            value = determineValue(scanner.getCurrentToken(), variableName);
+            value = determineTypedValue(scanner.getCurrentToken(), name);
             scanner.next(); // consume value
         } else {
             value = Value.getNil();
@@ -135,10 +147,15 @@ final class Parser {
         }
 
         scanner.next(); // consume new line
-        mainFunction.addVariable(nodeFactory.newVarNode(variableName, value));
+
+        if (isConstant) {
+            mainFunction.addConstant(nodeFactory.newConstNode(name, value));
+        } else {
+            mainFunction.addVariable(nodeFactory.newVarNode(name, value));
+        }
     }
 
-    private Value determineValue(final Token valueToken, final String variableName) {
+    private Value determineTypedValue(final Token valueToken, final String variableName) {
         switch (valueToken.getType()) {
             case NULL:
                 return Value.getNil();
