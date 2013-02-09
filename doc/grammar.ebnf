@@ -30,3 +30,15 @@ var-declaration      : var-keyword '{' EOL [ identifier | declaration { identifi
 const-declaration    : const-keyword '{' EOL [ identifier | declaration { identifier | declaration } ] EOL '}' .
 function-declaration : function-keyword '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body EOL '}' .
 function-body        : [ var-declaration | const-declaration { var-declaration | const-declaration } ] .
+
+binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
+rel-op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
+add-op     = "+" | "-" | "|" | "^" .
+mul-op     = "*" | "/" | "%" | "<<" | ">>" | "&" .
+unary-op   = "+" | "-" | "!" | "^" .
+
+expression  : term | expression add-op term .
+term        : factor | term mul-op factor .
+factor      : const | var | expression .
+var         : identifier .
+const       : identifier | value .
