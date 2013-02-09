@@ -25,7 +25,7 @@ enum TokenType {
      */
     LITERAL,
     /**
-     * Everything defined in {@link OpCode}.
+     * Everything defined in {@link de.weltraumschaf.registermachine.bytecode.OpCode}.
      *
      * opcode = "a" .. "z" [ { "a" .. "z" } ]
      */

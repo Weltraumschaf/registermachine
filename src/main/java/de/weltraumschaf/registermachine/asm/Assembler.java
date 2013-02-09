@@ -57,9 +57,10 @@ public class Assembler {
     }
 
     /**
+     * Creates the byte code header.
      *
      * @param sourceFileName
-     * @return
+     * @return liste of bytes
      * @throws UnsupportedEncodingException
      */
     private List<Byte> createByteCodeWithHeader(final String sourceFileName) throws UnsupportedEncodingException {
