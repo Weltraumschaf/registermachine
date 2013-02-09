@@ -19,7 +19,7 @@ package de.weltraumschaf.registermachine.asm;
 enum TokenType {
 
     /**
-     * Literal strings, like: true, false nil, a, zet etc.
+     * Literal strings, like: true, false, nil, a, zet42 etc.
      *
      * literal = "a" .. "Z" [ { "a" .. "Z" | "0" .. "9" } ]
      */
