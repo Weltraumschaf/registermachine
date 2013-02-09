@@ -13,6 +13,7 @@ package de.weltraumschaf.registermachine.front;
 import com.google.common.base.Objects;
 import de.weltraumschaf.commons.characters.CharacterHelper;
 import de.weltraumschaf.commons.characters.CharacterStream;
+import de.weltraumschaf.commons.token.Position;
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
 import de.weltraumschaf.commons.token.Tokens;
@@ -32,6 +33,8 @@ final class Scanner {
      * Current recognized token.
      */
     private Token<?> currentToken;
+    private int line = 1;
+    private int columnOffset = 0;
 
     /**
      * Hidden to enforce creation by {@link #forString(java.lang.String) factory method}.
@@ -56,6 +59,15 @@ final class Scanner {
     @Override
     public String toString() {
         return Objects.toStringHelper(this).add("currentToken", currentToken).toString();
+    }
+
+    /**
+     * Create position of current scanned character.
+     *
+     * @return new instance
+     */
+    Position createPosition() {
+        return new Position(line, input.getIndex() - columnOffset + 1);
     }
 
     /**
@@ -95,7 +107,9 @@ final class Scanner {
 
             // Must be befor whitespace check, because \n is also whitespace
             if ('\n' == currentCharacter) {
-                currentToken = Tokens.newEndOfLineToken();
+                currentToken = Tokens.newEndOfLineToken(createPosition());
+                columnOffset = input.getIndex() + 1;
+                ++line;
                 return;
             }
 
@@ -128,7 +142,7 @@ final class Scanner {
                 return;
             }
         }
-        currentToken = Tokens.newEndOfFileToken();
+        currentToken = Tokens.newEndOfFileToken(createPosition());
     }
 
     /**
@@ -151,6 +165,7 @@ final class Scanner {
      */
     private void scanSingleLineComment() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
         buffer.append(input.current()); // consume first slash
         input.next();
         buffer.append(input.current()); // consume second slash
@@ -163,7 +178,7 @@ final class Scanner {
             buffer.append(currentCharacter);
         }
 
-        currentToken = Tokens.newCommentToken(buffer.toString());
+        currentToken = Tokens.newCommentToken(buffer.toString(), pos);
     }
 
     /**
@@ -171,6 +186,7 @@ final class Scanner {
      */
     private void scanMultiLineComment() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
         buffer.append(input.current()); // consume slash
         input.next();
         buffer.append(input.current()); // consume star
@@ -186,7 +202,8 @@ final class Scanner {
                     if (input.hasNext()) {
                         input.next(); // consume slash
                     }
-                    currentToken = Tokens.newCommentToken(buffer.toString());
+
+                    currentToken = Tokens.newCommentToken(buffer.toString(), pos);
                     return;
                 }
 
@@ -204,6 +221,7 @@ final class Scanner {
      */
     private void scanOperator() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
         final char currentChar = input.current();
         buffer.append(currentChar);
 
@@ -237,7 +255,7 @@ final class Scanner {
                 // nothing to do
         }
 
-        currentToken = Tokens.newOperatorToken(buffer.toString());
+        currentToken = Tokens.newOperatorToken(buffer.toString(), pos);
     }
 
     /**
@@ -245,6 +263,7 @@ final class Scanner {
      */
     private void scanKeywordOrLiteral() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
         buffer.append(input.current());
 
         while (input.hasNext()) {
@@ -255,7 +274,7 @@ final class Scanner {
             buffer.append(input.next());
         }
 
-        determineKeywordOrLiteralToken(buffer.toString());
+        determineKeywordOrLiteralToken(buffer.toString(), pos);
     }
 
     /**
@@ -263,17 +282,17 @@ final class Scanner {
      *
      * @param literal literal to examine
      */
-    private void determineKeywordOrLiteralToken(final String literal) {
+    private void determineKeywordOrLiteralToken(final String literal, final Position pos) {
         if (Keyword.isKeyword(literal)) {
-            currentToken = Tokens.newKeywordToken(literal);
+            currentToken = Tokens.newKeywordToken(literal, pos);
         } else if ("true".equals(literal)) {
-            currentToken = Tokens.newBooleanToken(Boolean.TRUE);
+            currentToken = Tokens.newBooleanToken(Boolean.TRUE, pos);
         } else if ("false".equals(literal)) {
-            currentToken = Tokens.newBooleanToken(Boolean.FALSE);
+            currentToken = Tokens.newBooleanToken(Boolean.FALSE, pos);
         } else if ("nil".equals(literal)) {
-            currentToken = Tokens.newNullToken();
+            currentToken = Tokens.newNullToken(pos);
         } else {
-            currentToken = Tokens.newLiteralToken(literal);
+            currentToken = Tokens.newLiteralToken(literal, pos);
         }
     }
 
@@ -282,10 +301,11 @@ final class Scanner {
      */
     private void scanString() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
 
         while (input.hasNext()) {
             if ('"' == input.next()) {
-                currentToken = Tokens.newStringToken(buffer.toString());
+                currentToken = Tokens.newStringToken(buffer.toString(), pos);
                 return;
             } else {
                 buffer.append(input.current());
@@ -300,6 +320,7 @@ final class Scanner {
      */
     private void scanNumber() {
         final StringBuilder buffer = new StringBuilder();
+        final Position pos = createPosition();
         buffer.append(input.current());
         boolean isFloat = false;
 
@@ -320,9 +341,9 @@ final class Scanner {
         }
 
         if (isFloat) {
-            currentToken = Tokens.newFloatToken(Float.valueOf(buffer.toString()));
+            currentToken = Tokens.newFloatToken(Float.valueOf(buffer.toString()), pos);
         } else {
-            currentToken = Tokens.newIntegerToken(Integer.valueOf(buffer.toString()));
+            currentToken = Tokens.newIntegerToken(Integer.valueOf(buffer.toString()), pos);
         }
     }
 
