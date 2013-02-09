@@ -33,7 +33,7 @@ abstract class ValueNode extends AbstractNode {
      *
      * @param name name of value.
      * @param value typed value.
-     * @param type either {@value AstNode.Type#CONST} or {@value AstNode.Type#}
+     * @param type either {@link AstNode.Type#CONST} or {@link AstNode.Type#VAR}
      */
     ValueNode(final String name, final Value value, final Type type) {
         super(type);
