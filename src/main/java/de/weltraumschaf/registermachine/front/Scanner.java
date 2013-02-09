@@ -15,6 +15,7 @@ import de.weltraumschaf.commons.characters.CharacterHelper;
 import de.weltraumschaf.commons.characters.CharacterStream;
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
+import de.weltraumschaf.commons.token.Tokens;
 
 /**
  * Scans the source code and produce tokens.
@@ -94,7 +95,7 @@ final class Scanner {
 
             // Must be befor whitespace check, because \n is also whitespace
             if ('\n' == currentCharacter) {
-                currentToken = Token.newEndOfLineToken();
+                currentToken = Tokens.newEndOfLineToken();
                 return;
             }
 
@@ -127,7 +128,7 @@ final class Scanner {
                 return;
             }
         }
-        currentToken = Token.newEndOfFileToken();
+        currentToken = Tokens.newEndOfFileToken();
     }
 
     /**
@@ -162,7 +163,7 @@ final class Scanner {
             buffer.append(currentCharacter);
         }
 
-        currentToken = Token.newCommentToken(buffer.toString());
+        currentToken = Tokens.newCommentToken(buffer.toString());
     }
 
     /**
@@ -185,7 +186,7 @@ final class Scanner {
                     if (input.hasNext()) {
                         input.next(); // consume slash
                     }
-                    currentToken = Token.newCommentToken(buffer.toString());
+                    currentToken = Tokens.newCommentToken(buffer.toString());
                     return;
                 }
 
@@ -236,7 +237,7 @@ final class Scanner {
                 // nothing to do
         }
 
-        currentToken = Token.newOperatorToken(buffer.toString());
+        currentToken = Tokens.newOperatorToken(buffer.toString());
     }
 
     /**
@@ -264,15 +265,15 @@ final class Scanner {
      */
     private void determineKeywordOrLiteralToken(final String literal) {
         if (Keyword.isKeyword(literal)) {
-            currentToken = Token.newKeywordToken(literal);
+            currentToken = Tokens.newKeywordToken(literal);
         } else if ("true".equals(literal)) {
-            currentToken = Token.newBooleanToken(Boolean.TRUE);
+            currentToken = Tokens.newBooleanToken(Boolean.TRUE);
         } else if ("false".equals(literal)) {
-            currentToken = Token.newBooleanToken(Boolean.FALSE);
+            currentToken = Tokens.newBooleanToken(Boolean.FALSE);
         } else if ("nil".equals(literal)) {
-            currentToken = Token.newNullToken();
+            currentToken = Tokens.newNullToken();
         } else {
-            currentToken = Token.newLiteralToken(literal);
+            currentToken = Tokens.newLiteralToken(literal);
         }
     }
 
@@ -284,10 +285,7 @@ final class Scanner {
 
         while (input.hasNext()) {
             if ('"' == input.next()) {
-//                if (input.hasNext()) {
-//                    input.next(); // consume "
-//                }
-                currentToken = Token.newStringToken(buffer.toString());
+                currentToken = Tokens.newStringToken(buffer.toString());
                 return;
             } else {
                 buffer.append(input.current());
@@ -322,11 +320,10 @@ final class Scanner {
         }
 
         if (isFloat) {
-            currentToken = Token.newFloatToken(Float.valueOf(buffer.toString()));
+            currentToken = Tokens.newFloatToken(Float.valueOf(buffer.toString()));
         } else {
-            currentToken = Token.newIntegerToken(Integer.valueOf(buffer.toString()));
+            currentToken = Tokens.newIntegerToken(Integer.valueOf(buffer.toString()));
         }
     }
-
 
 }
