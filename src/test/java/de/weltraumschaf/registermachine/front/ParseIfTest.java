@@ -22,24 +22,22 @@ public class ParseIfTest {
 
     @Test @Ignore
     public void parseSingleIf() {
-        final Parser sut = Parser.forString("");
 
     }
 
     @Test @Ignore
     public void parseIfElse() {
-        final Parser sut = Parser.forString("");
 
     }
 
     @Test @Ignore
     public void parseIfElseIf() {
-        final Parser sut = Parser.forString("");
+
     }
 
     @Test @Ignore
     public void parseIfElseIfElse() {
-        final Parser sut = Parser.forString("");
+
     }
 
 }

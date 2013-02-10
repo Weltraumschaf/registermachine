@@ -12,7 +12,6 @@ package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
-import static de.weltraumschaf.registermachine.front.Keyword.CONST;
 import de.weltraumschaf.registermachine.inter.FunctionNode;
 import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
@@ -53,7 +52,7 @@ final class Parser {
 
     void parse() {
         while (scanner.hasNext()) {
-            final Token token = scanner.getCurrentToken();
+            final Token<?> token = scanner.getCurrentToken();
 
             if (token.getType() == TokenType.KEYWORD) {
                 parseKeyword();
@@ -119,7 +118,7 @@ final class Parser {
     }
 
     private void parseValue(final boolean isConstant) {
-        final Token nameToken = scanner.getCurrentToken();
+        final Token<?> nameToken = scanner.getCurrentToken();
 
         if (nameToken.getType() != TokenType.LITERAL) {
             throw new SyntaxException("Identifier expected!");
@@ -127,7 +126,7 @@ final class Parser {
 
         final String name = ((Token<String>) nameToken).getValue();
         scanner.next(); // consume name
-        final Token maybeAssign = scanner.getCurrentToken();
+        final Token<?> maybeAssign = scanner.getCurrentToken();
         Value value;
 
         if (isOperator(maybeAssign, "=")) {
@@ -155,7 +154,7 @@ final class Parser {
         }
     }
 
-    private Value determineTypedValue(final Token valueToken, final String variableName) {
+    private Value determineTypedValue(final Token<?> valueToken, final String variableName) {
         switch (valueToken.getType()) { // NOPMD
             case NULL:
                 return Value.getNil();
@@ -177,7 +176,7 @@ final class Parser {
         }
     }
 
-    private boolean isOperator(final Token token, final String literal) {
+    private boolean isOperator(final Token<?> token, final String literal) {
         return token.getType() == TokenType.OPERATOR && ((Token<String>) token).getValue().equals(literal);
     }
 
