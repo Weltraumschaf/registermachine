@@ -8,37 +8,44 @@ NIL     : 'nil' .
 TRUE    : 'true' . 
 FALSE   : 'false' .
 
-(* keywords *)
-var-keyword         : 'var' .
-const-keyword       : 'const' .
-function-keyword    : 'function' .
+(* keyword terminals *)
+VAR         : 'var' .
+CONST       : 'const' .
+FUNCTION    : 'function' .
 
+(* operator terminals *)
+binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
+rel-op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
+add-op     = "+" | "-"  .
+mul-op     = "*" | "/" | "%" .
+unary-op   = "+" | "-" | "!" .
+
+(* base productions *)
 identifier      : CHAR { CHAR | DIGIT } .
 boolean-value   : TRUE 
                 | FALSE .
 integer-value   : DIGIT { DIGIT } .
 float-value     : DIGIT '.' DIGIT { DIGIT } .
-string-value    : '"' ANY_CHARACTER '"' .
+string-value    : '"' { CHAR | DIGIT } '"' .
 value           : NIL 
                 | boolean-value 
                 | integer-value 
                 | float-value 
                 | string-value . 
-declaration     : identifier '=' value .
 
-var-declaration      : var-keyword '{' EOL [ identifier | declaration { identifier | declaration } ] EOL '}' .
-const-declaration    : const-keyword '{' EOL [ identifier | declaration { identifier | declaration } ] EOL '}' .
-function-declaration : function-keyword '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body EOL '}' .
-function-body        : [ var-declaration | const-declaration { var-declaration | const-declaration } ] .
+(* statement productions *)
+declaration          : identifier { '=' value } EOL .
+var-declaration      : VAR ( declaration | '{' EOL { declaration } '}') .
+const-declaration    : CONST ( declaration | '{' EOL { declaration } '}') .
+function-declaration : FUNCTION '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body '}' .
+function-body        : { statement } .
+statement            : var-declaration | const-declaration | function-declaration | return-statement .
+return-statement     : RETURN [ identifier | value { ',' identifier | value } ] .
 
-binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
-rel-op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
-add-op     = "+" | "-" | "|" | "^" .
-mul-op     = "*" | "/" | "%" | "<<" | ">>" | "&" .
-unary-op   = "+" | "-" | "!" | "^" .
-
-expression  : term | expression add-op term .
-term        : factor | term mul-op factor .
-factor      : const | var | expression .
-var         : identifier .
-const       : identifier | value .
+(* expression productions *)
+expression        : term-expression { add-op term-expression } .
+term-expression   : factor-expression { mul-op factor-expression } .
+factor-expression : unary-expression { mul-op factor-expression } .
+unary-expression  : unary-op unary-expression | value-expression .
+value-expression  : identifier | value | paren-expression .
+paren-expression  : '(' expression ')' .
