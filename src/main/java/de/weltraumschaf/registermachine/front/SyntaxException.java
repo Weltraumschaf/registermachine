@@ -22,6 +22,11 @@ import de.weltraumschaf.commons.token.Position;
 public class SyntaxException extends RuntimeException {
 
     /**
+	 * Serial version.
+	 */
+	private static final long serialVersionUID = -504793219747754628L;
+	
+	/**
      * Position of the error.
      *
      * May be null.

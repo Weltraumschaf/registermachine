@@ -20,6 +20,11 @@ package de.weltraumschaf.registermachine.asm;
 public class AssemblerSyntaxException extends Exception {
 
     /**
+	 * Serial version.
+	 */
+	private static final long serialVersionUID = -5003876813506881525L;
+
+	/**
      * Sets the line to -1.
      *
      * @param syntaxError the human readable error message

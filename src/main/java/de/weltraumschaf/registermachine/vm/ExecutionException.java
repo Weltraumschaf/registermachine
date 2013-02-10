@@ -19,7 +19,12 @@ package de.weltraumschaf.registermachine.vm;
  */
 public class ExecutionException extends Exception {
 
-    public ExecutionException(final String message) {
+    /**
+	 * Serial version. 
+	 */
+	private static final long serialVersionUID = 3152269768457475499L;
+
+	public ExecutionException(final String message) {
         super(message);
     }
 
