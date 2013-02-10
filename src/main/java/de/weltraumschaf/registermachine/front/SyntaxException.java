@@ -12,14 +12,54 @@
 
 package de.weltraumschaf.registermachine.front;
 
+import de.weltraumschaf.commons.token.Position;
+
 /**
+ * Exception to signal syntax errors.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class SyntaxException extends RuntimeException {
 
+    /**
+     * Position of the error.
+     *
+     * May be null.
+     */
+    private final Position pos;
+
+    /**
+     * Initializes {@link #pos} with {2code null}.
+     *
+     * @param reason reason for the syntax error
+     */
     SyntaxException(final String reason) {
+        this(reason, null);
+    }
+
+    /**
+     * Dedicated constructor.
+     *
+     * @param reason reason for the syntax error
+     * @param pos source code position of the syntax error
+     */
+    SyntaxException(final String reason, final Position pos) {
         super(reason);
+        this.pos = pos;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append("Syntax error: ").append(getMessage()).append(" At position ");
+
+        if (null == pos) {
+            buffer.append("unknown");
+        } else {
+            buffer.append(pos);
+        }
+
+        return buffer.append('.').toString();
     }
 
 }
