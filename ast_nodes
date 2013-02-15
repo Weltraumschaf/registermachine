@@ -1,0 +1,31 @@
+
+Node
+--
+
+Function > Node
+--
+-name:Symbol
+-statements:List<Node>
+
+Symbol > Node
+--
+-id:String
+
+Expression > Node
+--
+-nodes:Node
+
+Variable > Node
+--
+-name:Symbol
+-value:Expression
+
+Constant > Node
+--
+-name:Symbol
+-value:Expression
+
+Assignment > Node
+--
+-leftHandSide:Symbol
+-rightHandSide:Expression
