@@ -17,10 +17,10 @@ var i
 var j = 0
 // multiple variables
 var {
-	k = 1
-	l = 2
-	m
-	n
+    k = 1
+    l = 2
+    m
+    n
 }
 
 var {
@@ -35,8 +35,8 @@ var f = 3 / 2 * 3 (3 + 1)
 const x = 1
 // multiple constants
 const {
-	y = 2
-	z = 3
+    y = 2
+    z = 3
 }
 
 // Functions
@@ -44,7 +44,7 @@ const {
 
 // a function w/o parameters and return NIL
 function aFunction() {
-
+    // ...
 }
 
 // calling the function
@@ -52,7 +52,7 @@ var a = aFunction() // a == NIL
 
 // a function w/ parameter which it returns
 fucntion bFunction(a) {
-	return a
+    return a
 }
 
 // calling the function
@@ -60,7 +60,7 @@ var b = bFunction(a: 5) // b == 5
 
 // a function w/ parameters which it returns
 function cFunction(a, b, c) {
-	return a, b, c
+    return a, b, c
 }
 
 // calling the function
@@ -93,25 +93,25 @@ if a < b {
 // traditional for loop
 var sum = 0
 for var i = 0; i < 10; i++ {
-	sum += i
+    sum += i
 }
 
 // like a while loop
 for a < b {
-	// ..
+    // ..
 
-	if a == b {
-		continue
-	}
+    if a == b {
+        continue
+    }
 
-	// ..
+    // ..
 }
 
 // endles loop
 for {
-	if a < b {
-		break
-	}
+    if a < b {
+        break
+    }
 }
 
 // switch with single matches, no fallthrough
