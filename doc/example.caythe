@@ -1,0 +1,19 @@
+
+var sum
+
+const END = 10
+
+for sum <= END {
+    if sum % 2 {
+        println("foo")
+    } else {
+        println("bar")
+    }
+
+    sum = sum + 1;
+}
+
+var {
+    a = 1
+    b
+}
