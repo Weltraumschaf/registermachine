@@ -107,9 +107,14 @@ final class Scanner {
 
             // Must be befor whitespace check, because \n is also whitespace
             if ('\n' == currentCharacter) {
+                ++line;
+
+                if (null != currentToken && currentToken.getType() == TokenType.EOL) { // Ignore multiple newlines.
+                    continue;
+                }
+
                 currentToken = Tokens.newEndOfLineToken(createPosition());
                 columnOffset = input.getIndex() + 1;
-                ++line;
                 return;
             }
 

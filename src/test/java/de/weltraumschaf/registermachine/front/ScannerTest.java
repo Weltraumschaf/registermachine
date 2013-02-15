@@ -15,6 +15,7 @@ import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -403,6 +404,7 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
         assertThat(sut.hasNext(), is(false));
     }
 
@@ -426,6 +428,8 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(false));
     }
 
     @Test
@@ -448,6 +452,8 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(false));
     }
 
     @Test
@@ -464,6 +470,53 @@ public class ScannerTest {
         token = sut.getCurrentToken();
         assertThat(token.getType(), is(TokenType.EOF));
         assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(false));
     }
 
+    @Test
+    public void scan_scipMultipleNewlines() {
+        final Scanner sut = Scanner.forString("var\n\n\nconst\n\n\nif");
+        Token<?> token = sut.getCurrentToken();
+
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("var"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("const"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOL));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.KEYWORD));
+        assertThat(((Token<String>) token).getValue(), is("if"));
+
+        assertThat(sut.hasNext(), is(true));
+        sut.next();
+
+        token = sut.getCurrentToken();
+        assertThat(token.getType(), is(TokenType.EOF));
+        assertThat(((Token<Null>) token).getValue(), is(Null.getInstance()));
+
+        assertThat(sut.hasNext(), is(false));
+    }
 }
