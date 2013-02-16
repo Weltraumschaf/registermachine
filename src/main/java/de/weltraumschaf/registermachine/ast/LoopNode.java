@@ -12,14 +12,23 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import de.weltraumschaf.commons.token.Token;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Value extends AbstractNode {
+public class LoopNode extends AbstractNode {
 
-    private Token value;
+    private ExpressionNode condition;
+    private final List<AstNode> statements = Lists.newArrayList();
 
+    void setCondition(final ExpressionNode condition) {
+        this.condition = condition;
+    }
+
+    void addStatementNode(final AstNode n) {
+        statements.add(n);
+    }
 }

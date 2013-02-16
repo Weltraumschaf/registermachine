@@ -12,16 +12,21 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import de.weltraumschaf.commons.token.Token;
-
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class BinaryOperator {
+public class VariableNode extends AbstractNode {
 
-    private Token operator;
-    private Expression leftHandSide;
-    private Expression rightHandSide;
-    
+    private SymbolNode name;
+    private ExpressionNode value;
+
+    void setName(final SymbolNode name) {
+        this.name = name;
+    }
+
+    void setValue(final ExpressionNode value) {
+        this.value = value;
+    }
+
 }

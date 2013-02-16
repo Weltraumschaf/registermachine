@@ -12,16 +12,28 @@
 
 package de.weltraumschaf.registermachine.ast;
 
+import de.weltraumschaf.registermachine.front.Operator;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Symbol extends AbstractNode {
+public class BinaryOperatorNode {
 
-    private final String id;
+    private Operator operator;
+    private ExpressionNode leftHandSide;
+    private ExpressionNode rightHandSide;
 
-    public Symbol(final String id) {
-        this.id = id;
+    public void setOperator(final Operator operator) {
+        this.operator = operator;
+    }
+
+    public void setLeftHandSide(final ExpressionNode leftHandSide) {
+        this.leftHandSide = leftHandSide;
+    }
+
+    public void setRightHandSide(final ExpressionNode rightHandSide) {
+        this.rightHandSide = rightHandSide;
     }
 
 }

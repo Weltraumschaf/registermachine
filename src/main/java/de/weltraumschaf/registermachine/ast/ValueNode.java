@@ -12,16 +12,17 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import com.google.common.collect.Lists;
-import java.util.List;
+import de.weltraumschaf.registermachine.inter.Value;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Loop extends AbstractNode {
+public class ValueNode extends AbstractNode {
 
-    private Expression condition;
-    private final List<AstNode> statements = Lists.newArrayList();
+    private Value value;
 
+    void setValue(final Value v) {
+        value = v;
+    }
 }

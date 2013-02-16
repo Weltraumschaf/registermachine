@@ -19,9 +19,22 @@ import java.util.List;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Call {
+public class BranchNode extends AbstractNode {
 
-    private Symbol ame;
-    private  final List<Expression> arguments = Lists.newArrayList();
+    private ExpressionNode condition;
+    private final List<AstNode> ifStatements = Lists.newArrayList();
+    private final List<AstNode> elseStatements = Lists.newArrayList();
+
+    void setCondition(final ExpressionNode condition) {
+        this.condition = condition;
+    }
+
+    void addIfStatementNode(final AstNode n) {
+        ifStatements.add(n);
+    }
+
+    void addElseStatementNode(final AstNode n) {
+        elseStatements.add(n);
+    }
 
 }

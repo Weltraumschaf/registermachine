@@ -65,4 +65,10 @@ Value > AstNode
 Call > AstNode
 --
 -name:Symbol
+-arguments:List<Argument>
+
+Argument > AstNode
+--
+-name:Symbol
 -arguments:List<Expression>
+

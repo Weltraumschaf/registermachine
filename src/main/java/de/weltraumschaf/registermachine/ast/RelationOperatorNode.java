@@ -12,24 +12,27 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import com.google.common.collect.Lists;
-import java.util.List;
+import de.weltraumschaf.registermachine.front.Operator;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class FunctionNode extends AbstractNode {
+public class RelationOperatorNode extends AbstractNode {
 
-    private SymbolNode name ;
-    private final List<AstNode> statements = Lists.newArrayList();
+    private Operator operator;
+    private ExpressionNode leftHandSide;
+    private ExpressionNode rightHandSide;
 
-    void setName(final SymbolNode name) {
-        this.name = name;
+    void setOperator(final Operator operator) {
+        this.operator = operator;
     }
 
-    void addStatementNodes(final AstNode n) {
-        statements.add(n);
+    void setLeftHandSide(final ExpressionNode leftHandSide) {
+        this.leftHandSide = leftHandSide;
     }
 
+    void setRightHandSide(final ExpressionNode rightHandSide) {
+        this.rightHandSide = rightHandSide;
+    }
 }

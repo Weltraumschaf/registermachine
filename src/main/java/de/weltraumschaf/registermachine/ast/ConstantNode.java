@@ -12,17 +12,21 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import com.google.common.collect.Lists;
-import java.util.List;
-
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Branch extends AbstractNode {
+public class ConstantNode extends AbstractNode {
 
-    private Expression condition;
-    private final List<AstNode> ifStatements = Lists.newArrayList();
-    private final List<AstNode> elseStatements = Lists.newArrayList();
+    private SymbolNode name;
+    private ExpressionNode value;
+
+    void setName(final SymbolNode name) {
+        this.name = name;
+    }
+
+    void setValue(final ExpressionNode value) {
+        this.value = value;
+    }
 
 }

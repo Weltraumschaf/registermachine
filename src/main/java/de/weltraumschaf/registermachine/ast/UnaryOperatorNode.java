@@ -12,15 +12,23 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import com.google.common.collect.Lists;
-import java.util.List;
+import de.weltraumschaf.registermachine.front.Operator;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Expression extends AbstractNode {
+public class UnaryOperatorNode extends AbstractNode {
 
-    private final List<AstNode> nodes = Lists.newArrayList();
+    private Operator operator;
+    private ExpressionNode operand;
+
+    void setOperator(final Operator operator) {
+        this.operator = operator;
+    }
+
+    void setOperand(final ExpressionNode operand) {
+        this.operand = operand;
+    }
 
 }

@@ -12,15 +12,24 @@
 
 package de.weltraumschaf.registermachine.ast;
 
-import de.weltraumschaf.commons.token.Token;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class UnaryOperator extends AbstractNode {
+public class CallNode {
 
-    private Token operator;
-    private Expression operand;
+    private SymbolNode name;
+    private  final List<ArgumentNode> arguments = Lists.newArrayList();
+
+    void addArgument(final ArgumentNode a) {
+        arguments.add(a);;
+    }
+
+    void setName(final SymbolNode n) {
+        name = n;
+    }
 
 }

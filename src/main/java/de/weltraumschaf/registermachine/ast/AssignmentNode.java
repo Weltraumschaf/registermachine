@@ -16,9 +16,17 @@ package de.weltraumschaf.registermachine.ast;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Constant extends AbstractNode {
+public class AssignmentNode extends AbstractNode {
 
-    private Symbol name;
-    private Expression value;
+    private SymbolNode leftHandSide;
+    private ExpressionNode rightHandSide;
+
+    void setLeftHandSide(final SymbolNode leftHandSide) {
+        this.leftHandSide = leftHandSide;
+    }
+
+    void setRightHandSide(final ExpressionNode rightHandSide) {
+        this.rightHandSide = rightHandSide;
+    }
 
 }
