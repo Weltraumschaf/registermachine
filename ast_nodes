@@ -1,68 +1,68 @@
 
-Node
+AstNode
 --
 
-Function > Node
+Function > AstNode
 --
 -name:Symbol
--statements:List<Node>
+-statements:List<AstNode>
 
-Symbol > Node
+Symbol > AstNode
 --
 -id:String
 
-Expression > Node
+Expression > AstNode
 --
--nodes:Node
+-nodes:AstNode
 
-Variable > Node
---
--name:Symbol
--value:Expression
-
-Constant > Node
+Variable > AstNode
 --
 -name:Symbol
 -value:Expression
 
-Assignment > Node
+Constant > AstNode
+--
+-name:Symbol
+-value:Expression
+
+Assignment > AstNode
 --
 -leftHandSide:Symbol
 -rightHandSide:Expression
 
-Loop > Node
+Loop > AstNode
 --
 -condition:Expression
--statements:List<Node>
+-statements:List<AstNode>
 
-Branch > Node
+Branch > AstNode
 --
 -condition:Expression
--ifStatements:List<Node>
--elseStatements:List<Node>
+-ifStatements:List<AstNode>
+-elseStatements:List<AstNode>
 
-RelationOperator > Node
+RelationOperator > AstNode
 --
 -operator:Token
 -leftHandSide:Expression
 -rightHandSide:Expression
 
-BinaryOperator > Node
+BinaryOperator > AstNode
 --
 -operator:Token
 -leftHandSide:Expression
 -rightHandSide:Expression
 
-UnaryOperator > Node
+UnaryOperator > AstNode
 --
 -operator:Token
 -operand:Expression
 
-Value > Node
+Value > AstNode
 --
 -value:Token
 
-Call > Node
+Call > AstNode
 --
 -name:Symbol
 -arguments:List<Expression>
