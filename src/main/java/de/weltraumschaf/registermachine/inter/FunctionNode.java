@@ -30,12 +30,16 @@ public final class FunctionNode extends AbstractNode {
      * Holds all constants declared in the scope of this function.
      */
     private final List<ConstNode> constants = Lists.newArrayList();
+    /**
+     * Holds all statements in the scope of this function.
+     */
+    private final List<StatementNode> statements = Lists.newArrayList();
 
     /**
      * Hidden to enforce usage of {@link #newFunctionNode() factory method}.
      */
     private FunctionNode() {
-        super(AstNode.Type.FUNCTION);
+        super(Type.FUNCTION);
     }
 
     /**
@@ -87,6 +91,14 @@ public final class FunctionNode extends AbstractNode {
      */
     public List<ConstNode> getConstants() {
         return Lists.newArrayList(constants);
+    }
+
+    public void addStatements(final StatementNode statement) {
+        statements.add(statement);
+    }
+
+    public List<StatementNode> getStatements() {
+        return Lists.newArrayList(statements);
     }
 
 }

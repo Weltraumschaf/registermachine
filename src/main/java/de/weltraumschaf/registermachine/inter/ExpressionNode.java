@@ -9,47 +9,29 @@
  *
  * Copyright (C) 2012 "Sven Strittmatter" <weltraumschaf@googlemail.com>
  */
-
 package de.weltraumschaf.registermachine.inter;
 
 /**
- * Nodes of the abstract syntax tree.
+ * Represents a parsed expression.
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public interface AstNode {
+public final class ExpressionNode extends StatementNode {
 
     /**
-     * Type of a node.
+     * Hidden to enforce usage of {@link #newExpressionNode() factory method}.
      */
-    public enum Type {
-        /**
-         * Empty node.
-         *
-         * Mostly used if empty source was parsed.
-         */
-        NOP,
-        /**
-         * Variable node.
-         */
-        VAR,
-        /**
-         * Constant node.
-         */
-        CONST,
-        /**
-         * Function node.
-         */
-        FUNCTION,
-        ASSIGNMENT,
-        EXPRESSION;
+    private ExpressionNode() {
+        super(Type.EXPRESSION);
     }
 
     /**
-     * Get the node type.
+     * Factory method.
      *
-     * @return the type of the node
+     * @return new instance
      */
-    Type getType();
+    static ExpressionNode newExpressionNode() {
+        return new ExpressionNode();
+    }
 
 }
