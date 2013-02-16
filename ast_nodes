@@ -29,3 +29,40 @@ Assignment > Node
 --
 -leftHandSide:Symbol
 -rightHandSide:Expression
+
+Loop > Node
+--
+-condition:Expression
+-statements:List<Node>
+
+Branch > Node
+--
+-condition:Expression
+-ifStatements:List<Node>
+-elseStatements:List<Node>
+
+RelationOperator > Node
+--
+-operator:Token
+-leftHandSide:Expression
+-rightHandSide:Expression
+
+BinaryOperator > Node
+--
+-operator:Token
+-leftHandSide:Expression
+-rightHandSide:Expression
+
+UnaryOperator > Node
+--
+-operator:Token
+-operand:Expression
+
+Value > Node
+--
+-value:Token
+
+Call > Node
+--
+-name:Symbol
+-arguments:List<Expression>
