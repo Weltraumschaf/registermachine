@@ -85,6 +85,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <compileTarget.version>1.6</compileTarget.version>
         <source.version>1.6</source.version>
+        <maven.version>3.0.3</maven.version>
         <finalName>registermachine</finalName>
         <binDir>bin</binDir>
     </properties>
@@ -352,6 +353,31 @@
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <!-- mockito uses older hamcrest than junit -->
+                                <!--<dependencyConvergence />-->
+                                <requirePluginVersions />
+                                <requireJavaVersion>
+                                    <version>${compileTarget.version}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${maven.version}</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
                         </goals>
                     </execution>
                 </executions>
