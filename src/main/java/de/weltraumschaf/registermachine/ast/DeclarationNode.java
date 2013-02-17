@@ -16,7 +16,7 @@ package de.weltraumschaf.registermachine.ast;
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
-public class Declaration extends AbstractNode {
+public class DeclarationNode extends AbstractNode {
 
     private SymbolNode name;
     private ExpressionNode value;

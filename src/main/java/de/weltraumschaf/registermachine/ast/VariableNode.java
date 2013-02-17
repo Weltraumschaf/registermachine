@@ -21,6 +21,10 @@ import java.util.List;
  */
 public class VariableNode extends AbstractNode {
 
-    private final List<Declaration> declarations = Lists.newArrayList();
+    private final List<DeclarationNode> declarations = Lists.newArrayList();
+
+    public List<DeclarationNode> getDeclarations() {
+        return declarations;
+    }
 
 }
