@@ -26,7 +26,7 @@ import org.junit.Test;
 public class ScanVariablesTest {
 
     @Test
-    public void parseMultiVaribaleWithAssignemtnWithNewlines() {
+    public void scanMultiVaribaleWithAssignemtnWithNewlines() {
         final Scanner sut = Scanner.forString("var {\n"
                 + "  foo = 3.14\n"
                 + "  bar = \"snafu\"\n"

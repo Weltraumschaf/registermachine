@@ -73,8 +73,8 @@ final class Scanner {
     /**
      * Return the current recognized token.
      *
-     * If never {@link #next()} was invoked this method will invoke it. If the source is empty or at the end
-     * an EOF token is returned.
+     * If never {@link #next()} was invoked this method will invoke it. If the source is empty or at the end an EOF
+     * token is returned.
      *
      * @return current scanned token
      */
@@ -107,14 +107,10 @@ final class Scanner {
 
             // Must be befor whitespace check, because \n is also whitespace
             if ('\n' == currentCharacter) {
-                ++line;
-
-                if (null != currentToken && currentToken.getType() == TokenType.EOL) { // Ignore multiple newlines.
+                if (scanNewline()) {
                     continue;
                 }
 
-                currentToken = Tokens.newEndOfLineToken(createPosition());
-                columnOffset = input.getIndex() + 1;
                 return;
             }
 
@@ -148,6 +144,19 @@ final class Scanner {
             }
         }
         currentToken = Tokens.newEndOfFileToken(createPosition());
+    }
+
+    private boolean scanNewline() {
+        final Position pos = createPosition();
+        ++line;
+
+        if (null != currentToken && currentToken.getType() == TokenType.EOL) { // Ignore multiple newlines.
+            return true;
+        }
+
+        currentToken = Tokens.newEndOfLineToken(pos);
+        columnOffset = input.getIndex() + 1;
+        return false;
     }
 
     /**
@@ -257,7 +266,7 @@ final class Scanner {
                 }
                 break;
             default:
-                // nothing to do
+            // nothing to do
         }
 
         currentToken = Tokens.newOperatorToken(buffer.toString(), pos);
@@ -351,5 +360,4 @@ final class Scanner {
             currentToken = Tokens.newIntegerToken(Integer.valueOf(buffer.toString()), pos);
         }
     }
-
 }
