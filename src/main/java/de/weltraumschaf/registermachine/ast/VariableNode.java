@@ -12,21 +12,15 @@
 
 package de.weltraumschaf.registermachine.ast;
 
+import com.google.common.collect.Lists;
+import java.util.List;
+
 /**
  *
  * @author Sven Strittmatter <weltraumschaf@googlemail.com>
  */
 public class VariableNode extends AbstractNode {
 
-    private SymbolNode name;
-    private ExpressionNode value;
-
-    void setName(final SymbolNode name) {
-        this.name = name;
-    }
-
-    void setValue(final ExpressionNode value) {
-        this.value = value;
-    }
+    private final List<Declaration> declarations = Lists.newArrayList();
 
 }

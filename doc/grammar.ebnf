@@ -5,13 +5,21 @@ DIGIT   : '0' .. '9' .
 
 (* built in value terminals *)
 NIL     : 'nil' .
-TRUE    : 'true' . 
+TRUE    : 'true' .
 FALSE   : 'false' .
 
 (* keyword terminals *)
 VAR         : 'var' .
 CONST       : 'const' .
 FUNCTION    : 'function' .
+RETURN      : 'return' .
+FOR         : 'for' .
+IF          : 'if' .
+ELSE        : 'else' .
+SWITCH      : 'switch' .
+CASE        : 'case' .
+BREAK       : 'break' .
+CONTINUE    : 'continue' .
 
 (* operator terminals *)
 binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
@@ -22,24 +30,39 @@ unary-op   = "+" | "-" | "!" .
 
 (* base productions *)
 identifier      : CHAR { CHAR | DIGIT } .
-boolean-value   : TRUE 
+boolean-value   : TRUE
                 | FALSE .
 integer-value   : DIGIT { DIGIT } .
 float-value     : DIGIT '.' DIGIT { DIGIT } .
 string-value    : '"' { CHAR | DIGIT } '"' .
-value           : NIL 
-                | boolean-value 
-                | integer-value 
-                | float-value 
-                | string-value . 
+value           : NIL
+                | boolean-value
+                | integer-value
+                | float-value
+                | string-value .
 
 (* statement productions *)
-declaration          : identifier { '=' value } EOL .
-var-declaration      : VAR ( declaration | '{' EOL { declaration } '}') .
-const-declaration    : CONST ( declaration | '{' EOL { declaration } '}') .
+statement   : var-declaration
+            | const-declaration
+            | for-statement
+            | if-statement
+            | call-statement
+            | function-declaration
+            | return-statement .
+
+var-declaration     : VAR ( declaration | '{' EOL { declaration } '}') .
+const-declaration   : CONST ( declaration | '{' EOL { declaration } '}') .
+declaration         : identifier { '=' value } EOL .
+
+for-statement       : FOR expression '{' EOL { statement } '}' EOL .
+if-statement        : IF expression  '{' EOL { statement } '}' [ ELSE '{' { statement } '}' ] EOL .
+call-statement      : identifier '('
+                        [ identifier ':' ( identifier | value )
+                            { ',' identifier ':' ( identifier | value ) } ]
+                        ')' EOL .
+
 function-declaration : FUNCTION '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body '}' .
 function-body        : { statement } .
-statement            : var-declaration | const-declaration | function-declaration | return-statement .
 return-statement     : RETURN [ identifier | value { ',' identifier | value } ] .
 
 (* expression productions *)

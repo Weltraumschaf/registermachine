@@ -17,10 +17,13 @@ Expression > AstNode
 
 Variable > AstNode
 --
--name:Symbol
--value:Expression
+-declarations:List<Declaration>
 
 Constant > AstNode
+--
+-declarations:List<Declaration>
+
+Declaration > AstNode
 --
 -name:Symbol
 -value:Expression

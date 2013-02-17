@@ -5,9 +5,9 @@ const END = 10
 
 for sum <= END {
     if sum % 2 {
-        println("foo")
+        println(output : "foo")
     } else {
-        println("bar")
+        println(output : "bar")
     }
 
     sum = sum + 1;
