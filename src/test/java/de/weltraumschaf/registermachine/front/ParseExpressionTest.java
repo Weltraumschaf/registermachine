@@ -28,28 +28,28 @@ public class ParseExpressionTest {
 
     @Test @Ignore
     public void parseArithmeticExpression() {
-        final Parser sut = Parser.forString("var foo = 1 + 2 * 3 / 4\n");
-        sut.parse();
-
-        final FunctionNode main = sut.getAbstractSyntaxtTree();
-        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
-        assertThat(main.getStatements().size(), is(1));
-
-        final StatementNode statement = main.getStatements().get(0);
-        assertThat(statement.getType(), is(AstNode.Type.ASSIGNMENT));
+//        final Parser sut = Parser.forString("var foo = 1 + 2 * 3 / 4\n");
+//        sut.parse();
+//
+//        final FunctionNode main = sut.getAbstractSyntaxtTree();
+//        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+//        assertThat(main.getStatements().size(), is(1));
+//
+//        final StatementNode statement = main.getStatements().get(0);
+//        assertThat(statement.getType(), is(AstNode.Type.ASSIGNMENT));
     }
 
     @Test @Ignore
     public void parseArithmeticExpressionWithParens() {
-        final Parser sut = Parser.forString("var foo = 1 * (2 + 3) - 4\n");
-        sut.parse();
-
-        final FunctionNode main = sut.getAbstractSyntaxtTree();
-        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
-        assertThat(main.getStatements().size(), is(1));
-
-        final StatementNode statement = main.getStatements().get(0);
-        assertThat(statement.getType(), is(AstNode.Type.ASSIGNMENT));
+//        final Parser sut = Parser.forString("var foo = 1 * (2 + 3) - 4\n");
+//        sut.parse();
+//
+//        final FunctionNode main = sut.getAbstractSyntaxtTree();
+//        assertThat(main.getType(), is(AstNode.Type.FUNCTION));
+//        assertThat(main.getStatements().size(), is(1));
+//
+//        final StatementNode statement = main.getStatements().get(0);
+//        assertThat(statement.getType(), is(AstNode.Type.ASSIGNMENT));
     }
 
 }

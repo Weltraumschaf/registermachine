@@ -12,7 +12,8 @@ package de.weltraumschaf.registermachine.front;
 
 import de.weltraumschaf.commons.token.Token;
 import de.weltraumschaf.commons.token.TokenType;
-import de.weltraumschaf.registermachine.inter.FunctionNode;
+import de.weltraumschaf.registermachine.ast.FunctionNode;
+import de.weltraumschaf.registermachine.ast.SymbolNode;
 import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
 
@@ -39,7 +40,8 @@ final class Parser {
     private Parser(final Scanner scanner) {
         super();
         this.scanner = scanner;
-        this.mainFunction = nodeFactory.newFunctionNode();
+        this.mainFunction = new FunctionNode();
+        this.mainFunction.setName(new SymbolNode("__main__"));
     }
 
     static Parser forString(final String string) {
@@ -148,9 +150,9 @@ final class Parser {
         scanner.next(); // consume new line
 
         if (isConstant) {
-            mainFunction.addConstant(nodeFactory.newConstNode(name, value));
+//            mainFunction.addConstant(nodeFactory.newConstNode(name, value));
         } else {
-            mainFunction.addVariable(nodeFactory.newVarNode(name, value));
+//            mainFunction.addVariable(nodeFactory.newVarNode(name, value));
         }
     }
 

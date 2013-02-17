@@ -24,7 +24,7 @@ public class FunctionNode extends AbstractNode {
     private SymbolNode name ;
     private final List<AstNode> statements = Lists.newArrayList();
 
-    void setName(final SymbolNode name) {
+    public void setName(final SymbolNode name) {
         this.name = name;
     }
 
