@@ -16,6 +16,7 @@ import de.weltraumschaf.registermachine.ast.FunctionNode;
 import de.weltraumschaf.registermachine.ast.SymbolNode;
 import de.weltraumschaf.registermachine.inter.Nodes;
 import de.weltraumschaf.registermachine.inter.Value;
+import org.apache.commons.lang.Validate;
 
 /**
  * Parse source and generates an AST.
@@ -55,108 +56,11 @@ final class Parser {
     void parse() {
         while (scanner.hasNext()) {
             final Token<?> token = scanner.getCurrentToken();
-
-            if (token.getType() == TokenType.KEYWORD) {
-                parseKeyword();
-            }
         }
     }
 
-    private void parseKeyword() {
-        final Token<String> currentToken = (Token<String>) scanner.getCurrentToken();
-        final Keyword keyword = Keyword.forValue(currentToken.getValue());
-
-        switch (keyword) {
-            case VAR:
-                parseVariables();
-                break;
-            case CONST:
-                parseConstants();
-                break;
-            default:
-                throw new SyntaxException(String.format("Unknown keyword '%s'!", keyword.getLiteral()));
-        }
-    }
-
-    private void parseVariables() {
-        parseValues(false);
-    }
-
-    private void parseConstants() {
-        parseValues(true);
-    }
-
-    private void parseValues(final boolean isConstant) {
-        if (!scanner.hasNext()) {
-            throw new SyntaxException("Unexpected end of source!");
-        }
-
-        scanner.next(); // consume var/const keyword
-
-        if (isOperator(scanner.getCurrentToken(), "{")) {
-            parseValuesList(isConstant);
-        } else {
-            parseValue(isConstant);
-        }
-    }
-
-    private void parseValuesList(final boolean isConstant) {
-        scanner.next(); // consume {
-
-        if (TokenType.EOL != scanner.getCurrentToken().getType()) {
-            throw new SyntaxException("Missing new line after {!");
-        }
-        scanner.next(); // consume new line
-
-        while (scanner.hasNext()) {
-            if (isOperator(scanner.getCurrentToken(), "}")) {
-                if (scanner.hasNext()) {
-                    scanner.next(); // consume }
-                }
-                break;
-            }
-            parseValue(isConstant);
-        }
-    }
-
-    private void parseValue(final boolean isConstant) {
-        final Token<?> nameToken = scanner.getCurrentToken();
-
-        if (nameToken.getType() != TokenType.LITERAL) {
-            throw new SyntaxException("Identifier expected!");
-        }
-
-        final String name = ((Token<String>) nameToken).getValue();
-        scanner.next(); // consume name
-        final Token<?> maybeAssign = scanner.getCurrentToken();
-        Value value;
-
-        if (isOperator(maybeAssign, "=")) {
-            if (!scanner.hasNext()) {
-                throw new SyntaxException("Unexpected end of source!");
-            }
-
-            scanner.next(); // consume =
-            value = determineTypedValue(scanner.getCurrentToken(), name);
-            scanner.next(); // consume value
-        } else {
-            value = Value.getNil();
-        }
-
-        if (TokenType.EOL != scanner.getCurrentToken().getType()) {
-            throw new SyntaxException("Missing new line after var declaration!");
-        }
-
-        scanner.next(); // consume new line
-
-        if (isConstant) {
-//            mainFunction.addConstant(nodeFactory.newConstNode(name, value));
-        } else {
-//            mainFunction.addVariable(nodeFactory.newVarNode(name, value));
-        }
-    }
-
-    private Value determineTypedValue(final Token<?> valueToken, final String variableName) {
+    static Value determineTypedValue(final Token<?> valueToken, final String variableName) {
+        Validate.notNull(valueToken);
         switch (valueToken.getType()) { // NOPMD
             case NULL:
                 return Value.getNil();
@@ -178,8 +82,11 @@ final class Parser {
         }
     }
 
-    private boolean isOperator(final Token<?> token, final String literal) {
-        return token.getType() == TokenType.OPERATOR && ((Token<String>) token).getValue().equals(literal);
+    static boolean isOperator(final Token<?> token, final String literal) {
+        Validate.notNull(token);
+        Validate.notNull(literal);
+        Validate.notEmpty(literal);
+        return token.getType() == TokenType.OPERATOR && literal.equals(((Token<String>) token).getValue());
     }
 
 }

@@ -24,4 +24,19 @@ public class SymbolNode extends AbstractNode {
         this.id = id;
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof SymbolNode)) {
+            return false;
+        }
+
+        final SymbolNode other = (SymbolNode) obj;
+        return id.equals(other.id);
+    }
+
 }

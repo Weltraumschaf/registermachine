@@ -28,8 +28,16 @@ public class FunctionNode extends AbstractNode {
         this.name = name;
     }
 
+    public SymbolNode getName() {
+        return name;
+    }
+
     void addStatementNodes(final AstNode n) {
         statements.add(n);
+    }
+
+    public List<AstNode> getStatements() {
+        return Lists.newArrayList(statements);
     }
 
 }
