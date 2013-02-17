@@ -1,74 +1,71 @@
-(* Basic terminals *)
-EOL     : '\n' .
-CHAR    : 'a' .. 'b' | 'A' .. 'Z' .
-DIGIT   : '0' .. '9' .
+"Cay-The Syntax" {
+    
+    EOL     = '\\n' . 
+    CHAR    = 'a..b' | 'A..Z' .
+    DIGIT   = '0..9' .
 
-(* built in value terminals *)
-NIL     : 'nil' .
-TRUE    : 'true' .
-FALSE   : 'false' .
+    NIL     = 'nil' .
+    TRUE    = 'true' .
+    FALSE   = 'false' .
 
-(* keyword terminals *)
-VAR         : 'var' .
-CONST       : 'const' .
-FUNCTION    : 'function' .
-RETURN      : 'return' .
-FOR         : 'for' .
-IF          : 'if' .
-ELSE        : 'else' .
-SWITCH      : 'switch' .
-CASE        : 'case' .
-BREAK       : 'break' .
-CONTINUE    : 'continue' .
+    VAR         = 'var' .
+    CONST       = 'const' .
+    FUNCTION    = 'function' .
+    RETURN      = 'return' .
+    FOR         = 'for' .
+    IF          = 'if' .
+    ELSE        = 'else' .
+    SWITCH      = 'switch' .
+    CASE        = 'case' .
+    BREAK       = 'break' .
+    CONTINUE    = 'continue' .
 
-(* operator terminals *)
-binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
-rel-op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
-add-op     = "+" | "-"  .
-mul-op     = "*" | "/" | "%" .
-unary-op   = "+" | "-" | "!" .
+    binary-op  = "||" | "&&" | rel_op | add_op | mul_op .
+    rel-op     = "==" | "!=" | "<" | "<=" | ">" | ">=" .
+    add-op     = "+" | "-"  .
+    mul-op     = "*" | "/" | "%" .
+    unary-op   = "+" | "-" | "!" .
 
-(* base productions *)
-identifier      : CHAR { CHAR | DIGIT } .
-boolean-value   : TRUE
-                | FALSE .
-integer-value   : DIGIT { DIGIT } .
-float-value     : DIGIT '.' DIGIT { DIGIT } .
-string-value    : '"' { CHAR | DIGIT } '"' .
-value           : NIL
-                | boolean-value
-                | integer-value
-                | float-value
-                | string-value .
+    identifier      = CHAR { CHAR | DIGIT } .
+    boolean-value   = TRUE
+                    | FALSE .
+    integer-value   = DIGIT { DIGIT } .
+    float-value     = DIGIT { DIGIT } '.' DIGIT { DIGIT } .
+    string-value    = '"' { CHAR | DIGIT } '"' .
+    value           = NIL
+                    | boolean-value
+                    | integer-value
+                    | float-value
+                    | string-value .
 
-(* statement productions *)
-statement   : var-declaration
-            | const-declaration
-            | for-statement
-            | if-statement
-            | call-statement
-            | function-declaration
-            | return-statement .
+    statement   = var-declaration
+                | const-declaration
+                | for-statement
+                | if-statement
+                | call-statement
+                | function-declaration
+                | return-statement .
 
-var-declaration     : VAR ( declaration | '{' EOL { declaration } '}') .
-const-declaration   : CONST ( declaration | '{' EOL { declaration } '}') .
-declaration         : identifier { '=' value } EOL .
+    var-declaration     = VAR ( declaration | '{' EOL { declaration } '}') .
+    const-declaration   = CONST ( declaration | '{' EOL { declaration } '}') .
+    declaration         = identifier [ '=' value ] EOL .
 
-for-statement       : FOR expression '{' EOL { statement } '}' EOL .
-if-statement        : IF expression  '{' EOL { statement } '}' [ ELSE '{' { statement } '}' ] EOL .
-call-statement      : identifier '('
-                        [ identifier ':' ( identifier | value )
-                            { ',' identifier ':' ( identifier | value ) } ]
-                        ')' EOL .
+    for-statement       = FOR expression '{' EOL { statement EOL } '}' EOL .
+    if-statement        = IF expression  '{' EOL { statement EOL } '}' 
+                            [ ELSE '{' { statement EOL } '}' ] EOL .
+    call-statement      = identifier '('
+                            [ identifier ':' ( identifier | value )
+                                { ',' identifier ':' ( identifier | value ) } ]
+                            ')' EOL .
 
-function-declaration : FUNCTION '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body '}' .
-function-body        : { statement } .
-return-statement     : RETURN [ identifier | value { ',' identifier | value } ] .
+    function-declaration = FUNCTION '(' [ identifier { ',' identifier } ] ')' '{' EOL function-body '}' .
+    function-body        = { statement EOL } return-statement .
+    return-statement     = RETURN [ identifier | value { ',' identifier | value } ] EOL .
 
-(* expression productions *)
-expression        : term-expression { add-op term-expression } .
-term-expression   : factor-expression { mul-op factor-expression } .
-factor-expression : unary-expression { mul-op factor-expression } .
-unary-expression  : unary-op unary-expression | value-expression .
-value-expression  : identifier | value | paren-expression .
-paren-expression  : '(' expression ')' .
+    expression        = term-expression { add-op term-expression } .
+    term-expression   = factor-expression { mul-op factor-expression } .
+    factor-expression = unary-expression { mul-op factor-expression } .
+    unary-expression  = unary-op unary-expression | value-expression .
+    value-expression  = identifier | value | paren-expression .
+    paren-expression  = '(' expression ')' .
+}
